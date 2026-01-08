@@ -10,12 +10,17 @@ pub const core_1_0 = @import("core_1_0.zig");
 pub const core_1_1 = @import("core_1_1.zig");
 pub const core_1_2 = @import("core_1_2.zig");
 pub const core_1_3 = @import("core_1_3.zig");
-pub const khr_surface = @import("extensions/khr_surface.zig");
-pub const khr_swapchain = @import("extensions/khr_swapchain.zig");
-pub const khr_wayland_surface = @import("extensions/khr_wayland_surface.zig");
-pub const khr_xcb_surface = @import("extensions/khr_xcb_surface.zig");
-pub const khr_xlib_surface = @import("extensions/khr_xlib_surface.zig");
-pub const khr_win32_surface = @import("extensions/khr_win32_surface.zig");
+pub const extensions = @import("extensions.zig");
+
+// Keep these for internal use and legacy compatibility if needed,
+// OR switch internal usage to use 'extensions.khr_surface' etc.
+// For now, aliasing them to the new extensions module is cleaner.
+pub const khr_surface = extensions.khr_surface;
+pub const khr_swapchain = extensions.khr_swapchain;
+pub const khr_wayland_surface = extensions.khr_wayland_surface;
+pub const khr_xcb_surface = extensions.khr_xcb_surface;
+pub const khr_xlib_surface = extensions.khr_xlib_surface;
+pub const khr_win32_surface = extensions.khr_win32_surface;
 
 // Re-export commonly used types
 pub const Instance = types.Instance;

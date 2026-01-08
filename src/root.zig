@@ -21,6 +21,9 @@ pub const core_1_0 = vk.core_1_0;
 pub const core_1_1 = vk.core_1_1;
 pub const core_1_2 = vk.core_1_2;
 pub const core_1_3 = vk.core_1_3;
+pub const extensions = vk.extensions;
+
+// Re-export commonly used modules (Legacy/Direct Access)
 pub const khr_surface = vk.khr_surface;
 pub const khr_swapchain = vk.khr_swapchain;
 pub const khr_wayland_surface = vk.khr_wayland_surface;

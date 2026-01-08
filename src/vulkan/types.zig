@@ -802,6 +802,14 @@ pub const ExternalSemaphoreFeatureFlags = packed struct(u32) {
     _padding: u30 = 0,
 };
 
+pub const PeerMemoryFeatureFlags = packed struct(u32) {
+    copy_src: bool = false,
+    copy_dst: bool = false,
+    generic_src: bool = false,
+    generic_dst: bool = false,
+    _padding: u28 = 0,
+};
+
 pub const ExternalMemoryProperties = extern struct {
     external_memory_features: ExternalMemoryFeatureFlags,
     export_from_imported_handle_types: ExternalMemoryHandleTypeFlags,
