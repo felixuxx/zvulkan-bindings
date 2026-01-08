@@ -30,7 +30,7 @@ The primary goal of this project is to provide a clean, idiomatic, and robust in
 Add this package to your `build.zig.zon`:
 
 ```bash
-zig fetch --save git+https://github.com/yourusername/zvulkan-bindings.git
+zig fetch --save git+https://github.com/felixuxx/zvulkan-bindings.git
 ```
 
 ## Usage
