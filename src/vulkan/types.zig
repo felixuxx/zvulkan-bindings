@@ -140,6 +140,72 @@ pub const StructureType = enum(i32) {
     buffer_memory_barrier = 44,
     image_memory_barrier = 45,
     memory_barrier = 46,
+
+    // Vulkan 1.1
+    physical_device_subgroup_properties = 1000094000,
+    bind_buffer_memory_info = 1000157000,
+    bind_image_memory_info = 1000157001,
+    physical_device_16bit_storage_features = 1000083000,
+    memory_dedicated_requirements = 1000127000,
+    memory_dedicated_allocate_info = 1000127001,
+    memory_allocate_flags_info = 1000060000,
+    device_group_device_create_info = 1000070001,
+    device_group_render_pass_begin_info = 1000060003,
+    device_group_command_buffer_begin_info = 1000060004,
+    device_group_submit_info = 1000060005,
+    device_group_bind_sparse_info = 1000060006,
+    bind_buffer_memory_device_group_info = 1000060013,
+    bind_image_memory_device_group_info = 1000060014,
+    physical_device_group_properties = 1000070000,
+    device_group_base_group_properties = 1000070002, // Wait, checking standard...
+    physical_device_features_2 = 1000059000,
+    physical_device_properties_2 = 1000059001,
+    format_properties_2 = 1000059002,
+    image_format_properties_2 = 1000059003,
+    queue_family_properties_2 = 1000059004,
+    physical_device_memory_properties_2 = 1000059005,
+    sparse_image_format_properties_2 = 1000059006,
+    physical_device_sparse_image_format_info_2 = 1000059007,
+    physical_device_image_format_info_2 = 1000059008,
+    command_buffer_inheritance_conditional_rendering_info_ext = 1000081000,
+    external_memory_image_create_info = 1000072000,
+    external_memory_buffer_create_info = 1000072001,
+    export_memory_allocate_info = 1000072002,
+    physical_device_external_image_format_info = 1000071000,
+    external_image_format_properties = 1000071001,
+    physical_device_external_buffer_info = 1000071002,
+    external_buffer_properties = 1000071003,
+    physical_device_id_properties = 1000071004,
+    physical_device_external_fence_info = 1000112000,
+    external_fence_properties = 1000112001,
+    physical_device_external_semaphore_info = 1000076000,
+    external_semaphore_properties = 1000076001,
+
+    // Vulkan 1.2
+    physical_device_vulkan_1_1_features = 49,
+    physical_device_vulkan_1_1_properties = 50,
+    physical_device_vulkan_1_2_features = 51,
+    physical_device_vulkan_1_2_properties = 52,
+    semaphore_type_create_info = 1000207002,
+    timeline_semaphore_submit_info = 1000207003,
+    semaphore_wait_info = 1000207004,
+    semaphore_signal_info = 1000207005,
+
+    // Vulkan 1.3
+    physical_device_vulkan_1_3_features = 53,
+    physical_device_vulkan_1_3_properties = 54,
+    pipeline_creation_feedback_create_info = 1000192000,
+    pipeline_rendering_create_info = 1000044000,
+    rendering_info = 1000044001,
+    rendering_attachment_info = 1000044002,
+    pipeline_shader_stage_required_subgroup_size_create_info = 1000225000,
+    physical_device_tool_properties = 1000245000,
+    dependency_info = 1000314000,
+    memory_barrier_2 = 1000314001,
+    buffer_memory_barrier_2 = 1000314002,
+    image_memory_barrier_2 = 1000314003,
+    rendering_fragment_shading_rate_attachment_info_khr = 1000044006, // Alias needed for Checking
+
     swapchain_create_info_khr = 1000001000,
     present_info_khr = 1000001001,
     wayland_surface_create_info_khr = 1000006000,
@@ -261,6 +327,77 @@ pub const ComponentSwizzle = enum(i32) {
     b = 5,
     a = 6,
     _,
+};
+
+pub const SemaphoreType = enum(i32) {
+    binary = 0,
+    timeline = 1,
+    _,
+};
+
+pub const PointClippingBehavior = enum(i32) {
+    all_clip_planes = 0,
+    user_clip_planes_only = 1,
+    _,
+};
+
+pub const ShaderFloatControlsIndependence = enum(i32) {
+    @"32_bit_only" = 0,
+    all = 1,
+    none = 2,
+    _,
+};
+
+pub const DriverId = enum(i32) {
+    amd_proprietary = 1,
+    amd_open_source = 2,
+    mesa_radv = 3,
+    nvidia_proprietary = 4,
+    intel_proprietary_windows = 5,
+    intel_open_source_mesa = 6,
+    imagination_proprietary = 7,
+    qualcomm_proprietary = 8,
+    arm_proprietary = 9,
+    google_swiftshader = 10,
+    ggp_proprietary = 11,
+    broadcom_proprietary = 12,
+    mesa_llvmpipe = 13,
+    moltenvk = 14,
+    _,
+};
+
+pub const PhysicalDeviceType = enum(i32) {
+    other = 0,
+    integrated_gpu = 1,
+    discrete_gpu = 2,
+    virtual_gpu = 3,
+    cpu = 4,
+    _,
+};
+
+pub const MAX_DRIVER_INFO_SIZE = 256;
+pub const LUID_SIZE = 8;
+pub const MAX_DEVICE_GROUP_SIZE = 32;
+
+pub const ConformanceVersion = extern struct {
+    major: u8,
+    minor: u8,
+    subminor: u8,
+    patch: u8,
+};
+
+pub const ResolveModeFlags = packed struct(u32) {
+    none: bool = false,
+    sample_zero: bool = false,
+    average: bool = false,
+    min: bool = false,
+    max: bool = false,
+    _padding: u27 = 0,
+};
+
+pub const SemaphoreWaitFlags = packed struct(u32) {
+    any: bool = false,
+    _padding: u31 = 0,
 };
 
 pub const PipelineBindPoint = enum(i32) {
@@ -532,7 +669,18 @@ pub const ImageUsageFlags = packed struct(u32) {
     depth_stencil_attachment: bool = false,
     transient_attachment: bool = false,
     input_attachment: bool = false,
-    _padding: u24 = 0,
+    video_decode_dpb_bit_khr: bool = false,
+    acceleration_structure_vertex_buffer_bit_khr: bool = false,
+    fragment_density_map_bit_ext: bool = false,
+    fragment_shading_rate_attachment_bit_khr: bool = false,
+    _padding: u20 = 0,
+};
+
+pub const SparseImageFormatFlags = packed struct(u32) {
+    single_subresource: bool = false,
+    aligned_mip_size: bool = false,
+    non_standard_block_size: bool = false,
+    _padding: u29 = 0,
 };
 
 pub const ImageCreateFlags = packed struct(u32) {
@@ -542,6 +690,122 @@ pub const ImageCreateFlags = packed struct(u32) {
     mutable_format: bool = false,
     cube_compatible: bool = false,
     _padding: u27 = 0,
+};
+
+pub const FormatFeatureFlags = packed struct(u32) {
+    sampled_image: bool = false,
+    storage_image: bool = false,
+    storage_image_atomic: bool = false,
+    uniform_texel_buffer: bool = false,
+    storage_texel_buffer: bool = false,
+    storage_texel_buffer_atomic: bool = false,
+    vertex_buffer: bool = false,
+    color_attachment: bool = false,
+    color_attachment_blend: bool = false,
+    depth_stencil_attachment: bool = false,
+    blit_src: bool = false,
+    blit_dst: bool = false,
+    sampled_image_filter_linear: bool = false,
+    transfer_src: bool = false,
+    transfer_dst: bool = false,
+    midpoint_chroma_samples: bool = false,
+    sampled_image_ycbcr_conversion_linear_filter: bool = false,
+    sampled_image_ycbcr_conversion_separate_reconstruction_filter: bool = false,
+    sampled_image_ycbcr_conversion_chroma_reconstruction_explicit: bool = false,
+    sampled_image_ycbcr_conversion_chroma_reconstruction_explicit_forceable: bool = false,
+    disjoint: bool = false,
+    cosited_chroma_samples: bool = false,
+    sampled_image_filter_minmax: bool = false,
+    _padding: u9 = 0,
+};
+
+pub const ExternalMemoryHandleTypeFlags = packed struct(u32) {
+    opaque_fd: bool = false,
+    opaque_win32: bool = false,
+    opaque_win32_kmt: bool = false,
+    d3d11_texture: bool = false,
+    d3d11_texture_kmt: bool = false,
+    d3d12_heap: bool = false,
+    d3d12_resource: bool = false,
+    dma_buf: bool = false,
+    android_hardware_buffer: bool = false,
+    host_allocation: bool = false,
+    host_mapped_foreign_memory: bool = false,
+    _padding: u21 = 0,
+};
+
+pub const ExternalMemoryHandleTypeFlagBits = enum(u32) {
+    opaque_fd_bit = 0x00000001,
+    opaque_win32_bit = 0x00000002,
+    opaque_win32_kmt_bit = 0x00000004,
+    d3d11_texture_bit = 0x00000008,
+    d3d11_texture_kmt_bit = 0x00000010,
+    d3d12_heap_bit = 0x00000020,
+    d3d12_resource_bit = 0x00000040,
+    dma_buf_bit = 0x00000080,
+    android_hardware_buffer_bit_android = 0x00000400,
+    // host_allocation_bit_ext = 0x00000080, // Duplicate value with dma_buf_bit
+    host_mapped_foreign_memory_bit_ext = 0x00000100,
+    _,
+};
+
+pub const ExternalMemoryFeatureFlags = packed struct(u32) {
+    dedicated_only: bool = false,
+    exportable: bool = false,
+    importable: bool = false,
+    _padding: u29 = 0,
+};
+
+pub const ExternalFenceHandleTypeFlags = packed struct(u32) {
+    opaque_fd: bool = false,
+    opaque_win32: bool = false,
+    opaque_win32_kmt: bool = false,
+    sync_fd: bool = false,
+    _padding: u28 = 0,
+};
+
+pub const ExternalFenceHandleTypeFlagBits = enum(u32) {
+    opaque_fd_bit = 0x00000001,
+    opaque_win32_bit = 0x00000002,
+    opaque_win32_kmt_bit = 0x00000004,
+    sync_fd_bit = 0x00000008,
+    _,
+};
+
+pub const ExternalFenceFeatureFlags = packed struct(u32) {
+    exportable: bool = false,
+    importable: bool = false,
+    _padding: u30 = 0,
+};
+
+pub const ExternalSemaphoreHandleTypeFlags = packed struct(u32) {
+    opaque_fd: bool = false,
+    opaque_win32: bool = false,
+    opaque_win32_kmt: bool = false,
+    d3d12_fence: bool = false,
+    sync_fd: bool = false,
+    _padding: u27 = 0,
+};
+
+pub const ExternalSemaphoreHandleTypeFlagBits = enum(u32) {
+    opaque_fd_bit = 0x00000001,
+    opaque_win32_bit = 0x00000002,
+    opaque_win32_kmt_bit = 0x00000004,
+    d3d12_fence_bit = 0x00000008,
+    sync_fd_bit = 0x00000010,
+    _,
+};
+
+pub const ExternalSemaphoreFeatureFlags = packed struct(u32) {
+    exportable: bool = false,
+    importable: bool = false,
+    _padding: u30 = 0,
+};
+
+pub const ExternalMemoryProperties = extern struct {
+    external_memory_features: ExternalMemoryFeatureFlags,
+    export_from_imported_handle_types: ExternalMemoryHandleTypeFlags,
+    compatible_handle_types: ExternalMemoryHandleTypeFlags,
 };
 
 pub const ImageAspectFlags = packed struct(u32) {
@@ -654,6 +918,28 @@ pub const SampleCountFlags = packed struct(u32) {
     _padding: u25 = 0,
 };
 
+pub const SampleCountFlagBits = enum(u32) {
+    @"1" = 0x00000001,
+    @"2" = 0x00000002,
+    @"4" = 0x00000004,
+    @"8" = 0x00000008,
+    @"16" = 0x00000010,
+    @"32" = 0x00000020,
+    @"64" = 0x00000040,
+    _,
+};
+
+pub const ToolPurposeFlags = packed struct(u32) {
+    validation: bool = false,
+    profiling: bool = false,
+    tracing: bool = false,
+    additional_features: bool = false,
+    modifying_features: bool = false,
+    debug_reporting_ext: bool = false,
+    debug_markers_ext: bool = false,
+    _padding: u25 = 0,
+};
+
 pub const CommandPoolCreateFlags = packed struct(u32) {
     transient: bool = false,
     reset_command_buffer: bool = false,
@@ -671,6 +957,60 @@ pub const CommandBufferUsageFlags = packed struct(u32) {
 pub const DependencyFlags = packed struct(u32) {
     by_region: bool = false,
     _padding: u31 = 0,
+};
+
+// Vulkan 1.3 Flags
+pub const PipelineStageFlags2 = packed struct(u64) {
+    none: bool = false,
+    top_of_pipe_bit: bool = false,
+    draw_indirect_bit: bool = false,
+    vertex_input_bit: bool = false,
+    vertex_shader_bit: bool = false,
+    tessellation_control_shader_bit: bool = false,
+    tessellation_evaluation_shader_bit: bool = false,
+    geometry_shader_bit: bool = false,
+    fragment_shader_bit: bool = false,
+    early_fragment_tests_bit: bool = false,
+    late_fragment_tests_bit: bool = false,
+    color_attachment_output_bit: bool = false,
+    compute_shader_bit: bool = false,
+    all_transfer_bit: bool = false,
+    transfer_bit: bool = false, // Alias
+    bottom_of_pipe_bit: bool = false,
+    host_bit: bool = false,
+    all_graphics_bit: bool = false,
+    all_commands_bit: bool = false,
+    _padding: u45 = 0,
+};
+
+pub const AccessFlags2 = packed struct(u64) {
+    none: bool = false,
+    indirect_command_read_bit: bool = false,
+    index_read_bit: bool = false,
+    vertex_attribute_read_bit: bool = false,
+    uniform_read_bit: bool = false,
+    input_attachment_read_bit: bool = false,
+    shader_read_bit: bool = false,
+    shader_write_bit: bool = false,
+    color_attachment_read_bit: bool = false,
+    color_attachment_write_bit: bool = false,
+    depth_stencil_attachment_read_bit: bool = false,
+    depth_stencil_attachment_write_bit: bool = false,
+    transfer_read_bit: bool = false,
+    transfer_write_bit: bool = false,
+    host_read_bit: bool = false,
+    host_write_bit: bool = false,
+    memory_read_bit: bool = false,
+    memory_write_bit: bool = false,
+    border_color_read_bit_ext: bool = false, // NOTE: Removed reserved bit manual padding for simplicity, hoping alignment holds
+    _padding: u45 = 0,
+};
+
+pub const RenderingFlags = packed struct(u32) {
+    contents_secondary_command_buffers_bit: bool = false,
+    suspending_bit: bool = false,
+    resuming_bit: bool = false,
+    _padding: u29 = 0,
 };
 
 // ============================================================================

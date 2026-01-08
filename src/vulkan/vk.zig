@@ -7,6 +7,9 @@ const platform = @import("platform.zig");
 pub const types = @import("types.zig");
 pub const constants = @import("constants.zig");
 pub const core_1_0 = @import("core_1_0.zig");
+pub const core_1_1 = @import("core_1_1.zig");
+pub const core_1_2 = @import("core_1_2.zig");
+pub const core_1_3 = @import("core_1_3.zig");
 pub const khr_surface = @import("extensions/khr_surface.zig");
 pub const khr_swapchain = @import("extensions/khr_swapchain.zig");
 pub const khr_wayland_surface = @import("extensions/khr_wayland_surface.zig");
@@ -36,6 +39,9 @@ pub const PFN_vkEnumerateInstanceExtensionProperties = *const fn (?[*:0]const u8
 pub const PFN_vkEnumerateInstanceLayerProperties = *const fn (*u32, ?[*]LayerProperties) callconv(.c) Result;
 pub const PFN_vkCreateInstance = *const fn (*const core_1_0.InstanceCreateInfo, ?*const types.AllocationCallbacks, *Instance) callconv(.c) Result;
 
+// Vulkan 1.1 Global
+pub const PFN_vkEnumerateInstanceVersion_1_1 = *const fn (*u32) callconv(.c) Result; // Same signature, mostly for completeness checking
+
 // Instance functions
 pub const PFN_vkDestroyInstance = *const fn (Instance, ?*const types.AllocationCallbacks) callconv(.c) void;
 pub const PFN_vkEnumeratePhysicalDevices = *const fn (Instance, *u32, ?[*]PhysicalDevice) callconv(.c) Result;
@@ -44,6 +50,21 @@ pub const PFN_vkGetPhysicalDeviceFeatures = *const fn (PhysicalDevice, *core_1_0
 pub const PFN_vkGetPhysicalDeviceMemoryProperties = *const fn (PhysicalDevice, *core_1_0.PhysicalDeviceMemoryProperties) callconv(.c) void;
 pub const PFN_vkGetPhysicalDeviceQueueFamilyProperties = *const fn (PhysicalDevice, *u32, ?[*]core_1_0.QueueFamilyProperties) callconv(.c) void;
 pub const PFN_vkCreateDevice = *const fn (PhysicalDevice, *const core_1_0.DeviceCreateInfo, ?*const types.AllocationCallbacks, *Device) callconv(.c) Result;
+
+// Vulkan 1.1 Instance
+pub const PFN_vkGetPhysicalDeviceFeatures2 = *const fn (PhysicalDevice, *core_1_1.PhysicalDeviceFeatures2) callconv(.c) void;
+pub const PFN_vkGetPhysicalDeviceProperties2 = *const fn (PhysicalDevice, *core_1_1.PhysicalDeviceProperties2) callconv(.c) void;
+pub const PFN_vkGetPhysicalDeviceFormatProperties2 = *const fn (PhysicalDevice, types.Format, *core_1_1.FormatProperties2) callconv(.c) void;
+pub const PFN_vkGetPhysicalDeviceImageFormatProperties2 = *const fn (PhysicalDevice, *const core_1_1.PhysicalDeviceImageFormatInfo2, *core_1_1.ImageFormatProperties2) callconv(.c) Result;
+pub const PFN_vkGetPhysicalDeviceQueueFamilyProperties2 = *const fn (PhysicalDevice, *u32, ?[*]core_1_1.QueueFamilyProperties2) callconv(.c) void;
+pub const PFN_vkGetPhysicalDeviceMemoryProperties2 = *const fn (PhysicalDevice, *core_1_1.PhysicalDeviceMemoryProperties2) callconv(.c) void;
+pub const PFN_vkGetPhysicalDeviceSparseImageFormatProperties2 = *const fn (PhysicalDevice, *const core_1_1.PhysicalDeviceSparseImageFormatInfo2, *u32, ?[*]core_1_1.SparseImageFormatProperties2) callconv(.c) void;
+pub const PFN_vkGetPhysicalDeviceExternalBufferProperties = *const fn (PhysicalDevice, *const core_1_1.PhysicalDeviceExternalBufferInfo, *core_1_1.ExternalBufferProperties) callconv(.c) void;
+pub const PFN_vkGetPhysicalDeviceExternalFenceProperties = *const fn (PhysicalDevice, *const core_1_1.PhysicalDeviceExternalFenceInfo, *core_1_1.ExternalFenceProperties) callconv(.c) void;
+pub const PFN_vkGetPhysicalDeviceExternalSemaphoreProperties = *const fn (PhysicalDevice, *const core_1_1.PhysicalDeviceExternalSemaphoreInfo, *core_1_1.ExternalSemaphoreProperties) callconv(.c) void;
+
+// Vulkan 1.3 Instance
+pub const PFN_vkGetPhysicalDeviceToolProperties = *const fn (PhysicalDevice, *u32, ?[*]core_1_3.PhysicalDeviceToolProperties) callconv(.c) Result;
 
 // Device functions
 pub const PFN_vkDestroyDevice = *const fn (Device, ?*const types.AllocationCallbacks) callconv(.c) void;
@@ -102,6 +123,67 @@ pub const PFN_vkCreateFramebuffer = *const fn (Device, *const core_1_0.Framebuff
 pub const PFN_vkDestroyFramebuffer = *const fn (Device, types.Framebuffer, ?*const types.AllocationCallbacks) callconv(.c) void;
 pub const PFN_vkCmdBeginRenderPass = *const fn (CommandBuffer, *const core_1_0.RenderPassBeginInfo, types.SubpassContents) callconv(.c) void;
 pub const PFN_vkCmdEndRenderPass = *const fn (CommandBuffer) callconv(.c) void;
+
+// Vulkan 1.1 Device
+pub const PFN_vkBindBufferMemory2 = *const fn (Device, u32, [*]const core_1_1.BindBufferMemoryInfo) callconv(.c) Result;
+pub const PFN_vkBindImageMemory2 = *const fn (Device, u32, [*]const core_1_1.BindImageMemoryInfo) callconv(.c) Result;
+pub const PFN_vkGetDeviceGroupPeerMemoryFeatures = *const fn (Device, u32, u32, u32, *types.PeerMemoryFeatureFlags) callconv(.c) void;
+pub const PFN_vkCmdSetDeviceMask = *const fn (CommandBuffer, u32) callconv(.c) void;
+pub const PFN_vkCmdDispatchBase = *const fn (CommandBuffer, u32, u32, u32, u32, u32, u32) callconv(.c) void;
+pub const PFN_vkGetImageMemoryRequirements2 = *const fn (Device, *const types.ImageMemoryRequirementsInfo2, *types.MemoryRequirements2) callconv(.c) void;
+pub const PFN_vkGetBufferMemoryRequirements2 = *const fn (Device, *const types.BufferMemoryRequirementsInfo2, *types.MemoryRequirements2) callconv(.c) void;
+pub const PFN_vkGetDeviceQueue2 = *const fn (Device, *const types.DeviceQueueInfo2, *Queue) callconv(.c) void;
+pub const PFN_vkTrimCommandPool = *const fn (Device, types.CommandPool, types.CommandPoolTrimFlags) callconv(.c) void;
+
+// Vulkan 1.2 Device
+pub const PFN_vkCmdDrawIndirectCount = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, types.Buffer, types.DeviceSize, u32, u32) callconv(.c) void;
+pub const PFN_vkCmdDrawIndexedIndirectCount = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, types.Buffer, types.DeviceSize, u32, u32) callconv(.c) void;
+pub const PFN_vkCreateRenderPass2 = *const fn (Device, *const types.RenderPassCreateInfo2, ?*const types.AllocationCallbacks, *types.RenderPass) callconv(.c) Result;
+pub const PFN_vkCmdBeginRenderPass2 = *const fn (CommandBuffer, *const types.RenderPassBeginInfo, *const types.SubpassBeginInfo) callconv(.c) void;
+pub const PFN_vkCmdEndRenderPass2 = *const fn (CommandBuffer, *const types.SubpassEndInfo) callconv(.c) void;
+pub const PFN_vkResetQueryPool = *const fn (Device, types.QueryPool, u32, u32) callconv(.c) void;
+pub const PFN_vkGetSemaphoreCounterValue = *const fn (Device, types.Semaphore, *u64) callconv(.c) Result;
+pub const PFN_vkWaitSemaphores = *const fn (Device, *const core_1_2.SemaphoreWaitInfo, u64) callconv(.c) Result;
+pub const PFN_vkSignalSemaphore = *const fn (Device, *const core_1_2.SemaphoreSignalInfo) callconv(.c) Result;
+pub const PFN_vkGetBufferDeviceAddress = *const fn (Device, *const core_1_2.BufferDeviceAddressInfo) callconv(.c) types.DeviceAddress;
+pub const PFN_vkGetBufferOpaqueCaptureAddress = *const fn (Device, *const core_1_2.BufferDeviceAddressInfo) callconv(.c) u64;
+pub const PFN_vkGetDeviceMemoryOpaqueCaptureAddress = *const fn (Device, *const core_1_2.DeviceMemoryOpaqueCaptureAddressInfo) callconv(.c) u64;
+
+// Vulkan 1.3 Device
+pub const PFN_vkGetPhysicalDeviceToolProperties_Dev = *const fn (PhysicalDevice, *u32, ?[*]types.PhysicalDeviceToolProperties) callconv(.c) Result; // Note: Instance func technically, but often loaded via device
+pub const PFN_vkCreatePrivateDataSlot = *const fn (Device, *const types.PrivateDataSlotCreateInfo, ?*const types.AllocationCallbacks, *types.PrivateDataSlot) callconv(.c) Result;
+pub const PFN_vkDestroyPrivateDataSlot = *const fn (Device, types.PrivateDataSlot, ?*const types.AllocationCallbacks) callconv(.c) void;
+pub const PFN_vkSetPrivateData = *const fn (Device, types.ObjectType, u64, types.PrivateDataSlot, u64) callconv(.c) Result;
+pub const PFN_vkGetPrivateData = *const fn (Device, types.ObjectType, u64, types.PrivateDataSlot, *u64) callconv(.c) void;
+pub const PFN_vkCmdSetEvent2 = *const fn (CommandBuffer, types.Event, *const core_1_3.DependencyInfo) callconv(.c) void;
+pub const PFN_vkCmdResetEvent2 = *const fn (CommandBuffer, types.Event, types.PipelineStageFlags2) callconv(.c) void;
+pub const PFN_vkCmdWaitEvents2 = *const fn (CommandBuffer, u32, [*]const types.Event, *const core_1_3.DependencyInfo) callconv(.c) void;
+pub const PFN_vkCmdPipelineBarrier2 = *const fn (CommandBuffer, *const core_1_3.DependencyInfo) callconv(.c) void;
+pub const PFN_vkQueueSubmit2 = *const fn (Queue, u32, [*]const core_1_3.SubmitInfo2, types.Fence) callconv(.c) Result;
+pub const PFN_vkCmdWriteTimestamp2 = *const fn (CommandBuffer, types.PipelineStageFlags2, types.QueryPool, u32) callconv(.c) void;
+pub const PFN_vkCmdCopyBuffer2 = *const fn (CommandBuffer, *const types.CopyBufferInfo2) callconv(.c) void;
+pub const PFN_vkCmdCopyImage2 = *const fn (CommandBuffer, *const types.CopyImageInfo2) callconv(.c) void;
+pub const PFN_vkCmdCopyBufferToImage2 = *const fn (CommandBuffer, *const types.CopyBufferToImageInfo2) callconv(.c) void;
+pub const PFN_vkCmdCopyImageToBuffer2 = *const fn (CommandBuffer, *const types.CopyImageToBufferInfo2) callconv(.c) void;
+pub const PFN_vkCmdBlitImage2 = *const fn (CommandBuffer, *const types.BlitImageInfo2) callconv(.c) void;
+pub const PFN_vkCmdResolveImage2 = *const fn (CommandBuffer, *const types.ResolveImageInfo2) callconv(.c) void;
+pub const PFN_vkCmdBeginRendering = *const fn (CommandBuffer, *const core_1_3.RenderingInfo) callconv(.c) void;
+pub const PFN_vkCmdEndRendering = *const fn (CommandBuffer) callconv(.c) void;
+pub const PFN_vkCmdSetCullMode = *const fn (CommandBuffer, types.CullModeFlags) callconv(.c) void;
+pub const PFN_vkCmdSetFrontFace = *const fn (CommandBuffer, types.FrontFace) callconv(.c) void;
+pub const PFN_vkCmdSetPrimitiveTopology = *const fn (CommandBuffer, types.PrimitiveTopology) callconv(.c) void;
+pub const PFN_vkCmdSetViewportWithCount = *const fn (CommandBuffer, u32, [*]const types.Viewport) callconv(.c) void;
+pub const PFN_vkCmdSetScissorWithCount = *const fn (CommandBuffer, u32, [*]const types.Rect2D) callconv(.c) void;
+pub const PFN_vkCmdBindVertexBuffers2 = *const fn (CommandBuffer, u32, u32, [*]const types.Buffer, [*]const types.DeviceSize, ?[*]const types.DeviceSize, ?[*]const types.DeviceSize) callconv(.c) void;
+pub const PFN_vkCmdSetDepthTestEnable = *const fn (CommandBuffer, types.Bool32) callconv(.c) void;
+pub const PFN_vkCmdSetDepthWriteEnable = *const fn (CommandBuffer, types.Bool32) callconv(.c) void;
+pub const PFN_vkCmdSetDepthCompareOp = *const fn (CommandBuffer, types.CompareOp) callconv(.c) void;
+pub const PFN_vkCmdSetDepthBoundsTestEnable = *const fn (CommandBuffer, types.Bool32) callconv(.c) void;
+pub const PFN_vkCmdSetStencilTestEnable = *const fn (CommandBuffer, types.Bool32) callconv(.c) void;
+pub const PFN_vkCmdSetStencilOp = *const fn (CommandBuffer, types.StencilFaceFlags, types.StencilOp, types.StencilOp, types.StencilOp, types.CompareOp) callconv(.c) void;
+pub const PFN_vkCmdSetRasterizerDiscardEnable = *const fn (CommandBuffer, types.Bool32) callconv(.c) void;
+pub const PFN_vkCmdSetDepthBiasEnable = *const fn (CommandBuffer, types.Bool32) callconv(.c) void;
+pub const PFN_vkCmdSetPrimitiveRestartEnable = *const fn (CommandBuffer, types.Bool32) callconv(.c) void;
 
 // ============================================================================
 // Extension Function Types
@@ -222,6 +304,21 @@ pub const InstanceDispatch = struct {
     vkCreateDevice: PFN_vkCreateDevice,
     vkGetDeviceProcAddr: PFN_vkGetDeviceProcAddr,
 
+    // Vulkan 1.1
+    vkGetPhysicalDeviceFeatures2: ?PFN_vkGetPhysicalDeviceFeatures2 = null,
+    vkGetPhysicalDeviceProperties2: ?PFN_vkGetPhysicalDeviceProperties2 = null,
+    vkGetPhysicalDeviceFormatProperties2: ?PFN_vkGetPhysicalDeviceFormatProperties2 = null,
+    vkGetPhysicalDeviceImageFormatProperties2: ?PFN_vkGetPhysicalDeviceImageFormatProperties2 = null,
+    vkGetPhysicalDeviceQueueFamilyProperties2: ?PFN_vkGetPhysicalDeviceQueueFamilyProperties2 = null,
+    vkGetPhysicalDeviceMemoryProperties2: ?PFN_vkGetPhysicalDeviceMemoryProperties2 = null,
+    vkGetPhysicalDeviceSparseImageFormatProperties2: ?PFN_vkGetPhysicalDeviceSparseImageFormatProperties2 = null,
+    vkGetPhysicalDeviceExternalBufferProperties: ?PFN_vkGetPhysicalDeviceExternalBufferProperties = null,
+    vkGetPhysicalDeviceExternalFenceProperties: ?PFN_vkGetPhysicalDeviceExternalFenceProperties = null,
+    vkGetPhysicalDeviceExternalSemaphoreProperties: ?PFN_vkGetPhysicalDeviceExternalSemaphoreProperties = null,
+
+    // Vulkan 1.3
+    vkGetPhysicalDeviceToolProperties: ?PFN_vkGetPhysicalDeviceToolProperties = null,
+
     // Extension functions
     vkDestroySurfaceKHR: ?PFN_vkDestroySurfaceKHR = null,
     vkGetPhysicalDeviceSurfaceSupportKHR: ?PFN_vkGetPhysicalDeviceSurfaceSupportKHR = null,
@@ -251,6 +348,21 @@ pub const InstanceDispatch = struct {
             .vkGetPhysicalDeviceQueueFamilyProperties = try loadInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceQueueFamilyProperties", PFN_vkGetPhysicalDeviceQueueFamilyProperties),
             .vkCreateDevice = try loadInstanceFunction(get_proc, instance, "vkCreateDevice", PFN_vkCreateDevice),
             .vkGetDeviceProcAddr = try loadInstanceFunction(get_proc, instance, "vkGetDeviceProcAddr", PFN_vkGetDeviceProcAddr),
+
+            // Vulkan 1.1
+            .vkGetPhysicalDeviceFeatures2 = loadOptionalInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceFeatures2", PFN_vkGetPhysicalDeviceFeatures2),
+            .vkGetPhysicalDeviceProperties2 = loadOptionalInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceProperties2", PFN_vkGetPhysicalDeviceProperties2),
+            .vkGetPhysicalDeviceFormatProperties2 = loadOptionalInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceFormatProperties2", PFN_vkGetPhysicalDeviceFormatProperties2),
+            .vkGetPhysicalDeviceImageFormatProperties2 = loadOptionalInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceImageFormatProperties2", PFN_vkGetPhysicalDeviceImageFormatProperties2),
+            .vkGetPhysicalDeviceQueueFamilyProperties2 = loadOptionalInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceQueueFamilyProperties2", PFN_vkGetPhysicalDeviceQueueFamilyProperties2),
+            .vkGetPhysicalDeviceMemoryProperties2 = loadOptionalInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceMemoryProperties2", PFN_vkGetPhysicalDeviceMemoryProperties2),
+            .vkGetPhysicalDeviceSparseImageFormatProperties2 = loadOptionalInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceSparseImageFormatProperties2", PFN_vkGetPhysicalDeviceSparseImageFormatProperties2),
+            .vkGetPhysicalDeviceExternalBufferProperties = loadOptionalInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceExternalBufferProperties", PFN_vkGetPhysicalDeviceExternalBufferProperties),
+            .vkGetPhysicalDeviceExternalFenceProperties = loadOptionalInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceExternalFenceProperties", PFN_vkGetPhysicalDeviceExternalFenceProperties),
+            .vkGetPhysicalDeviceExternalSemaphoreProperties = loadOptionalInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceExternalSemaphoreProperties", PFN_vkGetPhysicalDeviceExternalSemaphoreProperties),
+
+            // Vulkan 1.3
+            .vkGetPhysicalDeviceToolProperties = loadOptionalInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceToolProperties", PFN_vkGetPhysicalDeviceToolProperties),
 
             // Extension functions
             .vkDestroySurfaceKHR = loadOptionalInstanceFunction(get_proc, instance, "vkDestroySurfaceKHR", PFN_vkDestroySurfaceKHR),
@@ -369,6 +481,67 @@ pub const DeviceDispatch = struct {
     vkCmdBeginRenderPass: PFN_vkCmdBeginRenderPass,
     vkCmdEndRenderPass: PFN_vkCmdEndRenderPass,
 
+    // Vulkan 1.1
+    vkBindBufferMemory2: ?PFN_vkBindBufferMemory2 = null,
+    vkBindImageMemory2: ?PFN_vkBindImageMemory2 = null,
+    vkGetDeviceGroupPeerMemoryFeatures: ?PFN_vkGetDeviceGroupPeerMemoryFeatures = null,
+    vkCmdSetDeviceMask: ?PFN_vkCmdSetDeviceMask = null,
+    vkCmdDispatchBase: ?PFN_vkCmdDispatchBase = null,
+    vkGetImageMemoryRequirements2: ?PFN_vkGetImageMemoryRequirements2 = null,
+    vkGetBufferMemoryRequirements2: ?PFN_vkGetBufferMemoryRequirements2 = null,
+    vkGetDeviceQueue2: ?PFN_vkGetDeviceQueue2 = null,
+    vkTrimCommandPool: ?PFN_vkTrimCommandPool = null,
+
+    // Vulkan 1.2
+    vkCmdDrawIndirectCount: ?PFN_vkCmdDrawIndirectCount = null,
+    vkCmdDrawIndexedIndirectCount: ?PFN_vkCmdDrawIndexedIndirectCount = null,
+    vkCreateRenderPass2: ?PFN_vkCreateRenderPass2 = null,
+    vkCmdBeginRenderPass2: ?PFN_vkCmdBeginRenderPass2 = null,
+    vkCmdEndRenderPass2: ?PFN_vkCmdEndRenderPass2 = null,
+    vkResetQueryPool: ?PFN_vkResetQueryPool = null,
+    vkGetSemaphoreCounterValue: ?PFN_vkGetSemaphoreCounterValue = null,
+    vkWaitSemaphores: ?PFN_vkWaitSemaphores = null,
+    vkSignalSemaphore: ?PFN_vkSignalSemaphore = null,
+    vkGetBufferDeviceAddress: ?PFN_vkGetBufferDeviceAddress = null,
+    vkGetBufferOpaqueCaptureAddress: ?PFN_vkGetBufferOpaqueCaptureAddress = null,
+    vkGetDeviceMemoryOpaqueCaptureAddress: ?PFN_vkGetDeviceMemoryOpaqueCaptureAddress = null,
+
+    // Vulkan 1.3
+    vkGetPhysicalDeviceToolProperties: ?PFN_vkGetPhysicalDeviceToolProperties_Dev = null,
+    vkCreatePrivateDataSlot: ?PFN_vkCreatePrivateDataSlot = null,
+    vkDestroyPrivateDataSlot: ?PFN_vkDestroyPrivateDataSlot = null,
+    vkSetPrivateData: ?PFN_vkSetPrivateData = null,
+    vkGetPrivateData: ?PFN_vkGetPrivateData = null,
+    vkCmdSetEvent2: ?PFN_vkCmdSetEvent2 = null,
+    vkCmdResetEvent2: ?PFN_vkCmdResetEvent2 = null,
+    vkCmdWaitEvents2: ?PFN_vkCmdWaitEvents2 = null,
+    vkCmdPipelineBarrier2: ?PFN_vkCmdPipelineBarrier2 = null,
+    vkQueueSubmit2: ?PFN_vkQueueSubmit2 = null,
+    vkCmdWriteTimestamp2: ?PFN_vkCmdWriteTimestamp2 = null,
+    vkCmdCopyBuffer2: ?PFN_vkCmdCopyBuffer2 = null,
+    vkCmdCopyImage2: ?PFN_vkCmdCopyImage2 = null,
+    vkCmdCopyBufferToImage2: ?PFN_vkCmdCopyBufferToImage2 = null,
+    vkCmdCopyImageToBuffer2: ?PFN_vkCmdCopyImageToBuffer2 = null,
+    vkCmdBlitImage2: ?PFN_vkCmdBlitImage2 = null,
+    vkCmdResolveImage2: ?PFN_vkCmdResolveImage2 = null,
+    vkCmdBeginRendering: ?PFN_vkCmdBeginRendering = null,
+    vkCmdEndRendering: ?PFN_vkCmdEndRendering = null,
+    vkCmdSetCullMode: ?PFN_vkCmdSetCullMode = null,
+    vkCmdSetFrontFace: ?PFN_vkCmdSetFrontFace = null,
+    vkCmdSetPrimitiveTopology: ?PFN_vkCmdSetPrimitiveTopology = null,
+    vkCmdSetViewportWithCount: ?PFN_vkCmdSetViewportWithCount = null,
+    vkCmdSetScissorWithCount: ?PFN_vkCmdSetScissorWithCount = null,
+    vkCmdBindVertexBuffers2: ?PFN_vkCmdBindVertexBuffers2 = null,
+    vkCmdSetDepthTestEnable: ?PFN_vkCmdSetDepthTestEnable = null,
+    vkCmdSetDepthWriteEnable: ?PFN_vkCmdSetDepthWriteEnable = null,
+    vkCmdSetDepthCompareOp: ?PFN_vkCmdSetDepthCompareOp = null,
+    vkCmdSetDepthBoundsTestEnable: ?PFN_vkCmdSetDepthBoundsTestEnable = null,
+    vkCmdSetStencilTestEnable: ?PFN_vkCmdSetStencilTestEnable = null,
+    vkCmdSetStencilOp: ?PFN_vkCmdSetStencilOp = null,
+    vkCmdSetRasterizerDiscardEnable: ?PFN_vkCmdSetRasterizerDiscardEnable = null,
+    vkCmdSetDepthBiasEnable: ?PFN_vkCmdSetDepthBiasEnable = null,
+    vkCmdSetPrimitiveRestartEnable: ?PFN_vkCmdSetPrimitiveRestartEnable = null,
+
     // Extension functions
     vkCreateSwapchainKHR: ?PFN_vkCreateSwapchainKHR = null,
     vkDestroySwapchainKHR: ?PFN_vkDestroySwapchainKHR = null,
@@ -427,6 +600,67 @@ pub const DeviceDispatch = struct {
             .vkDestroyFramebuffer = try loadDeviceFunction(get_proc, device, "vkDestroyFramebuffer"),
             .vkCmdBeginRenderPass = try loadDeviceFunction(get_proc, device, "vkCmdBeginRenderPass", PFN_vkCmdBeginRenderPass),
             .vkCmdEndRenderPass = try loadDeviceFunction(get_proc, device, "vkCmdEndRenderPass", PFN_vkCmdEndRenderPass),
+
+            // Vulkan 1.1
+            .vkBindBufferMemory2 = loadOptionalDeviceFunction(get_proc, device, "vkBindBufferMemory2", PFN_vkBindBufferMemory2),
+            .vkBindImageMemory2 = loadOptionalDeviceFunction(get_proc, device, "vkBindImageMemory2", PFN_vkBindImageMemory2),
+            .vkGetDeviceGroupPeerMemoryFeatures = loadOptionalDeviceFunction(get_proc, device, "vkGetDeviceGroupPeerMemoryFeatures", PFN_vkGetDeviceGroupPeerMemoryFeatures),
+            .vkCmdSetDeviceMask = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetDeviceMask", PFN_vkCmdSetDeviceMask),
+            .vkCmdDispatchBase = loadOptionalDeviceFunction(get_proc, device, "vkCmdDispatchBase", PFN_vkCmdDispatchBase),
+            .vkGetImageMemoryRequirements2 = loadOptionalDeviceFunction(get_proc, device, "vkGetImageMemoryRequirements2", PFN_vkGetImageMemoryRequirements2),
+            .vkGetBufferMemoryRequirements2 = loadOptionalDeviceFunction(get_proc, device, "vkGetBufferMemoryRequirements2", PFN_vkGetBufferMemoryRequirements2),
+            .vkGetDeviceQueue2 = loadOptionalDeviceFunction(get_proc, device, "vkGetDeviceQueue2", PFN_vkGetDeviceQueue2),
+            .vkTrimCommandPool = loadOptionalDeviceFunction(get_proc, device, "vkTrimCommandPool", PFN_vkTrimCommandPool),
+
+            // Vulkan 1.2
+            .vkCmdDrawIndirectCount = loadOptionalDeviceFunction(get_proc, device, "vkCmdDrawIndirectCount", PFN_vkCmdDrawIndirectCount),
+            .vkCmdDrawIndexedIndirectCount = loadOptionalDeviceFunction(get_proc, device, "vkCmdDrawIndexedIndirectCount", PFN_vkCmdDrawIndexedIndirectCount),
+            .vkCreateRenderPass2 = loadOptionalDeviceFunction(get_proc, device, "vkCreateRenderPass2", PFN_vkCreateRenderPass2),
+            .vkCmdBeginRenderPass2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdBeginRenderPass2", PFN_vkCmdBeginRenderPass2),
+            .vkCmdEndRenderPass2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdEndRenderPass2", PFN_vkCmdEndRenderPass2),
+            .vkResetQueryPool = loadOptionalDeviceFunction(get_proc, device, "vkResetQueryPool", PFN_vkResetQueryPool),
+            .vkGetSemaphoreCounterValue = loadOptionalDeviceFunction(get_proc, device, "vkGetSemaphoreCounterValue", PFN_vkGetSemaphoreCounterValue),
+            .vkWaitSemaphores = loadOptionalDeviceFunction(get_proc, device, "vkWaitSemaphores", PFN_vkWaitSemaphores),
+            .vkSignalSemaphore = loadOptionalDeviceFunction(get_proc, device, "vkSignalSemaphore", PFN_vkSignalSemaphore),
+            .vkGetBufferDeviceAddress = loadOptionalDeviceFunction(get_proc, device, "vkGetBufferDeviceAddress", PFN_vkGetBufferDeviceAddress),
+            .vkGetBufferOpaqueCaptureAddress = loadOptionalDeviceFunction(get_proc, device, "vkGetBufferOpaqueCaptureAddress", PFN_vkGetBufferOpaqueCaptureAddress),
+            .vkGetDeviceMemoryOpaqueCaptureAddress = loadOptionalDeviceFunction(get_proc, device, "vkGetDeviceMemoryOpaqueCaptureAddress", PFN_vkGetDeviceMemoryOpaqueCaptureAddress),
+
+            // Vulkan 1.3
+            .vkGetPhysicalDeviceToolProperties = loadOptionalDeviceFunction(get_proc, device, "vkGetPhysicalDeviceToolProperties", PFN_vkGetPhysicalDeviceToolProperties_Dev),
+            .vkCreatePrivateDataSlot = loadOptionalDeviceFunction(get_proc, device, "vkCreatePrivateDataSlot", PFN_vkCreatePrivateDataSlot),
+            .vkDestroyPrivateDataSlot = loadOptionalDeviceFunction(get_proc, device, "vkDestroyPrivateDataSlot", PFN_vkDestroyPrivateDataSlot),
+            .vkSetPrivateData = loadOptionalDeviceFunction(get_proc, device, "vkSetPrivateData", PFN_vkSetPrivateData),
+            .vkGetPrivateData = loadOptionalDeviceFunction(get_proc, device, "vkGetPrivateData", PFN_vkGetPrivateData),
+            .vkCmdSetEvent2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetEvent2", PFN_vkCmdSetEvent2),
+            .vkCmdResetEvent2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdResetEvent2", PFN_vkCmdResetEvent2),
+            .vkCmdWaitEvents2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdWaitEvents2", PFN_vkCmdWaitEvents2),
+            .vkCmdPipelineBarrier2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdPipelineBarrier2", PFN_vkCmdPipelineBarrier2),
+            .vkQueueSubmit2 = loadOptionalDeviceFunction(get_proc, device, "vkQueueSubmit2", PFN_vkQueueSubmit2),
+            .vkCmdWriteTimestamp2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdWriteTimestamp2", PFN_vkCmdWriteTimestamp2),
+            .vkCmdCopyBuffer2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdCopyBuffer2", PFN_vkCmdCopyBuffer2),
+            .vkCmdCopyImage2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdCopyImage2", PFN_vkCmdCopyImage2),
+            .vkCmdCopyBufferToImage2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdCopyBufferToImage2", PFN_vkCmdCopyBufferToImage2),
+            .vkCmdCopyImageToBuffer2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdCopyImageToBuffer2", PFN_vkCmdCopyImageToBuffer2),
+            .vkCmdBlitImage2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdBlitImage2", PFN_vkCmdBlitImage2),
+            .vkCmdResolveImage2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdResolveImage2", PFN_vkCmdResolveImage2),
+            .vkCmdBeginRendering = loadOptionalDeviceFunction(get_proc, device, "vkCmdBeginRendering", PFN_vkCmdBeginRendering),
+            .vkCmdEndRendering = loadOptionalDeviceFunction(get_proc, device, "vkCmdEndRendering", PFN_vkCmdEndRendering),
+            .vkCmdSetCullMode = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetCullMode", PFN_vkCmdSetCullMode),
+            .vkCmdSetFrontFace = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetFrontFace", PFN_vkCmdSetFrontFace),
+            .vkCmdSetPrimitiveTopology = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetPrimitiveTopology", PFN_vkCmdSetPrimitiveTopology),
+            .vkCmdSetViewportWithCount = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetViewportWithCount", PFN_vkCmdSetViewportWithCount),
+            .vkCmdSetScissorWithCount = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetScissorWithCount", PFN_vkCmdSetScissorWithCount),
+            .vkCmdBindVertexBuffers2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdBindVertexBuffers2", PFN_vkCmdBindVertexBuffers2),
+            .vkCmdSetDepthTestEnable = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetDepthTestEnable", PFN_vkCmdSetDepthTestEnable),
+            .vkCmdSetDepthWriteEnable = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetDepthWriteEnable", PFN_vkCmdSetDepthWriteEnable),
+            .vkCmdSetDepthCompareOp = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetDepthCompareOp", PFN_vkCmdSetDepthCompareOp),
+            .vkCmdSetDepthBoundsTestEnable = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetDepthBoundsTestEnable", PFN_vkCmdSetDepthBoundsTestEnable),
+            .vkCmdSetStencilTestEnable = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetStencilTestEnable", PFN_vkCmdSetStencilTestEnable),
+            .vkCmdSetStencilOp = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetStencilOp", PFN_vkCmdSetStencilOp),
+            .vkCmdSetRasterizerDiscardEnable = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetRasterizerDiscardEnable", PFN_vkCmdSetRasterizerDiscardEnable),
+            .vkCmdSetDepthBiasEnable = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetDepthBiasEnable", PFN_vkCmdSetDepthBiasEnable),
+            .vkCmdSetPrimitiveRestartEnable = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetPrimitiveRestartEnable", PFN_vkCmdSetPrimitiveRestartEnable),
 
             // Extension functions
             .vkCreateSwapchainKHR = loadOptionalDeviceFunction(get_proc, device, "vkCreateSwapchainKHR", PFN_vkCreateSwapchainKHR),

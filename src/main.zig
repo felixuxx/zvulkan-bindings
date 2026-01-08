@@ -52,7 +52,7 @@ pub fn main() !void {
         .application_version = vk.constants.makeApiVersion(0, 1, 0, 0),
         .p_engine_name = "No Engine",
         .engine_version = vk.constants.makeApiVersion(0, 1, 0, 0),
-        .api_version = vk.constants.API_VERSION_1_0,
+        .api_version = vk.constants.makeApiVersion(0, 1, 3, 0),
     };
 
     const instance_create_info = vk.core_1_0.InstanceCreateInfo{
@@ -139,6 +139,27 @@ pub fn main() !void {
             std.debug.print("\n", .{});
         }
         std.debug.print("\n", .{});
+
+        // Vulkan 1.1+ Check
+        if (instance_dispatch.vkGetPhysicalDeviceProperties2) |get_props2| {
+            std.debug.print("  [Vulkan 1.1] vkGetPhysicalDeviceProperties2 available\n", .{});
+
+            var props13: vk.core_1_3.PhysicalDeviceVulkan13Properties = undefined;
+            // Manually zero out mostly to be safe, but we depend on s_type
+            props13 = std.mem.zeroes(vk.core_1_3.PhysicalDeviceVulkan13Properties);
+            props13.s_type = .physical_device_vulkan_1_3_properties;
+
+            var props2 = vk.core_1_1.PhysicalDeviceProperties2{
+                .p_next = &props13,
+                .properties = undefined,
+            };
+
+            get_props2(physical_device, &props2);
+
+            if (vk.constants.versionMajor(properties.api_version) >= 1 and vk.constants.versionMinor(properties.api_version) >= 3) {
+                std.debug.print("  [Vulkan 1.3] Max Subgroup Size: {}\n", .{props13.max_subgroup_size});
+            }
+        }
     }
 
     std.debug.print("✓ Example completed successfully!\n", .{});
