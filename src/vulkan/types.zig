@@ -1165,6 +1165,118 @@ pub const RenderPassBeginInfo = extern struct {
     pClearValues: ?*const ClearValue,
 };
 
+pub const SubpassBeginInfo = extern struct {
+    sType: StructureType,
+    pNext: ?*anyopaque,
+    contents: u32,
+};
+
+pub const SubpassEndInfo = extern struct {
+    sType: StructureType,
+    pNext: ?*anyopaque,
+};
+
+pub const BufferDeviceAddressInfo = extern struct {
+    sType: StructureType,
+    pNext: ?*anyopaque,
+    buffer: Buffer,
+};
+
+pub const DeviceMemoryOpaqueCaptureAddressInfo = extern struct {
+    sType: StructureType,
+    pNext: ?*anyopaque,
+    memory: DeviceMemory,
+};
+
+pub const StencilFaceFlags = u32;
+
+pub const PhysicalDeviceToolProperties = extern struct {
+    sType: StructureType,
+    pNext: ?*anyopaque,
+    name: [256]u8,
+    version: [256]u8,
+    purposes: u32,
+    description: [256]u8,
+    layer: [256]u8,
+};
+
+pub const PrivateDataSlot = u64;
+
+pub const SubmitInfo2 = extern struct {
+    sType: StructureType,
+    pNext: ?*anyopaque,
+    flags: u32,
+    waitSemaphoreInfoCount: u32,
+    pWaitSemaphoreInfos: ?*const anyopaque,
+    commandBufferInfoCount: u32,
+    pCommandBufferInfos: ?*const anyopaque,
+    signalSemaphoreInfoCount: u32,
+    pSignalSemaphoreInfos: ?*const anyopaque,
+};
+
+pub const CopyBufferInfo2 = extern struct {
+    sType: StructureType,
+    pNext: ?*anyopaque,
+    srcBuffer: Buffer,
+    dstBuffer: Buffer,
+    regionCount: u32,
+    pRegions: ?*const anyopaque,
+};
+
+pub const CopyImageInfo2 = extern struct {
+    sType: StructureType,
+    pNext: ?*anyopaque,
+    srcImage: Image,
+    srcImageLayout: u32,
+    dstImage: Image,
+    dstImageLayout: u32,
+    regionCount: u32,
+    pRegions: ?*const anyopaque,
+};
+
+pub const CopyBufferToImageInfo2 = extern struct {
+    sType: StructureType,
+    pNext: ?*anyopaque,
+    srcBuffer: Buffer,
+    dstImage: Image,
+    dstImageLayout: u32,
+    regionCount: u32,
+    pRegions: ?*const anyopaque,
+};
+
+pub const CopyImageToBufferInfo2 = extern struct {
+    sType: StructureType,
+    pNext: ?*anyopaque,
+    srcImage: Image,
+    srcImageLayout: u32,
+    dstBuffer: Buffer,
+    regionCount: u32,
+    pRegions: ?*const anyopaque,
+};
+
+pub const BlitImageInfo2 = extern struct {
+    sType: StructureType,
+    pNext: ?*anyopaque,
+    srcImage: Image,
+    srcImageLayout: u32,
+    dstImage: Image,
+    dstImageLayout: u32,
+    regionCount: u32,
+    pRegions: ?*const anyopaque,
+    filter: u32,
+};
+
+pub const ResolveImageInfo2 = extern struct {
+    sType: StructureType,
+    pNext: ?*anyopaque,
+    srcImage: Image,
+    srcImageLayout: u32,
+    dstImage: Image,
+    dstImageLayout: u32,
+    regionCount: u32,
+    pRegions: ?*const anyopaque,
+};
+
 pub const CommandPoolTrimFlags = u32;
 
 pub const AllocationCallbacks = extern struct {
