@@ -194,6 +194,8 @@ pub const StructureType = enum(i32) {
     timeline_semaphore_submit_info = 1000207003,
     semaphore_wait_info = 1000207004,
     semaphore_signal_info = 1000207005,
+    device_memory_opaque_capture_address_info = 1000257004,
+    buffer_device_address_info = 1000244001,
 
     // Vulkan 1.3
     physical_device_vulkan_1_3_features = 53,
