@@ -1,6 +1,6 @@
 # zvulkan-bindings
 
-Comprehensive, zero-dependency, modular Vulkan bindings for Zig 0.15.2.
+Comprehensive, zero-c-dependency, modular Vulkan bindings for Zig 0.15.2.
 
 ## Goals
 
