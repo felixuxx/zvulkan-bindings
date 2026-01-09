@@ -1273,6 +1273,13 @@ pub const ResolveImageInfo2 = extern struct {
     pRegions: ?*const anyopaque,
 };
 
+pub const VertexInputAttributeDescription = extern struct {
+    location: u32,
+    binding: u32,
+    format: u32,
+    offset: u32,
+};
+
 pub const VertexInputBindingDescription = extern struct {
     binding: u32,
     stride: u32,
