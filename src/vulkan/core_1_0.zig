@@ -532,3 +532,13 @@ pub const RenderPassBeginInfo = extern struct {
     clear_value_count: u32 = 0,
     p_clear_values: ?[*]const types.ClearValue = null,
 };
+
+pub const PipelineVertexInputStateCreateInfo = extern struct {
+    s_type: types.StructureType = .pipeline_vertex_input_state_create_info,
+    p_next: ?*const anyopaque = null,
+    flags: types.PipelineVertexInputStateCreateFlags = 0,
+    vertex_binding_description_count: u32 = 0,
+    p_vertex_binding_descriptions: ?[*]const types.VertexInputBindingDescription = null,
+    vertex_attribute_description_count: u32 = 0,
+    p_vertex_attribute_descriptions: ?[*]const types.VertexInputAttributeDescription = null,
+};
