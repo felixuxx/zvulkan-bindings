@@ -167,6 +167,10 @@ pub const StructureType = enum(i32) {
     sparse_image_format_properties_2 = 1000059006,
     physical_device_sparse_image_format_info_2 = 1000059007,
     physical_device_image_format_info_2 = 1000059008,
+    image_memory_requirements_info_2 = 1000146001,
+    buffer_memory_requirements_info_2 = 1000146000,
+    memory_requirements_2 = 1000146003,
+    sparse_image_memory_requirements_2 = 1000146004,
     command_buffer_inheritance_conditional_rendering_info_ext = 1000081000,
     external_memory_image_create_info = 1000072000,
     external_memory_buffer_create_info = 1000072001,
@@ -1109,6 +1113,24 @@ pub const MemoryRequirements = extern struct {
     size: DeviceSize,
     alignment: DeviceSize,
     memory_type_bits: u32,
+};
+
+pub const MemoryRequirements2 = extern struct {
+    sType: StructureType,
+    pNext: ?*anyopaque,
+    memoryRequirements: MemoryRequirements,
+};
+
+pub const ImageMemoryRequirementsInfo2 = extern struct {
+    sType: StructureType,
+    pNext: ?*anyopaque,
+    image: Image,
+};
+
+pub const BufferMemoryRequirementsInfo2 = extern struct {
+    sType: StructureType,
+    pNext: ?*anyopaque,
+    buffer: Buffer,
 };
 
 pub const AllocationCallbacks = extern struct {
