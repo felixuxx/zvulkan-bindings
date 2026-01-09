@@ -1133,6 +1133,14 @@ pub const BufferMemoryRequirementsInfo2 = extern struct {
     buffer: Buffer,
 };
 
+pub const DeviceQueueInfo2 = extern struct {
+    sType: StructureType,
+    pNext: ?*anyopaque,
+    flags: u32,
+    queueFamilyIndex: u32,
+    queueIndex: u32,
+};
+
 pub const AllocationCallbacks = extern struct {
     user_data: ?*anyopaque,
     pfn_allocation: ?*const fn (?*anyopaque, usize, usize, u32) callconv(.c) ?*anyopaque,
