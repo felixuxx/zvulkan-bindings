@@ -1176,18 +1176,6 @@ pub const SubpassEndInfo = extern struct {
     pNext: ?*anyopaque,
 };
 
-pub const BufferDeviceAddressInfo = extern struct {
-    sType: StructureType,
-    pNext: ?*anyopaque,
-    buffer: Buffer,
-};
-
-pub const DeviceMemoryOpaqueCaptureAddressInfo = extern struct {
-    sType: StructureType,
-    pNext: ?*anyopaque,
-    memory: DeviceMemory,
-};
-
 pub const PrivateDataSlotCreateInfo = extern struct {
     sType: StructureType,
     pNext: ?*anyopaque,

@@ -183,3 +183,15 @@ pub const SemaphoreSignalInfo = extern struct {
     semaphore: types.Semaphore,
     value: u64,
 };
+
+pub const BufferDeviceAddressInfo = extern struct {
+    s_type: types.StructureType = .buffer_device_address_info,
+    p_next: ?*const anyopaque = null,
+    buffer: types.Buffer,
+};
+
+pub const DeviceMemoryOpaqueCaptureAddressInfo = extern struct {
+    s_type: types.StructureType = .device_memory_opaque_capture_address_info,
+    p_next: ?*const anyopaque = null,
+    memory: types.DeviceMemory,
+};
