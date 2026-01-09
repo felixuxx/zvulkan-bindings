@@ -1273,6 +1273,12 @@ pub const ResolveImageInfo2 = extern struct {
     pRegions: ?*const anyopaque,
 };
 
+pub const VertexInputBindingDescription = extern struct {
+    binding: u32,
+    stride: u32,
+    inputRate: u32,
+};
+
 pub const PipelineVertexInputStateCreateFlags = u32;
 
 pub const CommandPoolTrimFlags = u32;
