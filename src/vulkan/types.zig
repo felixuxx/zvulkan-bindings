@@ -1141,6 +1141,8 @@ pub const DeviceQueueInfo2 = extern struct {
     queueIndex: u32,
 };
 
+pub const CommandPoolTrimFlags = u32;
+
 pub const AllocationCallbacks = extern struct {
     user_data: ?*anyopaque,
     pfn_allocation: ?*const fn (?*anyopaque, usize, usize, u32) callconv(.c) ?*anyopaque,
