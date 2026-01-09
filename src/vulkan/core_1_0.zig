@@ -542,3 +542,11 @@ pub const PipelineVertexInputStateCreateInfo = extern struct {
     vertex_attribute_description_count: u32 = 0,
     p_vertex_attribute_descriptions: ?[*]const types.VertexInputAttributeDescription = null,
 };
+
+pub const PipelineInputAssemblyStateCreateInfo = extern struct {
+    s_type: types.StructureType = .pipeline_input_assembly_state_create_info,
+    p_next: ?*const anyopaque = null,
+    flags: types.PipelineInputAssemblyStateCreateFlags = 0,
+    topology: types.PrimitiveTopology = .point_list,
+    primitive_restart_enable: types.Bool32 = 0,
+};
