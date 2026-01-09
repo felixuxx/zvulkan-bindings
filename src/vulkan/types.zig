@@ -1188,6 +1188,12 @@ pub const DeviceMemoryOpaqueCaptureAddressInfo = extern struct {
     memory: DeviceMemory,
 };
 
+pub const PrivateDataSlotCreateInfo = extern struct {
+    sType: StructureType,
+    pNext: ?*anyopaque,
+    flags: u32,
+};
+
 pub const StencilFaceFlags = u32;
 
 pub const PhysicalDeviceToolProperties = extern struct {
