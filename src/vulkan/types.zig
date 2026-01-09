@@ -1141,6 +1141,20 @@ pub const DeviceQueueInfo2 = extern struct {
     queueIndex: u32,
 };
 
+pub const RenderPassCreateInfo2 = extern struct {
+    sType: StructureType,
+    pNext: ?*anyopaque,
+    flags: u32,
+    attachmentCount: u32,
+    pAttachments: ?*const anyopaque,
+    subpassCount: u32,
+    pSubpasses: ?*const anyopaque,
+    dependencyCount: u32,
+    pDependencies: ?*const anyopaque,
+    correlatedViewMaskCount: u32,
+    pCorrelatedViewMasks: ?*const u32,
+};
+
 pub const CommandPoolTrimFlags = u32;
 
 pub const AllocationCallbacks = extern struct {
