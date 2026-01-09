@@ -1155,6 +1155,16 @@ pub const RenderPassCreateInfo2 = extern struct {
     pCorrelatedViewMasks: ?*const u32,
 };
 
+pub const RenderPassBeginInfo = extern struct {
+    sType: StructureType,
+    pNext: ?*anyopaque,
+    renderPass: RenderPass,
+    framebuffer: Framebuffer,
+    renderArea: Rect2D,
+    clearValueCount: u32,
+    pClearValues: ?*const ClearValue,
+};
+
 pub const CommandPoolTrimFlags = u32;
 
 pub const AllocationCallbacks = extern struct {
