@@ -385,6 +385,19 @@ pub const MAX_DRIVER_INFO_SIZE = 256;
 pub const LUID_SIZE = 8;
 pub const MAX_DEVICE_GROUP_SIZE = 32;
 
+pub const WHOLE_SIZE = u64;
+
+pub const QueryType = enum(i32) {
+    occlusion = 0,
+    pipeline_statistics = 1,
+    timestamp = 2,
+    _,
+};
+
+pub const QueryPoolCreateFlags = u32;
+
+pub const EventCreateFlags = u32;
+
 pub const ConformanceVersion = extern struct {
     major: u8,
     minor: u8,
@@ -1313,6 +1326,16 @@ pub const PipelineViewportStateCreateFlags = u32;
 pub const PipelineTessellationStateCreateFlags = u32;
 
 pub const PipelineDynamicStateCreateFlags = u32;
+
+pub const DescriptorSetLayoutCreateFlags = u32;
+
+pub const DescriptorSetLayoutBinding = extern struct {
+    binding: u32,
+    descriptor_type: DescriptorType,
+    descriptor_count: u32,
+    stage_flags: ShaderStageFlags,
+    p_immutable_samplers: ?[*]const Sampler = null,
+};
 
 pub const PipelineCreateFlags = u32;
 

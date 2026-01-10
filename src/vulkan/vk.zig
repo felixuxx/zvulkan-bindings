@@ -125,6 +125,37 @@ pub const PFN_vkDestroyPipelineLayout = *const fn (Device, types.PipelineLayout,
 pub const PFN_vkCreateGraphicsPipelines = *const fn (Device, types.PipelineCache, u32, [*]const core_1_0.GraphicsPipelineCreateInfo, ?*const types.AllocationCallbacks, [*]types.Pipeline) callconv(.c) Result;
 pub const PFN_vkDestroyPipeline = *const fn (Device, types.Pipeline, ?*const types.AllocationCallbacks) callconv(.c) void;
 
+// Descriptor management functions
+pub const PFN_vkCreateDescriptorSetLayout = *const fn (Device, [*]const core_1_0.DescriptorSetLayoutCreateInfo, ?*const types.AllocationCallbacks, *types.DescriptorSetLayout) callconv(.c) Result;
+pub const PFN_vkDestroyDescriptorSetLayout = *const fn (Device, types.DescriptorSetLayout, ?*const types.AllocationCallbacks) callconv(.c) void;
+
+pub const PFN_vkCreateDescriptorPool = *const fn (Device, [*]const core_1_0.DescriptorPoolCreateInfo, ?*const types.AllocationCallbacks, *types.DescriptorPool) callconv(.c) Result;
+pub const PFN_vkDestroyDescriptorPool = *const fn (Device, types.DescriptorPool, ?*const types.AllocationCallbacks) callconv(.c) void;
+
+pub const PFN_vkAllocateDescriptorSets = *const fn (Device, [*]const core_1_0.DescriptorSetAllocateInfo, ?*const types.AllocationCallbacks, [*]types.DescriptorSet) callconv(.c) Result;
+
+pub const PFN_vkFreeDescriptorSets = *const fn (Device, u32, [*]types.DescriptorSet, ?*const types.AllocationCallbacks) callconv(.c) void;
+
+pub const PFN_vkUpdateDescriptorSets = *const fn (Device, u32, [*]const core_1_0.WriteDescriptorSet, u32, [*]const core_1_0.CopyDescriptorSet, ?*const types.AllocationCallbacks) callconv(.c) void;
+
+pub const PFN_vkCreateSampler = *const fn (Device, [*]const core_1_0.SamplerCreateInfo, ?*const types.AllocationCallbacks, *types.Sampler) callconv(.c) Result;
+pub const PFN_vkDestroySampler = *const fn (Device, types.Sampler, ?*const types.AllocationCallbacks) callconv(.c) void;
+
+// Command buffer functions
+pub const PFN_vkCreateQueryPool = *const fn (Device, [*]const core_1_0.QueryPoolCreateInfo, ?*const types.AllocationCallbacks, *types.QueryPool) callconv(.c) Result;
+pub const PFN_vkDestroyQueryPool = *const fn (Device, types.QueryPool, ?*const types.AllocationCallbacks) callconv(.c) void;
+
+pub const PFN_vkCreateEvent = *const fn (Device, [*]const core_1_0.EventCreateInfo, ?*const types.AllocationCallbacks, *types.Event) callconv(.c) Result;
+pub const PFN_vkDestroyEvent = *const fn (Device, types.Event, ?*const types.AllocationCallbacks) callconv(.c) void;
+
+pub const PFN_vkCmdPipelineBarrier = *const fn (types.CommandBuffer, types.PipelineStageFlags, types.PipelineStageFlags, types.DependencyFlags, u32, [*]const core_1_0.MemoryBarrier, u32, [*]const core_1_0.BufferMemoryBarrier, u32, [*]const core_1_0.ImageMemoryBarrier) callconv(.c) void;
+
+// Copy functions
+pub const PFN_vkCmdCopyBuffer = *const fn (types.CommandBuffer, types.Buffer, types.Buffer, [*]const core_1_0.BufferCopy) callconv(.c) void;
+pub const PFN_vkCmdCopyImage = *const fn (types.CommandBuffer, types.Image, types.Image, [*]const core_1_0.ImageCopy) callconv(.c) void;
+pub const PFN_vkCmdBlitImage = *const fn (types.CommandBuffer, types.Image, types.Image, [*]const core_1_0.ImageBlit) callconv(.c) void;
+pub const PFN_vkCmdClearAttachments = *const fn (types.CommandBuffer, u32, [*]const core_1_0.ClearAttachment, types.Rect2D, u32) callconv(.c) void;
+
 // Render pass functions
 pub const PFN_vkCreateRenderPass = *const fn (Device, *const core_1_0.RenderPassCreateInfo, ?*const types.AllocationCallbacks, *types.RenderPass) callconv(.c) Result;
 pub const PFN_vkDestroyRenderPass = *const fn (Device, types.RenderPass, ?*const types.AllocationCallbacks) callconv(.c) void;

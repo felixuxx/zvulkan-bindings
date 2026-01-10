@@ -675,3 +675,242 @@ pub const GraphicsPipelineCreateInfo = extern struct {
     base_pipeline_handle: types.Pipeline,
     base_pipeline_index: i32 = -1,
 };
+
+// ============================================================================
+// Descriptor Management Structures
+// ============================================================================
+
+pub const DescriptorSetLayoutCreateInfo = extern struct {
+    s_type: types.StructureType = .descriptor_set_layout_create_info,
+    p_next: ?*const anyopaque = null,
+    flags: types.DescriptorSetLayoutCreateFlags = 0,
+    binding_count: u32 = 0,
+    p_bindings: ?[*]const types.DescriptorSetLayoutBinding = null,
+};
+
+pub const DescriptorPoolCreateInfo = extern struct {
+    s_type: types.StructureType = .descriptor_pool_create_info,
+    p_next: ?*const anyopaque = null,
+    flags: u32 = 0,
+    max_sets: u32 = 0,
+    pool_size_count: u32 = 0,
+    p_pool_sizes: ?[*]const DescriptorPoolSize = null,
+};
+
+pub const DescriptorPoolSize = extern struct {
+    type: types.DescriptorType,
+    descriptor_count: u32,
+};
+
+pub const DescriptorSetAllocateInfo = extern struct {
+    s_type: types.StructureType = .descriptor_set_allocate_info,
+    p_next: ?*const anyopaque = null,
+    descriptor_pool: types.DescriptorPool,
+    descriptor_set_count: u32 = 0,
+    p_set_layouts: ?[*]const types.DescriptorSetLayout = null,
+};
+
+pub const WriteDescriptorSet = extern struct {
+    s_type: types.StructureType = .write_descriptor_set,
+    p_next: ?*const anyopaque = null,
+    dst_set: types.DescriptorSet,
+    dst_binding: u32 = 0,
+    dst_array_element: u32 = 0,
+    descriptor_count: u32 = 0,
+    p_descriptor_info: ?[*]const DescriptorImageInfo = null,
+    p_buffer_info: ?[*]const DescriptorBufferInfo = null,
+};
+
+pub const CopyDescriptorSet = extern struct {
+    s_type: types.StructureType = .copy_descriptor_set,
+    p_next: ?*const anyopaque = null,
+    src_set: types.DescriptorSet,
+    src_binding: u32 = 0,
+    dst_set: types.DescriptorSet,
+    dst_binding: u32 = 0,
+    descriptor_count: u32 = 0,
+};
+
+pub const DescriptorImageInfo = extern struct {
+    sampler: types.Sampler,
+    image_view: types.ImageView,
+    image_layout: types.ImageLayout = .shader_read_only_optimal,
+};
+
+pub const DescriptorBufferInfo = extern struct {
+    buffer: types.Buffer,
+    offset: u64 = 0,
+    range: u64 = 0xFFFFFFFFFFFFFFFF, // WHOLE_SIZE equivalent
+};
+
+test "descriptor structures compilation" {
+    const layout_info = DescriptorSetLayoutCreateInfo{};
+    const pool_info = DescriptorPoolCreateInfo{};
+    const alloc_info = DescriptorSetAllocateInfo{
+        .descriptor_pool = undefined,
+    };
+    const write_info = WriteDescriptorSet{
+        .dst_set = undefined,
+    };
+    const copy_info = CopyDescriptorSet{
+        .src_set = undefined,
+        .dst_set = undefined,
+    };
+    const sampler_info = SamplerCreateInfo{
+        .min_filter = .linear,
+        .mag_filter = .linear,
+        .address_mode_u = .repeat,
+        .address_mode_v = .repeat,
+        .address_mode_w = .repeat,
+        .compare_op = .always,
+        .mipmap_mode = .linear,
+    };
+    const desc_image_info = DescriptorImageInfo{
+        .sampler = undefined,
+        .image_view = undefined,
+    };
+    const desc_buffer_info = DescriptorBufferInfo{
+        .buffer = undefined,
+    };
+
+    // Test that structures can be instantiated
+    _ = layout_info;
+    _ = pool_info;
+    _ = alloc_info;
+    _ = write_info;
+    _ = copy_info;
+    _ = sampler_info;
+    _ = desc_image_info;
+    _ = desc_buffer_info;
+}
+
+// ============================================================================
+// Command Buffer Recording Structures
+// ============================================================================
+
+pub const MemoryBarrier = extern struct {
+    s_type: types.StructureType = .memory_barrier,
+    p_next: ?*const anyopaque = null,
+    src_access_mask: types.AccessFlags,
+    dst_access_mask: types.AccessFlags,
+};
+
+pub const BufferMemoryBarrier = extern struct {
+    s_type: types.StructureType = .buffer_memory_barrier,
+    p_next: ?*const anyopaque = null,
+    src_access_mask: types.AccessFlags,
+    dst_access_mask: types.AccessFlags,
+    src_queue_family_index: u32 = 0,
+    dst_queue_family_index: u32 = 0,
+    buffer: types.Buffer,
+    offset: u64 = 0,
+    size: u64 = 0xFFFFFFFFFFFFFFFF, // WHOLE_SIZE equivalent
+};
+
+pub const ImageMemoryBarrier = extern struct {
+    s_type: types.StructureType = .image_memory_barrier,
+    p_next: ?*const anyopaque = null,
+    src_access_mask: types.AccessFlags,
+    dst_access_mask: types.AccessFlags,
+    old_layout: types.ImageLayout,
+    new_layout: types.ImageLayout,
+    src_queue_family_index: u32 = 0,
+    dst_queue_family_index: u32 = 0,
+    image: types.Image,
+    subresource_range: types.ImageSubresourceRange,
+};
+
+pub const BufferCopy = extern struct {
+    src_offset: u64 = 0,
+    dst_offset: u64 = 0,
+    size: u64 = 0,
+};
+
+pub const ImageCopy = extern struct {
+    src_subresource: types.ImageSubresourceLayers,
+    src_offset: types.Offset3D,
+    dst_subresource: types.ImageSubresourceLayers,
+    dst_offset: types.Offset3D,
+    extent: types.Extent3D,
+};
+
+pub const BufferImageCopy = extern struct {
+    buffer_offset: u64 = 0,
+    buffer_row_length: u32 = 0,
+    buffer_image_height: u32 = 0,
+    image_subresource: types.ImageSubresourceLayers,
+    image_offset: types.Offset3D,
+    image_extent: types.Extent3D,
+};
+
+pub const ImageBlit = extern struct {
+    src_subresource: types.ImageSubresourceLayers,
+    src_offsets: [2]types.Offset3D,
+    dst_subresource: types.ImageSubresourceLayers,
+    dst_offsets: [2]types.Offset3D,
+};
+
+pub const ImageResolve = extern struct {
+    src_subresource: types.ImageSubresourceLayers,
+    src_offset: types.Offset3D,
+    dst_subresource: types.ImageSubresourceLayers,
+    dst_offset: types.Offset3D,
+    extent: types.Extent3D,
+};
+
+pub const ClearAttachment = extern struct {
+    aspect_mask: types.ImageAspectFlags,
+    color_attachment: u32 = 0,
+    image_view: types.ImageView,
+    clear_value: types.ClearValue,
+};
+
+pub const ClearRect = extern struct {
+    rect: types.Rect2D,
+    base_array_layer: u32 = 0,
+    layer_count: u32 = 1,
+};
+
+pub const SamplerCreateInfo = extern struct {
+    s_type: types.StructureType = .sampler_create_info,
+    p_next: ?*const anyopaque = null,
+    flags: u32 = 0,
+    min_filter: types.Filter,
+    mag_filter: types.Filter,
+    address_mode_u: types.SamplerAddressMode,
+    address_mode_v: types.SamplerAddressMode,
+    address_mode_w: types.SamplerAddressMode,
+    anisotropy_enable: types.Bool32 = 0,
+    max_anisotropy: f32 = 0.0,
+    border_color: types.BorderColor = .float_transparent_black,
+    unnormalized_coordinates: types.Bool32 = 0,
+    compare_enable: types.Bool32 = 0,
+    compare_op: types.CompareOp,
+    mipmap_mode: types.SamplerMipmapMode,
+    mip_lod_bias: f32 = 0.0,
+    min_lod: f32 = 0.0,
+    max_lod: f32 = 0.0,
+};
+
+// ============================================================================
+// Query and Event Structures
+// ============================================================================
+
+pub const QueryPoolCreateInfo = extern struct {
+    s_type: types.StructureType = .query_pool_create_info,
+    p_next: ?*const anyopaque = null,
+    flags: u32 = 0,
+    query_type: types.QueryType,
+    query_count: u32 = 0,
+    pipeline_statistics: u32 = 0,
+};
+
+pub const EventCreateInfo = extern struct {
+    s_type: types.StructureType = .event_create_info,
+    p_next: ?*const anyopaque = null,
+    flags: u32 = 0,
+};
+
+// ============================================================================
+// Additional Pipeline Structures
+// ============================================================================
