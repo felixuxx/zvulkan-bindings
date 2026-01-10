@@ -185,3 +185,174 @@ pub const PhysicalDeviceToolProperties = extern struct {
     description: [constants.MAX_DESCRIPTION_SIZE]u8,
     layer: [constants.MAX_EXTENSION_NAME_SIZE]u8,
 };
+
+// ============================================================================
+// Individual Feature Structures (Vulkan 1.3)
+// ============================================================================
+
+pub const PhysicalDeviceShaderDemoteToHelperInvocationFeatures = extern struct {
+    s_type: types.StructureType = .physical_device_shader_demote_to_helper_invocation_features,
+    p_next: ?*const anyopaque = null,
+    shader_demote_to_helper_invocation: types.Bool32,
+};
+
+pub const PhysicalDevicePrivateDataFeatures = extern struct {
+    s_type: types.StructureType = .physical_device_private_data_features,
+    p_next: ?*const anyopaque = null,
+    private_data: types.Bool32,
+};
+
+pub const PhysicalDeviceShaderIntegerDotProductFeatures = extern struct {
+    s_type: types.StructureType = .physical_device_shader_integer_dot_product_features,
+    p_next: ?*const anyopaque = null,
+    shader_integer_dot_product: types.Bool32,
+};
+
+pub const PhysicalDeviceSynchronization2Features = extern struct {
+    s_type: types.StructureType = .physical_device_synchronization2_features,
+    p_next: ?*const anyopaque = null,
+    synchronization2: types.Bool32,
+};
+
+pub const PhysicalDeviceShaderTerminateInvocationFeatures = extern struct {
+    s_type: types.StructureType = .physical_device_shader_terminate_invocation_features,
+    p_next: ?*const anyopaque = null,
+    shader_terminate_invocation: types.Bool32,
+};
+
+pub const PhysicalDeviceDynamicRenderingFeatures = extern struct {
+    s_type: types.StructureType = .physical_device_dynamic_rendering_features,
+    p_next: ?*const anyopaque = null,
+    dynamic_rendering: types.Bool32,
+};
+
+pub const PhysicalDeviceShaderZeroInitializeWorkgroupMemoryFeatures = extern struct {
+    s_type: types.StructureType = .physical_device_shader_zero_initialize_workgroup_memory_features,
+    p_next: ?*const anyopaque = null,
+    shader_zero_initialize_workgroup_memory: types.Bool32,
+};
+
+pub const PhysicalDeviceSubgroupSizeControlFeatures = extern struct {
+    s_type: types.StructureType = .physical_device_subgroup_size_control_features,
+    p_next: ?*const anyopaque = null,
+    subgroup_size_control: types.Bool32,
+};
+
+pub const PhysicalDeviceSubgroupSizeControlProperties = extern struct {
+    s_type: types.StructureType = .physical_device_subgroup_size_control_properties,
+    p_next: ?*anyopaque = null,
+    min_subgroup_size: u32,
+    max_subgroup_size: u32,
+    max_compute_workgroup_subgroups: u32,
+    required_subgroup_size_stages: types.ShaderStageFlags,
+};
+
+pub const PhysicalDeviceMaintenance4Features = extern struct {
+    s_type: types.StructureType = .physical_device_maintenance4_features,
+    p_next: ?*const anyopaque = null,
+    maintenance4: types.Bool32,
+};
+
+pub const PhysicalDeviceMaintenance4Properties = extern struct {
+    s_type: types.StructureType = .physical_device_maintenance4_properties,
+    p_next: ?*anyopaque = null,
+    max_acquired_buffer_device_address_range: u64,
+};
+
+// ============================================================================
+// Command Buffer Inheritance for Dynamic Rendering
+// ============================================================================
+
+pub const CommandBufferInheritanceRenderingInfo = extern struct {
+    s_type: types.StructureType = .command_buffer_inheritance_rendering_info,
+    p_next: ?*const anyopaque = null,
+    flags: types.CommandBufferInheritanceRenderingFlags,
+    view_mask: u32,
+    render_pass_sample_count: u32,
+};
+
+// ============================================================================
+// Copy Commands 2 Support
+// ============================================================================
+
+pub const CopyBufferInfo2 = extern struct {
+    s_type: types.StructureType = .copy_buffer_info_2,
+    p_next: ?*const anyopaque = null,
+    src_buffer: types.Buffer,
+    dst_buffer: types.Buffer,
+    region_count: u32,
+    p_regions: ?[*]const types.BufferCopy2,
+};
+
+pub const CopyImageInfo2 = extern struct {
+    s_type: types.StructureType = .copy_image_info_2,
+    p_next: ?*const anyopaque = null,
+    src_image: types.Image,
+    dst_image: types.Image,
+    region_count: u32,
+    p_regions: ?[*]const types.ImageCopy2,
+};
+
+pub const CopyBufferToImageInfo2 = extern struct {
+    s_type: types.StructureType = .copy_buffer_to_image_info_2,
+    p_next: ?*const anyopaque = null,
+    src_buffer: types.Buffer,
+    dst_image: types.Image,
+    region_count: u32,
+    p_regions: ?[*]const types.BufferImageCopy2,
+};
+
+pub const CopyImageToBufferInfo2 = extern struct {
+    s_type: types.StructureType = .copy_image_to_buffer_info_2,
+    p_next: ?*const anyopaque = null,
+    src_image: types.Image,
+    dst_buffer: types.Buffer,
+    region_count: u32,
+    p_regions: ?[*]const types.BufferImageCopy2,
+};
+
+pub const BlitImageInfo2 = extern struct {
+    s_type: types.StructureType = .blit_image_info_2,
+    p_next: ?*const anyopaque = null,
+    src_image: types.Image,
+    dst_image: types.Image,
+    region_count: u32,
+    p_regions: ?[*]const types.ImageBlit2,
+    filter: types.Filter,
+};
+
+// ============================================================================
+// Submit Info 2 Support
+// ============================================================================
+
+pub const SubmitInfo2 = extern struct {
+    s_type: types.StructureType = .submit_info_2,
+    p_next: ?*const anyopaque = null,
+    flags: types.SubmitFlags,
+    wait_semaphore_info_count: u32,
+    p_wait_semaphore_infos: ?[*]const types.SemaphoreSubmitInfo,
+    command_buffer_info_count: u32,
+    p_command_buffer_infos: ?[*]const CommandBufferSubmitInfo,
+    signal_semaphore_info_count: u32,
+    p_signal_semaphore_infos: ?[*]const types.SemaphoreSubmitInfo,
+};
+
+pub const CommandBufferSubmitInfo = extern struct {
+    s_type: types.StructureType = .command_buffer_submit_info,
+    p_next: ?*const anyopaque = null,
+    command_buffer: types.CommandBuffer,
+    device_mask: u32,
+};
+
+// ============================================================================
+// Enhanced Command Buffer Support
+// ============================================================================
+
+pub const SemaphoreSubmitInfo = extern struct {
+    s_type: types.StructureType = .semaphore_submit_info,
+    p_next: ?*const anyopaque = null,
+    semaphore: types.Semaphore,
+    value: u64,
+    stage_mask: types.PipelineStageFlags2,
+    device_index: u32,
+};

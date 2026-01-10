@@ -1355,6 +1355,52 @@ pub const AllocationCallbacks = extern struct {
     pfn_allocation: ?*const fn (?*anyopaque, usize, usize, u32) callconv(.c) ?*anyopaque,
     pfn_reallocation: ?*const fn (?*anyopaque, ?*anyopaque, usize, usize, u32) callconv(.c) ?*anyopaque,
     pfn_free: ?*const fn (?*anyopaque, ?*anyopaque) callconv(.c) void,
-    pfn_internal_allocation: ?*const fn (?*anyopaque, usize, u32, u32) callconv(.c) void,
-    pfn_internal_free: ?*const fn (?*anyopaque, usize, u32, u32) callconv(.c) void,
+    pfn_internal_allocation: ?*const fn (?*anyopaque, usize, usize, u32) callconv(.c) void,
+    pfn_internal_free: ?*const fn (?*anyopaque, usize, usize, u32) callconv(.c) void,
+};
+
+// ============================================================================
+// Vulkan 1.3 Flag Types
+// ============================================================================
+
+pub const ToolPurposeFlagBits = enum(u32) {
+    validation = 0x00000001,
+    profiling = 0x00000002,
+    tracing = 0x00000004,
+    _,
+};
+
+// ============================================================================
+// Additional Types for Copy Commands 2
+// ============================================================================
+
+pub const BufferCopy2 = extern struct {
+    src_offset: DeviceSize,
+    dst_offset: DeviceSize,
+    size: DeviceSize,
+};
+
+pub const ImageCopy2 = extern struct {
+    src_subresource: ImageSubresourceLayers,
+    dst_subresource: ImageSubresourceLayers,
+    src_offset: Offset3D,
+    dst_offset: Offset3D,
+    extent: Extent3D,
+};
+
+pub const BufferImageCopy2 = extern struct {
+    buffer_offset: DeviceSize,
+    buffer_row_length: u32,
+    buffer_image_height: u32,
+    image_subresource: ImageSubresourceLayers,
+    image_offset: Offset3D,
+};
+
+pub const ImageBlit2 = extern struct {
+    src_subresource: ImageSubresourceLayers,
+    src_offsets: [2]Offset3D,
+    src_extent: Extent3D,
+    dst_subresource: ImageSubresourceLayers,
+    dst_offsets: [2]Offset3D,
+    dst_extent: Extent3D,
 };

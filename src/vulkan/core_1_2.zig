@@ -195,3 +195,370 @@ pub const DeviceMemoryOpaqueCaptureAddressInfo = extern struct {
     p_next: ?*const anyopaque = null,
     memory: types.DeviceMemory,
 };
+
+// ============================================================================
+// Extended Render Pass Structures (Vulkan 1.2)
+// ============================================================================
+
+pub const RenderPassCreateInfo2 = extern struct {
+    s_type: types.StructureType = .render_pass_create_info_2,
+    p_next: ?*const anyopaque = null,
+    flags: types.RenderPassCreateFlags,
+    attachment_count: u32,
+    p_attachments: ?[*]const AttachmentDescription2,
+    subpass_count: u32,
+    p_subpasses: ?[*]const SubpassDescription2,
+    dependency_count: u32,
+    p_dependencies: ?[*]const SubpassDependency2,
+    correlated_view_mask_count: u32,
+    p_correlated_view_masks: ?[*]const u32,
+};
+
+pub const AttachmentDescription2 = extern struct {
+    s_type: types.StructureType = .attachment_description_2,
+    p_next: ?*const anyopaque = null,
+    flags: types.AttachmentDescriptionFlags,
+    format: types.Format,
+    samples: types.SampleCountFlagBits,
+    load_op: types.AttachmentLoadOp,
+    store_op: types.AttachmentStoreOp,
+    stencil_load_op: types.AttachmentLoadOp,
+    stencil_store_op: types.AttachmentStoreOp,
+    initial_layout: types.ImageLayout,
+    final_layout: types.ImageLayout,
+};
+
+pub const SubpassDescription2 = extern struct {
+    s_type: types.StructureType = .subpass_description_2,
+    p_next: ?*const anyopaque = null,
+    flags: types.SubpassDescriptionFlags,
+    pipeline_bind_point: types.PipelineBindPoint,
+    view_mask: u32,
+    input_attachment_count: u32,
+    p_input_attachments: ?[*]const AttachmentReference2,
+    color_attachment_count: u32,
+    p_color_attachments: ?[*]const AttachmentReference2,
+    p_resolve_attachments: ?[*]const AttachmentReference2,
+    p_depth_stencil_attachment: ?*const AttachmentReference2,
+    preserve_attachment_count: u32,
+    p_preserve_attachments: ?[*]const u32,
+};
+
+pub const SubpassDependency2 = extern struct {
+    s_type: types.StructureType = .subpass_dependency_2,
+    p_next: ?*const anyopaque = null,
+    src_subpass: u32,
+    dst_subpass: u32,
+    src_stage_mask: types.PipelineStageFlags,
+    dst_stage_mask: types.PipelineStageFlags,
+    src_access_mask: types.AccessFlags,
+    dst_access_mask: types.AccessFlags,
+    dependency_flags: types.DependencyFlags,
+    view_offset: i32,
+};
+
+pub const AttachmentReference2 = extern struct {
+    s_type: types.StructureType = .attachment_reference_2,
+    p_next: ?*const anyopaque = null,
+    attachment: u32,
+    layout: types.ImageLayout,
+    aspect_mask: types.ImageAspectFlags,
+};
+
+// ============================================================================
+// Input Attachment Aspect Support
+// ============================================================================
+
+pub const InputAttachmentAspectReference = extern struct {
+    s_type: types.StructureType = .input_attachment_aspect_reference,
+    p_next: ?*const anyopaque = null,
+    aspect_mask: types.ImageAspectFlags,
+    color_attachment: u32,
+};
+
+pub const RenderPassInputAttachmentAspectCreateInfo = extern struct {
+    s_type: types.StructureType = .render_pass_input_attachment_aspect_create_info,
+    p_next: ?*const anyopaque = null,
+    aspect_reference_count: u32,
+    p_aspect_references: ?[*]const InputAttachmentAspectReference,
+};
+
+// ============================================================================
+// Image Format List Support
+// ============================================================================
+
+pub const ImageFormatListCreateInfo = extern struct {
+    s_type: types.StructureType = .image_format_list_create_info,
+    p_next: ?*const anyopaque = null,
+    view_format_count: u32,
+    p_view_formats: ?[*]const types.Format,
+};
+
+// ============================================================================
+// Device Group Support
+// ============================================================================
+
+pub const DeviceGroupDeviceCreateInfo = extern struct {
+    s_type: types.StructureType = .device_group_device_create_info,
+    p_next: ?*const anyopaque = null,
+    physical_device_count: u32,
+    p_physical_devices: ?[*]const types.PhysicalDevice,
+    p_physical_devices_s8: ?[*:0]const u8,
+    p_next_chain: ?*const anyopaque = null,
+    p_physical_devices_s16: ?[*:0]const i16,
+    p_physical_devices_s32: ?[*:0]const i32,
+    p_physical_devices_s64: ?[*:0]const i64,
+    p_physical_devices_f32: ?[*]const f32,
+    p_physical_devices_f64: ?[*:0]const f64,
+};
+
+pub const DeviceGroupSubmitInfo = extern struct {
+    s_type: types.StructureType = .device_group_submit_info,
+    p_next: ?*const anyopaque = null,
+    wait_semaphore_count: u32,
+    p_wait_semaphore_device_indices: ?[*]const u32,
+    command_buffer_count: u32,
+    p_command_buffer_device_masks: ?[*]const u32,
+    signal_semaphore_count: u32,
+    p_signal_semaphore_device_indices: ?[*]const u32,
+};
+
+// ============================================================================
+// Bind Memory 2 Support
+// ============================================================================
+
+pub const BindBufferMemoryInfo = extern struct {
+    s_type: types.StructureType = .bind_buffer_memory_info,
+    p_next: ?*const anyopaque = null,
+    buffer: types.Buffer,
+    memory: types.DeviceMemory,
+    memory_offset: types.DeviceSize,
+    memory_size: types.DeviceSize,
+};
+
+pub const BindImageMemoryInfo = extern struct {
+    s_type: types.StructureType = .bind_image_memory_info,
+    p_next: ?*const anyopaque = null,
+    image: types.Image,
+    memory: types.DeviceMemory,
+    memory_offset: types.DeviceSize,
+    memory_size: types.DeviceSize,
+    memory_offset_index: u32,
+};
+
+pub const BindBufferMemoryDeviceGroupInfo = extern struct {
+    s_type: types.StructureType = .bind_buffer_memory_device_group_info,
+    p_next: ?*const anyopaque = null,
+    device_index: u32,
+};
+
+pub const BindImageMemoryDeviceGroupInfo = extern struct {
+    s_type: types.StructureType = .bind_image_memory_device_group_info,
+    p_next: ?*const anyopaque = null,
+    device_index: u32,
+    split_instance_bind: types.Bool32,
+};
+
+pub const MemoryDedicatedRequirements = extern struct {
+    s_type: types.StructureType = .memory_dedicated_requirements,
+    p_next: ?*const anyopaque = null,
+    prefers_dedicated_allocation: types.Bool32,
+    requires_dedicated_allocation: types.Bool32,
+    dedicated_allocation: types.Bool32,
+};
+
+pub const MemoryDedicatedAllocateInfo = extern struct {
+    s_type: types.StructureType = .memory_dedicated_allocate_info,
+    p_next: ?*const anyopaque = null,
+    image: types.Image,
+    buffer: types.Buffer,
+};
+
+pub const MemoryAllocateFlagsInfo = extern struct {
+    s_type: types.StructureType = .memory_allocate_flags_info,
+    p_next: ?*const anyopaque = null,
+    flags: types.MemoryAllocateFlags,
+};
+
+pub const MemoryAllocateFlagBits = enum(u32) {
+    device_mask = 0x00000001,
+    device_address = 0x00000002,
+    device_address_capture_replay = 0x00000004,
+    device_address_capture_replay_within_group = 0x00000008,
+    device_address_capture_replay_within_process = 0x00000010,
+    _,
+};
+
+pub const MemoryAllocateFlags = types.Flags(MemoryAllocateFlagBits);
+
+// ============================================================================
+// External Memory Support
+// ============================================================================
+
+pub const PhysicalDeviceExternalBufferInfo = extern struct {
+    s_type: types.StructureType = .physical_device_external_buffer_info,
+    p_next: ?*const anyopaque = null,
+    handle_type: types.ExternalMemoryHandleTypeFlags,
+};
+
+pub const ExternalBufferProperties = extern struct {
+    s_type: types.StructureType = .external_buffer_properties,
+    p_next: ?*const anyopaque = null,
+    external_memory_features: types.ExternalMemoryFeatureFlags,
+    export_from_imported_handle_types: types.ExternalMemoryHandleTypeFlags,
+    compatible_handle_types: types.ExternalMemoryHandleTypeFlags,
+    buffer_size_alignment: u64,
+};
+
+pub const PhysicalDeviceExternalFenceInfo = extern struct {
+    s_type: types.StructureType = .physical_device_external_fence_info,
+    p_next: ?*const anyopaque = null,
+    handle_type: types.ExternalFenceHandleTypeFlags,
+};
+
+pub const ExternalFenceProperties = extern struct {
+    s_type: types.StructureType = .external_fence_properties,
+    p_next: ?*const anyopaque = null,
+    export_from_imported_handle_types: types.ExternalFenceHandleTypeFlags,
+    compatible_handle_types: types.ExternalFenceHandleTypeFlags,
+    external_fence_features: types.ExternalFenceFeatureFlags,
+};
+
+pub const PhysicalDeviceExternalSemaphoreInfo = extern struct {
+    s_type: types.StructureType = .physical_device_external_semaphore_info,
+    p_next: ?*const anyopaque = null,
+    handle_type: types.ExternalSemaphoreHandleTypeFlags,
+};
+
+pub const ExternalSemaphoreProperties = extern struct {
+    s_type: types.StructureType = .external_semaphore_properties,
+    p_next: ?*const anyopaque = null,
+    export_from_imported_handle_types: types.ExternalSemaphoreHandleTypeFlags,
+    compatible_handle_types: types.ExternalSemaphoreHandleTypeFlags,
+    external_semaphore_features: types.ExternalSemaphoreFeatureFlags,
+};
+
+// ============================================================================
+// Device Group Properties
+// ============================================================================
+
+pub const PhysicalDeviceGroupProperties = extern struct {
+    s_type: types.StructureType = .physical_device_group_properties,
+    p_next: ?*anyopaque = null,
+    physical_device_count: u32,
+    physical_devices: [constants.MAX_DEVICE_GROUP_SIZE]types.PhysicalDevice,
+    subset_allocation: types.Bool32,
+};
+
+pub const PhysicalDeviceGroupProperties2 = extern struct {
+    s_type: types.StructureType = .physical_device_group_properties_2,
+    p_next: ?*anyopaque = null,
+    physical_device_count: u32,
+    physical_devices: [constants.MAX_DEVICE_GROUP_SIZE]types.PhysicalDevice,
+    subset_allocation: types.Bool32,
+    physical_device_group_count: u32,
+};
+
+// ============================================================================
+// Extended Format and Image Properties
+// ============================================================================
+
+pub const FormatProperties2 = extern struct {
+    s_type: types.StructureType = .format_properties_2,
+    p_next: ?*anyopaque = null,
+    format_properties: types.FormatProperties,
+};
+
+pub const ImageFormatProperties2 = extern struct {
+    s_type: types.StructureType = .image_format_properties_2,
+    p_next: ?*anyopaque = null,
+    properties: types.ImageFormatProperties,
+};
+
+pub const QueueFamilyProperties2 = extern struct {
+    s_type: types.StructureType = .queue_family_properties_2,
+    p_next: ?*anyopaque = null,
+    queue_family_properties: types.QueueFamilyProperties,
+};
+
+pub const PhysicalDeviceMemoryProperties2 = extern struct {
+    s_type: types.StructureType = .physical_device_memory_properties_2,
+    p_next: ?*anyopaque = null,
+    memory_properties: types.PhysicalDeviceMemoryProperties,
+};
+
+pub const SparseImageFormatProperties2 = extern struct {
+    s_type: types.StructureType = .sparse_image_format_properties_2,
+    p_next: ?*anyopaque = null,
+    properties: types.SparseImageFormatProperties,
+};
+
+pub const PhysicalDeviceImageFormatInfo2 = extern struct {
+    s_type: types.StructureType = .physical_device_image_format_info_2,
+    p_next: ?*const anyopaque = null,
+    format: types.Format,
+    type: types.ImageType,
+    tiling: types.ImageTiling,
+    usage: types.ImageUsageFlags,
+    flags: types.ImageCreateFlags,
+};
+
+pub const PhysicalDeviceSparseImageFormatInfo2 = extern struct {
+    s_type: types.StructureType = .physical_device_sparse_image_format_info_2,
+    p_next: ?*const anyopaque = null,
+    format: types.Format,
+    type: types.ImageType,
+    samples: types.SampleCountFlagBits,
+    usage: types.ImageUsageFlags,
+    tiling: types.ImageTiling,
+    flags: types.ImageCreateFlags,
+};
+
+// ============================================================================
+// Device Memory Requirements 2 Support
+// ============================================================================
+
+pub const MemoryRequirements2 = extern struct {
+    s_type: types.StructureType = .memory_requirements_2,
+    p_next: ?*anyopaque = null,
+    memory_requirements: types.MemoryRequirements,
+};
+
+pub const ImageMemoryRequirementsInfo2 = extern struct {
+    s_type: types.StructureType = .image_memory_requirements_info_2,
+    p_next: ?*const anyopaque = null,
+    image: types.Image,
+};
+
+pub const BufferMemoryRequirementsInfo2 = extern struct {
+    s_type: types.StructureType = .buffer_memory_requirements_info_2,
+    p_next: ?*const anyopaque = null,
+    buffer: types.Buffer,
+};
+
+pub const ImageSparseMemoryRequirementsInfo2 = extern struct {
+    s_type: types.StructureType = .image_sparse_memory_requirements_info_2,
+    p_next: ?*const anyopaque = null,
+    image: types.Image,
+};
+
+pub const ImageSubresource2 = extern struct {
+    s_type: types.StructureType = .image_subresource_2,
+    p_next: ?*anyopaque = null,
+    aspect_mask: types.ImageAspectFlags,
+    mip_level: u32,
+    base_array_layer: u32,
+    layer_count: u32,
+};
+
+pub const ImageSubresourceLayout2 = extern struct {
+    s_type: types.StructureType = .image_subresource_layout_2,
+    p_next: ?*anyopaque = null,
+    subresource: types.ImageSubresource2,
+    offset: types.Offset3D,
+    extent: types.Extent3D,
+    row_pitch: types.DeviceSize,
+    array_pitch: types.DeviceSize,
+    depth_pitch: types.DeviceSize,
+    size: types.DeviceSize,
+};
