@@ -162,5 +162,75 @@ pub fn main() !void {
         }
     }
 
+    // Test graphics pipeline structure creation
+    std.debug.print("Testing graphics pipeline structures...\n", .{});
+    testGraphicsPipelineStructures();
+
     std.debug.print("✓ Example completed successfully!\n", .{});
+}
+
+fn testGraphicsPipelineStructures() void {
+    // Test rasterization state
+    const raster_state = vk.core_1_0.PipelineRasterizationStateCreateInfo{
+        .polygon_mode = .fill,
+        .cull_mode = .{ .back = true },
+        .front_face = .counter_clockwise,
+        .line_width = 1.0,
+    };
+
+    // Test multisample state
+    const multisample_state = vk.core_1_0.PipelineMultisampleStateCreateInfo{
+        .rasterization_samples = .@"4",
+        .sample_shading_enable = 0,
+        .min_sample_shading = 0.0,
+        .alpha_to_coverage_enable = 0,
+        .alpha_to_one_enable = 0,
+    };
+
+    // Test color blend attachment state
+    const color_blend_attachment = vk.core_1_0.PipelineColorBlendAttachmentState{
+        .blend_enable = 0,
+        .src_color_blend_factor = .one,
+        .dst_color_blend_factor = .zero,
+        .color_blend_op = .add,
+        .src_alpha_blend_factor = .one,
+        .dst_alpha_blend_factor = .zero,
+        .alpha_blend_op = .add,
+        .color_write_mask = .{ .r = true, .g = true, .b = true, .a = true },
+    };
+
+    // Test color blend state
+    const blend_constants = [_]f32{ 0.0, 0.0, 0.0, 1.0 };
+    const color_blend_attachments = [_]vk.core_1_0.PipelineColorBlendAttachmentState{color_blend_attachment};
+    const color_blend_state = vk.core_1_0.PipelineColorBlendStateCreateInfo{
+        .logic_op_enable = 0,
+        .logic_op = .copy,
+        .attachment_count = 1,
+        .p_attachments = &color_blend_attachments,
+        .blend_constants = blend_constants,
+    };
+
+    // Test graphics pipeline create info
+    const pipeline_create_info = vk.core_1_0.GraphicsPipelineCreateInfo{
+        .flags = 0,
+        .stage_count = 0,
+        .p_stages = null,
+        .p_vertex_input_state = null,
+        .p_input_assembly_state = null,
+        .p_tessellation_state = null,
+        .p_viewport_state = null,
+        .p_rasterization_state = &raster_state,
+        .p_multisample_state = &multisample_state,
+        .p_depth_stencil_state = null,
+        .p_color_blend_state = &color_blend_state,
+        .p_dynamic_state = null,
+        .layout = 0, // Dummy handle for test
+        .render_pass = 0, // Dummy handle for test
+        .subpass = 0,
+        .base_pipeline_handle = 0, // Dummy handle for test
+        .base_pipeline_index = -1,
+    };
+
+    _ = pipeline_create_info; // Suppress unused variable warning
+    std.debug.print("  ✓ Graphics pipeline structures created successfully\n", .{});
 }

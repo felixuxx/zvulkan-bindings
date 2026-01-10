@@ -1,6 +1,7 @@
 //! Core Vulkan 1.0 API structures and function signatures
 //! This module contains all the structures needed for Vulkan 1.0 core functionality
 
+const std = @import("std");
 const types = @import("types.zig");
 const c = @import("constants.zig");
 
@@ -549,4 +550,128 @@ pub const PipelineInputAssemblyStateCreateInfo = extern struct {
     flags: types.PipelineInputAssemblyStateCreateFlags = 0,
     topology: types.PrimitiveTopology = .point_list,
     primitive_restart_enable: types.Bool32 = 0,
+};
+
+pub const PipelineRasterizationStateCreateInfo = extern struct {
+    s_type: types.StructureType = .pipeline_rasterization_state_create_info,
+    p_next: ?*const anyopaque = null,
+    flags: types.PipelineRasterizationStateCreateFlags = 0,
+    depth_clamp_enable: types.Bool32 = 0,
+    rasterizer_discard_enable: types.Bool32 = 0,
+    polygon_mode: types.PolygonMode = .fill,
+    cull_mode: types.CullModeFlags = .{ .none = true },
+    front_face: types.FrontFace = .counter_clockwise,
+    depth_bias_enable: types.Bool32 = 0,
+    depth_bias_constant_factor: f32 = 0.0,
+    depth_bias_clamp: f32 = 0.0,
+    depth_bias_slope_factor: f32 = 0.0,
+    line_width: f32 = 1.0,
+};
+
+pub const PipelineMultisampleStateCreateInfo = extern struct {
+    s_type: types.StructureType = .pipeline_multisample_state_create_info,
+    p_next: ?*const anyopaque = null,
+    flags: types.PipelineMultisampleStateCreateFlags = 0,
+    rasterization_samples: types.SampleCountFlagBits = .@"1",
+    sample_shading_enable: types.Bool32 = 0,
+    min_sample_shading: f32 = 0.0,
+    p_sample_mask: ?[*]const types.SampleMask = null,
+    alpha_to_coverage_enable: types.Bool32 = 0,
+    alpha_to_one_enable: types.Bool32 = 0,
+};
+
+pub const PipelineColorBlendAttachmentState = extern struct {
+    blend_enable: types.Bool32 = 0,
+    src_color_blend_factor: types.BlendFactor = .zero,
+    dst_color_blend_factor: types.BlendFactor = .zero,
+    color_blend_op: types.BlendOp = .add,
+    src_alpha_blend_factor: types.BlendFactor = .zero,
+    dst_alpha_blend_factor: types.BlendFactor = .zero,
+    alpha_blend_op: types.BlendOp = .add,
+    color_write_mask: types.ColorComponentFlags = .{ .r = true, .g = true, .b = true, .a = true },
+};
+
+pub const PipelineColorBlendStateCreateInfo = extern struct {
+    s_type: types.StructureType = .pipeline_color_blend_state_create_info,
+    p_next: ?*const anyopaque = null,
+    flags: types.PipelineColorBlendStateCreateFlags = 0,
+    logic_op_enable: types.Bool32 = 0,
+    logic_op: types.LogicOp = .copy,
+    attachment_count: u32 = 0,
+    p_attachments: ?[*]const PipelineColorBlendAttachmentState = null,
+    blend_constants: [4]f32 = [_]f32{ 0.0, 0.0, 0.0, 0.0 },
+};
+
+pub const PipelineViewportStateCreateInfo = extern struct {
+    s_type: types.StructureType = .pipeline_viewport_state_create_info,
+    p_next: ?*const anyopaque = null,
+    flags: types.PipelineViewportStateCreateFlags = 0,
+    viewport_count: u32 = 0,
+    p_viewports: ?[*]const types.Viewport = null,
+    scissor_count: u32 = 0,
+    p_scissors: ?[*]const types.Rect2D = null,
+};
+
+pub const PipelineTessellationStateCreateInfo = extern struct {
+    s_type: types.StructureType = .pipeline_tessellation_state_create_info,
+    p_next: ?*const anyopaque = null,
+    flags: types.PipelineTessellationStateCreateFlags = 0,
+    patch_control_points: u32 = 0,
+};
+
+pub const PipelineDepthStencilStateCreateInfo = extern struct {
+    s_type: types.StructureType = .pipeline_depth_stencil_state_create_info,
+    p_next: ?*const anyopaque = null,
+    flags: types.PipelineDepthStencilStateCreateFlags = 0,
+    depth_test_enable: types.Bool32 = 0,
+    depth_write_enable: types.Bool32 = 0,
+    depth_compare_op: types.CompareOp = .never,
+    depth_bounds_test_enable: types.Bool32 = 0,
+    min_depth_bounds: f32 = 0.0,
+    max_depth_bounds: f32 = 1.0,
+    stencil_test_enable: types.Bool32 = 0,
+    front: types.StencilOpState = std.mem.zeroes(types.StencilOpState),
+    back: types.StencilOpState = std.mem.zeroes(types.StencilOpState),
+};
+
+pub const DynamicState = enum(u32) {
+    viewport = 0,
+    scissor = 1,
+    line_width = 2,
+    depth_bias = 3,
+    blend_constants = 4,
+    depth_bounds = 5,
+    stencil_compare_mask = 6,
+    stencil_write_mask = 7,
+    stencil_reference = 8,
+};
+
+pub const PipelineDynamicStateCreateInfo = extern struct {
+    s_type: types.StructureType = .pipeline_dynamic_state_create_info,
+    p_next: ?*const anyopaque = null,
+    flags: types.PipelineDynamicStateCreateFlags = 0,
+    dynamic_state_count: u32 = 0,
+    p_dynamic_states: ?[*]const DynamicState = null,
+};
+
+pub const GraphicsPipelineCreateInfo = extern struct {
+    s_type: types.StructureType = .graphics_pipeline_create_info,
+    p_next: ?*const anyopaque = null,
+    flags: types.PipelineCreateFlags = 0,
+    stage_count: u32 = 0,
+    p_stages: ?[*]const PipelineShaderStageCreateInfo = null,
+    p_vertex_input_state: ?*const PipelineVertexInputStateCreateInfo = null,
+    p_input_assembly_state: ?*const PipelineInputAssemblyStateCreateInfo = null,
+    p_tessellation_state: ?*const PipelineTessellationStateCreateInfo = null,
+    p_viewport_state: ?*const PipelineViewportStateCreateInfo = null,
+    p_rasterization_state: ?*const PipelineRasterizationStateCreateInfo = null,
+    p_multisample_state: ?*const PipelineMultisampleStateCreateInfo = null,
+    p_depth_stencil_state: ?*const PipelineDepthStencilStateCreateInfo = null,
+    p_color_blend_state: ?*const PipelineColorBlendStateCreateInfo = null,
+    p_dynamic_state: ?*const PipelineDynamicStateCreateInfo = null,
+    layout: types.PipelineLayout,
+    render_pass: types.RenderPass,
+    subpass: u32 = 0,
+    base_pipeline_handle: types.Pipeline,
+    base_pipeline_index: i32 = -1,
 };

@@ -121,6 +121,10 @@ pub const PFN_vkDestroyShaderModule = *const fn (Device, types.ShaderModule, ?*c
 pub const PFN_vkCreatePipelineLayout = *const fn (Device, *const core_1_0.PipelineLayoutCreateInfo, ?*const types.AllocationCallbacks, *types.PipelineLayout) callconv(.c) Result;
 pub const PFN_vkDestroyPipelineLayout = *const fn (Device, types.PipelineLayout, ?*const types.AllocationCallbacks) callconv(.c) void;
 
+// Graphics pipeline functions
+pub const PFN_vkCreateGraphicsPipelines = *const fn (Device, types.PipelineCache, u32, [*]const core_1_0.GraphicsPipelineCreateInfo, ?*const types.AllocationCallbacks, [*]types.Pipeline) callconv(.c) Result;
+pub const PFN_vkDestroyPipeline = *const fn (Device, types.Pipeline, ?*const types.AllocationCallbacks) callconv(.c) void;
+
 // Render pass functions
 pub const PFN_vkCreateRenderPass = *const fn (Device, *const core_1_0.RenderPassCreateInfo, ?*const types.AllocationCallbacks, *types.RenderPass) callconv(.c) Result;
 pub const PFN_vkDestroyRenderPass = *const fn (Device, types.RenderPass, ?*const types.AllocationCallbacks) callconv(.c) void;
@@ -479,6 +483,9 @@ pub const DeviceDispatch = struct {
     vkCreatePipelineLayout: PFN_vkCreatePipelineLayout,
     vkDestroyPipelineLayout: PFN_vkDestroyPipelineLayout,
 
+    vkCreateGraphicsPipelines: PFN_vkCreateGraphicsPipelines,
+    vkDestroyPipeline: PFN_vkDestroyPipeline,
+
     vkCreateRenderPass: PFN_vkCreateRenderPass,
     vkDestroyRenderPass: PFN_vkDestroyRenderPass,
     vkCreateFramebuffer: PFN_vkCreateFramebuffer,
@@ -598,6 +605,9 @@ pub const DeviceDispatch = struct {
             .vkDestroyShaderModule = try loadDeviceFunction(get_proc, device, "vkDestroyShaderModule", PFN_vkDestroyShaderModule),
             .vkCreatePipelineLayout = try loadDeviceFunction(get_proc, device, "vkCreatePipelineLayout", PFN_vkCreatePipelineLayout),
             .vkDestroyPipelineLayout = try loadDeviceFunction(get_proc, device, "vkDestroyPipelineLayout", PFN_vkDestroyPipelineLayout),
+
+            .vkCreateGraphicsPipelines = try loadDeviceFunction(get_proc, device, "vkCreateGraphicsPipelines", PFN_vkCreateGraphicsPipelines),
+            .vkDestroyPipeline = try loadDeviceFunction(get_proc, device, "vkDestroyPipeline", PFN_vkDestroyPipeline),
 
             .vkCreateRenderPass = try loadDeviceFunction(get_proc, device, "vkCreateRenderPass", PFN_vkCreateRenderPass),
             .vkDestroyRenderPass = try loadDeviceFunction(get_proc, device, "vkDestroyRenderPass", PFN_vkDestroyRenderPass),

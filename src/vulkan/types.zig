@@ -1286,7 +1286,44 @@ pub const VertexInputBindingDescription = extern struct {
     inputRate: u32,
 };
 
+pub const StencilOpState = extern struct {
+    fail_op: StencilOp,
+    pass_op: StencilOp,
+    depth_fail_op: StencilOp,
+    compare_op: CompareOp,
+    compare_mask: u32 = 0,
+    write_mask: u32 = 0,
+    reference: u32 = 0,
+};
+
 pub const PipelineVertexInputStateCreateFlags = u32;
+
+pub const PipelineInputAssemblyStateCreateFlags = u32;
+
+pub const PipelineRasterizationStateCreateFlags = u32;
+
+pub const PipelineMultisampleStateCreateFlags = u32;
+
+pub const PipelineColorBlendStateCreateFlags = u32;
+
+pub const PipelineDepthStencilStateCreateFlags = u32;
+
+pub const PipelineViewportStateCreateFlags = u32;
+
+pub const PipelineTessellationStateCreateFlags = u32;
+
+pub const PipelineDynamicStateCreateFlags = u32;
+
+pub const PipelineCreateFlags = u32;
+
+// PipelineCreateFlagBits constants
+pub const PIPELINE_CREATE_DISABLE_OPTIMIZATION_BIT = 0x00000001;
+pub const PIPELINE_CREATE_ALLOW_DERIVATIVES_BIT = 0x00000002;
+pub const PIPELINE_CREATE_DERIVATIVE_BIT = 0x00000004;
+pub const PIPELINE_CREATE_VIEW_INDEX_FROM_DEVICE_INDEX_BIT = 0x00000008;
+pub const PIPELINE_CREATE_DISPATCH_BASE_BIT = 0x00000010;
+pub const PIPELINE_CREATE_FAIL_ON_PIPELINE_COMPILE_REQUIRED_BIT = 0x00000100;
+pub const PIPELINE_CREATE_EARLY_RETURN_ON_FAILURE_BIT = 0x00000200;
 
 pub const CommandPoolTrimFlags = u32;
 

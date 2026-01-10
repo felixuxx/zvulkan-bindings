@@ -22,6 +22,25 @@ Only the Core API (1.0 - 1.3) and Window System Integration (WSI) extensions are
 
 *If you need these, please see `CONTRIBUTING.md` to add them.*
 
+## 3. Now Implemented ✅
+
+**Graphics Pipeline Support:** As of the latest update, all core graphics pipeline creation structures are now implemented:
+
+- ✅ `VkPipelineVertexInputStateCreateInfo`
+- ✅ `VkPipelineInputAssemblyStateCreateInfo` 
+- ✅ `VkPipelineRasterizationStateCreateInfo`
+- ✅ `VkPipelineMultisampleStateCreateInfo`
+- ✅ `VkPipelineColorBlendAttachmentState`
+- ✅ `VkPipelineColorBlendStateCreateInfo`
+- ✅ `VkGraphicsPipelineCreateInfo`
+- ✅ `VkPipelineViewportStateCreateInfo`
+- ✅ `VkPipelineDepthStencilStateCreateInfo`
+- ✅ `VkPipelineDynamicStateCreateInfo`
+- ✅ `VkPipelineTessellationStateCreateInfo`
+- ✅ `vkCreateGraphicsPipelines` & `vkDestroyPipeline` functions
+
+This enables complete graphics pipeline creation for rendering applications.
+
 ## 3. Allocator Integration
 
 The API currently uses raw pointers (`?[*]const T`, `?*const T`) to match the C ABI exactly.
