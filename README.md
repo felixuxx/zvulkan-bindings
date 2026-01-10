@@ -4,15 +4,27 @@ Comprehensive, zero-c-dependency, modular Vulkan bindings for Zig 0.15.2.
 
 ## Goals
 
-The primary goal of this project is to provide a clean, idiomatic, and robust interface to the Vulkan API for Zig game engines and applications, without relying on C header translation (`@cImport`) or external generator scripts during the build process.
+The primary goal of this project is to provide a clean, idiomatic,
+and robust interface to the Vulkan API for Zig game engines and applications,
+without relying on C header translation (`@cImport`) or external generator
+scripts during the build process.
 
 ### Key Features
 
-* **Zero Dependencies**: Pure Zig implementation. No generic `vulkan.h` translation.
-* **Modular Architecture**: Core API versions (1.0, 1.1, 1.2, 1.3) are separated into distinct modules, allowing you to use strictly what you need.
-* **Dynamic Loading**: Built-in support for loading the Vulkan runtime (`libvulkan.so`, `vulkan-1.dll`, etc.) dynamically at runtime. This allows your application to start even if Vulkan is not present, or to handle partial support gracefully.
-* **WSI Support**: Built-in support for Window System Integration extensions (`VK_KHR_surface`, `VK_KHR_swapchain`) and platform-specific surfaces (Wayland, XCB, Xlib, Win32).
-* **Type Safety**: Proper Zig enums, packed structs for flags, and optional pointers to ensure type safety where possible while maintaining the raw API mapping.
+* **Zero Dependencies**: Pure Zig implementation. No generic `vulkan.h`
+translation.
+* **Modular Architecture**: Core API versions (1.0, 1.1, 1.2, 1.3) are separated
+into distinct modules, allowing you to use strictly what you need.
+* **Dynamic Loading**: Built-in support for loading the Vulkan runtime
+(`libvulkan.so`, `vulkan-1.dll`, etc.) dynamically at runtime. This allows your
+application to start even if Vulkan is not present, or to handle partial
+support gracefully.
+* **WSI Support**: Built-in support for Window System Integration extensions
+(`VK_KHR_surface`, `VK_KHR_swapchain`) and platform-specific surfaces
+(Wayland, XCB, Xlib, Win32).
+* **Type Safety**: Proper Zig enums, packed structs for flags,
+and optional pointers to ensure type safety where possible while maintaining the
+raw API mapping.
 
 ## Status
 
