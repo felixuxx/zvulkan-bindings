@@ -141,6 +141,9 @@ pub const StructureType = enum(i32) {
     image_memory_barrier = 45,
     memory_barrier = 46,
 
+    loader_instance_create_info = 47,
+    loader_device_create_info = 48,
+
     // Vulkan 1.1
     physical_device_subgroup_properties = 1000094000,
     bind_buffer_memory_info = 1000157000,
@@ -184,6 +187,7 @@ pub const StructureType = enum(i32) {
     external_fence_properties = 1000112001,
     physical_device_external_semaphore_info = 1000076000,
     external_semaphore_properties = 1000076001,
+    physical_device_shader_draw_parameters_features = 1000063000,
 
     // Vulkan 1.2
     physical_device_vulkan_1_1_features = 49,
@@ -196,21 +200,15 @@ pub const StructureType = enum(i32) {
     semaphore_signal_info = 1000207005,
     device_memory_opaque_capture_address_info = 1000257004,
     buffer_device_address_info = 1000244001,
-
-    // Vulkan 1.3
-    physical_device_vulkan_1_3_features = 53,
-    physical_device_vulkan_1_3_properties = 54,
-    pipeline_creation_feedback_create_info = 1000192000,
-    pipeline_rendering_create_info = 1000044000,
-    rendering_info = 1000044001,
-    rendering_attachment_info = 1000044002,
-    pipeline_shader_stage_required_subgroup_size_create_info = 1000225000,
+    render_pass_create_info_2 = 1000109004,
+    subpass_begin_info = 1000109005,
+    subpass_end_info = 1000109006,
     physical_device_tool_properties = 1000245000,
-    dependency_info = 1000314000,
-    memory_barrier_2 = 1000314001,
-    buffer_memory_barrier_2 = 1000314002,
-    image_memory_barrier_2 = 1000314003,
-    rendering_fragment_shading_rate_attachment_info_khr = 1000044006, // Alias needed for Checking
+    physical_device_shader_terminate_invocation_features = 1000215000,
+    physical_device_private_data_features = 1000295000,
+    physical_device_shader_integer_dot_product_features = 1000280000,
+    physical_device_texel_buffer_alignment_properties = 1000281001,
+    physical_device_vulkan_1_3_properties = 54,
 
     swapchain_create_info_khr = 1000001000,
     present_info_khr = 1000001001,
@@ -218,7 +216,19 @@ pub const StructureType = enum(i32) {
     win32_surface_create_info_khr = 1000009000,
     xlib_surface_create_info_khr = 1000004000,
     xcb_surface_create_info_khr = 1000005000,
+    android_surface_create_info_khr = 1000008000,
+    debug_report_callback_create_info_ext = 1000011000,
     _,
+};
+
+// ============================================================================
+// Vulkan 1.2 Command Structures (for vkCmdBeginRenderPass2)
+// ============================================================================
+
+pub const RenderPassBeginInfo = extern struct {
+    s_type: StructureType = .render_pass_begin_info,
+    p_next: ?*const anyopaque = null,
+    contents: SubpassContents,
 };
 
 // ============================================================================
@@ -1168,27 +1178,6 @@ pub const RenderPassCreateInfo2 = extern struct {
     pDependencies: ?*const anyopaque,
     correlatedViewMaskCount: u32,
     pCorrelatedViewMasks: ?*const u32,
-};
-
-pub const RenderPassBeginInfo = extern struct {
-    sType: StructureType,
-    pNext: ?*anyopaque,
-    renderPass: RenderPass,
-    framebuffer: Framebuffer,
-    renderArea: Rect2D,
-    clearValueCount: u32,
-    pClearValues: ?*const ClearValue,
-};
-
-pub const SubpassBeginInfo = extern struct {
-    sType: StructureType,
-    pNext: ?*anyopaque,
-    contents: u32,
-};
-
-pub const SubpassEndInfo = extern struct {
-    sType: StructureType,
-    pNext: ?*anyopaque,
 };
 
 pub const PrivateDataSlotCreateInfo = extern struct {

@@ -30,6 +30,7 @@ pub const khr_wayland_surface = vk.khr_wayland_surface;
 pub const khr_xcb_surface = vk.khr_xcb_surface;
 pub const khr_xlib_surface = vk.khr_xlib_surface;
 pub const khr_win32_surface = vk.khr_win32_surface;
+pub const khr_android_surface = vk.khr_android_surface;
 
 // Re-export the loader
 pub const Loader = vk.Loader;

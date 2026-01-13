@@ -287,6 +287,14 @@ pub const MemoryAllocateInfo = extern struct {
     memory_type_index: u32,
 };
 
+pub const MappedMemoryRange = extern struct {
+    s_type: types.StructureType = .mapped_memory_range,
+    p_next: ?*const anyopaque = null,
+    memory: types.DeviceMemory,
+    offset: types.DeviceSize,
+    size: types.DeviceSize,
+};
+
 // ============================================================================
 // Buffer Structures
 // ============================================================================
@@ -300,6 +308,16 @@ pub const BufferCreateInfo = extern struct {
     sharing_mode: types.SharingMode = .exclusive,
     queue_family_index_count: u32 = 0,
     p_queue_family_indices: ?[*]const u32 = null,
+};
+
+pub const BufferViewCreateInfo = extern struct {
+    s_type: types.StructureType = .buffer_view_create_info,
+    p_next: ?*const anyopaque = null,
+    flags: u32 = 0, // BufferViewCreateFlags
+    buffer: types.Buffer,
+    format: types.Format,
+    offset: types.DeviceSize = 0,
+    range: types.DeviceSize = c.WHOLE_SIZE,
 };
 
 // ============================================================================
@@ -408,6 +426,14 @@ pub const SubmitInfo = extern struct {
 // ============================================================================
 // Shader and Pipeline Structures
 // ============================================================================
+
+pub const PipelineCacheCreateInfo = extern struct {
+    s_type: types.StructureType = .pipeline_cache_create_info,
+    p_next: ?*const anyopaque = null,
+    flags: u32 = 0, // PipelineCacheCreateFlags
+    initial_data_size: types.DeviceSize = 0,
+    p_initial_data: ?*const anyopaque = null,
+};
 
 pub const ShaderModuleCreateInfo = extern struct {
     s_type: types.StructureType = .shader_module_create_info,

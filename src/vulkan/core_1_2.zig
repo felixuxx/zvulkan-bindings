@@ -203,15 +203,26 @@ pub const DeviceMemoryOpaqueCaptureAddressInfo = extern struct {
 pub const RenderPassCreateInfo2 = extern struct {
     s_type: types.StructureType = .render_pass_create_info_2,
     p_next: ?*const anyopaque = null,
-    flags: types.RenderPassCreateFlags,
+    flags: u32 = 0,
     attachment_count: u32,
     p_attachments: ?[*]const AttachmentDescription2,
     subpass_count: u32,
-    p_subpasses: ?[*]const SubpassDescription2,
+    p_subpasses: [*]const SubpassDescription2,
     dependency_count: u32,
     p_dependencies: ?[*]const SubpassDependency2,
-    correlated_view_mask_count: u32,
+    correlated_view_mask_count: u32 = 0,
     p_correlated_view_masks: ?[*]const u32,
+};
+
+pub const SubpassBeginInfo = extern struct {
+    s_type: types.StructureType = .subpass_begin_info,
+    p_next: ?*const anyopaque = null,
+    contents: types.SubpassContents,
+};
+
+pub const SubpassEndInfo = extern struct {
+    s_type: types.StructureType = .subpass_end_info,
+    p_next: ?*const anyopaque = null,
 };
 
 pub const AttachmentDescription2 = extern struct {
