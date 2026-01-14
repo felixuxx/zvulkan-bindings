@@ -412,3 +412,44 @@ pub const ExternalSemaphoreProperties = extern struct {
     compatible_handle_types: types.ExternalSemaphoreHandleTypeFlags,
     external_semaphore_features: types.ExternalSemaphoreFeatureFlags,
 };
+
+// ============================================================================
+// Physical Device Vulkan 1.1 Features (VK_VERSION_1_2)
+// ============================================================================
+
+pub const PhysicalDeviceVulkan11Features = extern struct {
+    s_type: types.StructureType = .physical_device_vulkan_1_1_features,
+    p_next: ?*const anyopaque = null,
+    storage_buffer_16_bit_access: types.Bool32,
+    uniform_and_storage_buffer_16_bit_access: types.Bool32,
+    storage_push_constant_16: types.Bool32,
+    storage_input_output_16: types.Bool32,
+    multiview: types.Bool32,
+    multiview_geometry_shader: types.Bool32,
+    multiview_tessellation_shader: types.Bool32,
+    variable_pointers_storage_buffer: types.Bool32,
+    variable_pointers: types.Bool32,
+    protected_memory: types.Bool32,
+    sampler_ycbcr_conversion: types.Bool32,
+    shader_draw_parameters: types.Bool32,
+};
+
+pub const PhysicalDeviceVulkan11Properties = extern struct {
+    s_type: types.StructureType = .physical_device_vulkan_1_1_properties,
+    p_next: ?*const anyopaque = null,
+    device_uuid: [constants.UUID_SIZE]u8,
+    driver_uuid: [constants.UUID_SIZE]u8,
+    device_luid: [constants.LUID_SIZE]u8,
+    device_node_mask: u32,
+    device_luid_valid: types.Bool32,
+    subgroup_size: u32,
+    subgroup_supported_stages: types.ShaderStageFlags,
+    subgroup_supported_operations: types.SubgroupFeatureFlags,
+    subgroup_quad_operations_in_all_stages: types.Bool32,
+    point_clipping_behavior: types.PointClippingBehavior,
+    max_multiview_view_count: u32,
+    max_multiview_instance_index: u32,
+    protected_no_fault: types.Bool32,
+    max_per_set_descriptors: u32,
+    max_memory_allocation_size: types.DeviceSize,
+};
