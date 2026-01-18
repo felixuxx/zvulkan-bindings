@@ -1338,6 +1338,7 @@ pub const DescriptorSetLayoutBinding = extern struct {
 };
 
 pub const PipelineCreateFlags = u32;
+pub const PipelineCacheCreateFlags = u32;
 
 // PipelineCreateFlagBits constants
 pub const PIPELINE_CREATE_DISABLE_OPTIMIZATION_BIT = 0x00000001;

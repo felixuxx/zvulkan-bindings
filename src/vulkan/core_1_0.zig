@@ -543,7 +543,7 @@ pub const ShaderModuleCreateInfo = extern struct {
 pub const PipelineCacheCreateInfo = extern struct {
     s_type: types.StructureType = .pipeline_cache_create_info,
     p_next: ?*const anyopaque = null,
-    flags: types.PipelineCacheCreateFlags = .{},
+    flags: types.PipelineCacheCreateFlags = 0,
     initial_data_size: usize = 0,
     p_initial_data: ?*const anyopaque = null,
 };
@@ -551,7 +551,7 @@ pub const PipelineCacheCreateInfo = extern struct {
 pub const ComputePipelineCreateInfo = extern struct {
     s_type: types.StructureType = .compute_pipeline_create_info,
     p_next: ?*const anyopaque = null,
-    flags: types.PipelineCreateFlags = .{},
+    flags: types.PipelineCreateFlags = 0,
     stage: PipelineShaderStageCreateInfo,
     layout: types.PipelineLayout,
     base_pipeline_handle: types.Pipeline = .null_handle,
