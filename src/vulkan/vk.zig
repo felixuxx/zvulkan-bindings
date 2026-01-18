@@ -33,6 +33,8 @@ pub const Result = types.Result;
 // Re-export new extension types
 pub const khr_dynamic_rendering = extensions.khr_dynamic_rendering;
 pub const khr_synchronization2 = extensions.khr_synchronization2;
+pub const khr_push_descriptor = extensions.khr_push_descriptor;
+pub const khr_fragment_shading_rate = extensions.khr_fragment_shading_rate;
 pub const ext_mesh_shader = extensions.ext_mesh_shader;
 pub const ext_validation_features = extensions.ext_validation_features;
 pub const amd_memory_overallocation = extensions.amd_memory_overallocation;
