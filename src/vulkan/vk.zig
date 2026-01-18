@@ -10,6 +10,7 @@ pub const core_1_0 = @import("core_1_0.zig");
 pub const core_1_1 = @import("core_1_1.zig");
 pub const core_1_2 = @import("core_1_2.zig");
 pub const core_1_3 = @import("core_1_3.zig");
+pub const core_1_4 = @import("core_1_4.zig");
 pub const extensions = @import("extensions.zig");
 
 // Keep these for internal use and legacy compatibility if needed,
@@ -308,6 +309,12 @@ pub const PFN_vkCmdSetStencilOp = *const fn (CommandBuffer, types.StencilFaceFla
 pub const PFN_vkCmdSetRasterizerDiscardEnable = *const fn (CommandBuffer, types.Bool32) callconv(.c) void;
 pub const PFN_vkCmdSetDepthBiasEnable = *const fn (CommandBuffer, types.Bool32) callconv(.c) void;
 pub const PFN_vkCmdSetPrimitiveRestartEnable = *const fn (CommandBuffer, types.Bool32) callconv(.c) void;
+
+// Vulkan 1.4 / Maintenance5 functions
+pub const PFN_vkCmdBindIndexBuffer2KHR = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, types.DeviceSize, types.IndexType) callconv(.c) void;
+pub const PFN_vkGetDeviceImageSubresourceLayoutKHR = *const fn (Device, *const core_1_4.DeviceImageSubresourceInfoKHR, *types.SubresourceLayout2KHR) callconv(.c) void;
+pub const PFN_vkGetImageSubresourceLayout2KHR = *const fn (Device, types.Image, *const types.ImageSubresource2KHR, *types.SubresourceLayout2KHR) callconv(.c) void;
+pub const PFN_vkGetRenderingAreaGranularityKHR = *const fn (Device, *const core_1_4.RenderingAreaInfoKHR, *types.Extent2D) callconv(.c) void;
 
 // ============================================================================
 // Extension Function Types
@@ -726,6 +733,12 @@ pub const DeviceDispatch = struct {
     // Vulkan 1.3
     vkGetPhysicalDeviceToolProperties: ?PFN_vkGetPhysicalDeviceToolProperties_Dev = null,
     vkCreatePrivateDataSlot: ?PFN_vkCreatePrivateDataSlot = null,
+
+    // Vulkan 1.4 / Maintenance5
+    vkCmdBindIndexBuffer2KHR: ?PFN_vkCmdBindIndexBuffer2KHR = null,
+    vkGetDeviceImageSubresourceLayoutKHR: ?PFN_vkGetDeviceImageSubresourceLayoutKHR = null,
+    vkGetImageSubresourceLayout2KHR: ?PFN_vkGetImageSubresourceLayout2KHR = null,
+    vkGetRenderingAreaGranularityKHR: ?PFN_vkGetRenderingAreaGranularityKHR = null,
     vkDestroyPrivateDataSlot: ?PFN_vkDestroyPrivateDataSlot = null,
     vkSetPrivateData: ?PFN_vkSetPrivateData = null,
     vkGetPrivateData: ?PFN_vkGetPrivateData = null,
@@ -967,6 +980,12 @@ pub const DeviceDispatch = struct {
             .vkCmdSetRasterizerDiscardEnable = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetRasterizerDiscardEnable", PFN_vkCmdSetRasterizerDiscardEnable),
             .vkCmdSetDepthBiasEnable = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetDepthBiasEnable", PFN_vkCmdSetDepthBiasEnable),
             .vkCmdSetPrimitiveRestartEnable = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetPrimitiveRestartEnable", PFN_vkCmdSetPrimitiveRestartEnable),
+
+            // Vulkan 1.4 / Maintenance5
+            .vkCmdBindIndexBuffer2KHR = loadOptionalDeviceFunction(get_proc, device, "vkCmdBindIndexBuffer2KHR", PFN_vkCmdBindIndexBuffer2KHR),
+            .vkGetDeviceImageSubresourceLayoutKHR = loadOptionalDeviceFunction(get_proc, device, "vkGetDeviceImageSubresourceLayoutKHR", PFN_vkGetDeviceImageSubresourceLayoutKHR),
+            .vkGetImageSubresourceLayout2KHR = loadOptionalDeviceFunction(get_proc, device, "vkGetImageSubresourceLayout2KHR", PFN_vkGetImageSubresourceLayout2KHR),
+            .vkGetRenderingAreaGranularityKHR = loadOptionalDeviceFunction(get_proc, device, "vkGetRenderingAreaGranularityKHR", PFN_vkGetRenderingAreaGranularityKHR),
 
             // Extension functions
             .vkCreateSwapchainKHR = loadOptionalDeviceFunction(get_proc, device, "vkCreateSwapchainKHR", PFN_vkCreateSwapchainKHR),
