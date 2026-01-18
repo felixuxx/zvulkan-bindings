@@ -225,6 +225,15 @@ pub const PFN_vkCmdSetPrimitiveTopology = *const fn (CommandBuffer, types.Primit
 pub const PFN_vkCmdSetViewportWithCount = *const fn (CommandBuffer, u32, [*]const types.Viewport) callconv(.c) void;
 pub const PFN_vkCmdSetScissorWithCount = *const fn (CommandBuffer, u32, [*]const types.Rect2D) callconv(.c) void;
 pub const PFN_vkCmdBindVertexBuffers2 = *const fn (CommandBuffer, u32, u32, [*]const types.Buffer, [*]const types.DeviceSize, ?[*]const types.DeviceSize, ?[*]const types.DeviceSize) callconv(.c) void;
+
+// Command buffer binding function pointer types
+pub const PFN_vkCmdBindPipeline = *const fn (CommandBuffer, types.PipelineBindPoint, types.Pipeline) callconv(.c) void;
+pub const PFN_vkCmdBindDescriptorSets = *const fn (CommandBuffer, types.PipelineBindPoint, types.PipelineLayout, u32, u32, ?[*]const types.DescriptorSet, u32, ?[*]const u32) callconv(.c) void;
+pub const PFN_vkCmdBindIndexBuffer = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, types.IndexType) callconv(.c) void;
+pub const PFN_vkCmdBindVertexBuffers = *const fn (CommandBuffer, u32, u32, ?[*]const types.Buffer, ?[*]const types.DeviceSize) callconv(.c) void;
+pub const PFN_vkCmdBindVertexBuffers2EXT = *const fn (CommandBuffer, u32, u32, ?[*]const types.Buffer, [*]const types.DeviceSize, ?[*]const types.DeviceSize, ?[*]const types.DeviceSize) callconv(.c) void;
+pub const PFN_vkCmdBindShadingRateImageNV = *const fn (CommandBuffer, types.ImageView, types.ImageLayout) callconv(.c) void;
+pub const PFN_vkCmdBindTransformFeedbackBuffersEXT = *const fn (CommandBuffer, u32, u32, ?[*]const types.Buffer, ?[*]const types.DeviceSize, ?[*]const types.DeviceSize) callconv(.c) void;
 pub const PFN_vkCmdSetDepthTestEnable = *const fn (CommandBuffer, types.Bool32) callconv(.c) void;
 pub const PFN_vkCmdSetDepthWriteEnable = *const fn (CommandBuffer, types.Bool32) callconv(.c) void;
 pub const PFN_vkCmdSetDepthCompareOp = *const fn (CommandBuffer, types.CompareOp) callconv(.c) void;
@@ -534,6 +543,15 @@ pub const DeviceDispatch = struct {
     vkCmdBeginRenderPass: PFN_vkCmdBeginRenderPass,
     vkCmdEndRenderPass: PFN_vkCmdEndRenderPass,
 
+    // Command buffer binding functions
+    vkCmdBindPipeline: PFN_vkCmdBindPipeline,
+    vkCmdBindDescriptorSets: PFN_vkCmdBindDescriptorSets,
+    vkCmdBindIndexBuffer: PFN_vkCmdBindIndexBuffer,
+    vkCmdBindVertexBuffers: PFN_vkCmdBindVertexBuffers,
+    vkCmdBindVertexBuffers2EXT: ?PFN_vkCmdBindVertexBuffers2EXT = null,
+    vkCmdBindShadingRateImageNV: ?PFN_vkCmdBindShadingRateImageNV = null,
+    vkCmdBindTransformFeedbackBuffersEXT: ?PFN_vkCmdBindTransformFeedbackBuffersEXT = null,
+
     // Vulkan 1.1
     vkBindBufferMemory2: ?PFN_vkBindBufferMemory2 = null,
     vkBindImageMemory2: ?PFN_vkBindImageMemory2 = null,
@@ -656,6 +674,15 @@ pub const DeviceDispatch = struct {
             .vkDestroyFramebuffer = try loadDeviceFunction(get_proc, device, "vkDestroyFramebuffer", PFN_vkDestroyFramebuffer),
             .vkCmdBeginRenderPass = try loadDeviceFunction(get_proc, device, "vkCmdBeginRenderPass", PFN_vkCmdBeginRenderPass),
             .vkCmdEndRenderPass = try loadDeviceFunction(get_proc, device, "vkCmdEndRenderPass", PFN_vkCmdEndRenderPass),
+
+            // Command buffer binding functions
+            .vkCmdBindPipeline = try loadDeviceFunction(get_proc, device, "vkCmdBindPipeline", PFN_vkCmdBindPipeline),
+            .vkCmdBindDescriptorSets = try loadDeviceFunction(get_proc, device, "vkCmdBindDescriptorSets", PFN_vkCmdBindDescriptorSets),
+            .vkCmdBindIndexBuffer = try loadDeviceFunction(get_proc, device, "vkCmdBindIndexBuffer", PFN_vkCmdBindIndexBuffer),
+            .vkCmdBindVertexBuffers = try loadDeviceFunction(get_proc, device, "vkCmdBindVertexBuffers", PFN_vkCmdBindVertexBuffers),
+            .vkCmdBindVertexBuffers2EXT = loadOptionalDeviceFunction(get_proc, device, "vkCmdBindVertexBuffers2EXT", PFN_vkCmdBindVertexBuffers2EXT),
+            .vkCmdBindShadingRateImageNV = loadOptionalDeviceFunction(get_proc, device, "vkCmdBindShadingRateImageNV", PFN_vkCmdBindShadingRateImageNV),
+            .vkCmdBindTransformFeedbackBuffersEXT = loadOptionalDeviceFunction(get_proc, device, "vkCmdBindTransformFeedbackBuffersEXT", PFN_vkCmdBindTransformFeedbackBuffersEXT),
 
             // Vulkan 1.1
             .vkBindBufferMemory2 = loadOptionalDeviceFunction(get_proc, device, "vkBindBufferMemory2", PFN_vkBindBufferMemory2),
