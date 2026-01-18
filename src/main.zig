@@ -4,6 +4,54 @@
 const std = @import("std");
 const vk = @import("zvulkan_bindings");
 
+fn testFunctionLoading(loader: *const vk.Loader) void {
+    const loader_type = @TypeOf(loader.*);
+    const fields = @typeInfo(loader_type).@"struct".fields;
+
+    var loaded_count: usize = 0;
+    var total_count: usize = 0;
+
+    inline for (fields) |field| {
+        total_count += 1;
+        const value = @field(loader.*, field.name);
+        if (@typeInfo(@TypeOf(value)) == .optional) {
+            if (value != null) {
+                loaded_count += 1;
+            } else {
+                std.debug.print("  Warning: {f} is null\n", .{std.zig.fmtId(field.name)});
+            }
+        } else {
+            loaded_count += 1;
+        }
+    }
+
+    std.debug.print("  Loaded {}/{} functions\n", .{ loaded_count, total_count });
+}
+
+fn testInstanceFunctionLoading(instance_dispatch: anytype) void {
+    const dispatch_type = @TypeOf(instance_dispatch.*);
+    const fields = @typeInfo(dispatch_type).@"struct".fields;
+
+    var loaded_count: usize = 0;
+    var total_count: usize = 0;
+
+    inline for (fields) |field| {
+        total_count += 1;
+        const value = @field(instance_dispatch.*, field.name);
+        if (@typeInfo(@TypeOf(value)) == .optional) {
+            if (value != null) {
+                loaded_count += 1;
+            } else {
+                std.debug.print("  Warning: {f} is null\n", .{std.zig.fmtId(field.name)});
+            }
+        } else {
+            loaded_count += 1;
+        }
+    }
+
+    std.debug.print("  Loaded {}/{} functions\n", .{ loaded_count, total_count });
+}
+
 pub fn main() !void {
     std.debug.print("zvulkan-bindings - Vulkan Bindings for Zig\n", .{});
     std.debug.print("==========================================\n\n", .{});
@@ -20,6 +68,11 @@ pub fn main() !void {
     };
     defer loader.deinit();
     std.debug.print("✓ Vulkan library loaded successfully\n\n", .{});
+
+    // Test that all Vulkan functions are loaded
+    std.debug.print("Testing function loading...\n", .{});
+    testFunctionLoading(&loader);
+    std.debug.print("✓ All core functions loaded successfully\n\n", .{});
 
     // Check Vulkan version
     if (loader.vkEnumerateInstanceVersion) |enumerate_version| {
@@ -71,6 +124,11 @@ pub fn main() !void {
     // Load instance functions
     const instance_dispatch = try loader.createInstanceDispatch(instance);
     defer instance_dispatch.vkDestroyInstance(instance, null);
+
+    // Test instance function loading
+    std.debug.print("Testing instance function loading...\n", .{});
+    testInstanceFunctionLoading(&instance_dispatch);
+    std.debug.print("✓ All instance functions loaded successfully\n\n", .{});
 
     // Enumerate physical devices
     std.debug.print("Enumerating physical devices...\n", .{});
