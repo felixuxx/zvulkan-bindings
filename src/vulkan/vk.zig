@@ -133,7 +133,14 @@ pub const PFN_vkDestroyPipelineLayout = *const fn (Device, types.PipelineLayout,
 
 // Graphics pipeline functions
 pub const PFN_vkCreateGraphicsPipelines = *const fn (Device, types.PipelineCache, u32, [*]const core_1_0.GraphicsPipelineCreateInfo, ?*const types.AllocationCallbacks, [*]types.Pipeline) callconv(.c) Result;
+pub const PFN_vkCreateComputePipelines = *const fn (Device, types.PipelineCache, u32, [*]const core_1_0.ComputePipelineCreateInfo, ?*const types.AllocationCallbacks, [*]types.Pipeline) callconv(.c) Result;
 pub const PFN_vkDestroyPipeline = *const fn (Device, types.Pipeline, ?*const types.AllocationCallbacks) callconv(.c) void;
+
+// Pipeline cache management
+pub const PFN_vkCreatePipelineCache = *const fn (Device, [*]const core_1_0.PipelineCacheCreateInfo, ?*const types.AllocationCallbacks, *types.PipelineCache) callconv(.c) Result;
+pub const PFN_vkDestroyPipelineCache = *const fn (Device, types.PipelineCache, ?*const types.AllocationCallbacks) callconv(.c) void;
+pub const PFN_vkGetPipelineCacheData = *const fn (Device, types.PipelineCache, [*]u8, [*]usize) callconv(.c) Result;
+pub const PFN_vkMergePipelineCaches = *const fn (Device, u32, [*]const types.PipelineCache, *types.PipelineCache, [*]u8) callconv(.c) Result;
 
 // Descriptor management functions
 pub const PFN_vkCreateDescriptorSetLayout = *const fn (Device, [*]const core_1_0.DescriptorSetLayoutCreateInfo, ?*const types.AllocationCallbacks, *types.DescriptorSetLayout) callconv(.c) Result;
@@ -248,7 +255,7 @@ pub const PFN_vkCmdSetViewport = *const fn (CommandBuffer, u32, u32, [*]const ty
 pub const PFN_vkCmdSetScissor = *const fn (CommandBuffer, u32, u32, [*]const types.Rect2D) callconv(.c) void;
 pub const PFN_vkCmdSetLineWidth = *const fn (CommandBuffer, f32) callconv(.c) void;
 pub const PFN_vkCmdSetDepthBias = *const fn (CommandBuffer, f32, f32, f32) callconv(.c) void;
-pub const PFN_vkCmdSetBlendConstants = *const fn (CommandBuffer, [4]f32) callconv(.c) void;
+pub const PFN_vkCmdSetBlendConstants = *const fn (CommandBuffer, f32, f32, f32, f32) callconv(.c) void;
 pub const PFN_vkCmdSetDepthBounds = *const fn (CommandBuffer, f32, f32) callconv(.c) void;
 pub const PFN_vkCmdSetStencilCompareMask = *const fn (CommandBuffer, types.StencilFaceFlags, u32) callconv(.c) void;
 pub const PFN_vkCmdSetStencilWriteMask = *const fn (CommandBuffer, types.StencilFaceFlags, u32) callconv(.c) void;
@@ -271,6 +278,9 @@ pub const PFN_vkCmdEndQuery = *const fn (CommandBuffer, types.QueryPool, u32) ca
 pub const PFN_vkCmdResetQueryPool = *const fn (CommandBuffer, types.QueryPool, u32, u32) callconv(.c) void;
 pub const PFN_vkCmdCopyQueryPoolResults = *const fn (CommandBuffer, types.QueryPool, u32, u32, types.Buffer, types.DeviceSize, types.DeviceSize, types.QueryResultFlags) callconv(.c) void;
 pub const PFN_vkCmdWriteTimestamp = *const fn (CommandBuffer, types.PipelineStageFlagBits, types.QueryPool, u32) callconv(.c) void;
+
+// Query management functions
+pub const PFN_vkGetQueryPoolResults = *const fn (Device, types.QueryPool, u32, u32, types.DeviceSize, types.DeviceSize, types.QueryResultFlags) callconv(.c) Result;
 
 // Event synchronization functions
 pub const PFN_vkCmdSetEvent = *const fn (CommandBuffer, types.Event, types.PipelineStageFlags) callconv(.c) void;
@@ -577,8 +587,26 @@ pub const DeviceDispatch = struct {
     vkCreatePipelineLayout: PFN_vkCreatePipelineLayout,
     vkDestroyPipelineLayout: PFN_vkDestroyPipelineLayout,
 
+    // Descriptor management functions
+    vkCreateDescriptorSetLayout: PFN_vkCreateDescriptorSetLayout,
+    vkDestroyDescriptorSetLayout: PFN_vkDestroyDescriptorSetLayout,
+    vkCreateDescriptorPool: PFN_vkCreateDescriptorPool,
+    vkDestroyDescriptorPool: PFN_vkDestroyDescriptorPool,
+    vkAllocateDescriptorSets: PFN_vkAllocateDescriptorSets,
+    vkFreeDescriptorSets: PFN_vkFreeDescriptorSets,
+    vkUpdateDescriptorSets: PFN_vkUpdateDescriptorSets,
+    vkCreateSampler: PFN_vkCreateSampler,
+    vkDestroySampler: PFN_vkDestroySampler,
+
     vkCreateGraphicsPipelines: PFN_vkCreateGraphicsPipelines,
+    vkCreateComputePipelines: PFN_vkCreateComputePipelines,
     vkDestroyPipeline: PFN_vkDestroyPipeline,
+
+    // Pipeline cache management
+    vkCreatePipelineCache: PFN_vkCreatePipelineCache,
+    vkDestroyPipelineCache: PFN_vkDestroyPipelineCache,
+    vkGetPipelineCacheData: PFN_vkGetPipelineCacheData,
+    vkMergePipelineCaches: PFN_vkMergePipelineCaches,
 
     vkCreateRenderPass: PFN_vkCreateRenderPass,
     vkDestroyRenderPass: PFN_vkDestroyRenderPass,
@@ -615,9 +643,12 @@ pub const DeviceDispatch = struct {
     vkCmdSetStencilWriteMask: PFN_vkCmdSetStencilWriteMask,
     vkCmdSetStencilReference: PFN_vkCmdSetStencilReference,
 
-    // Copy and transfer functions (missing ones only)
+    // Copy and transfer functions
+    vkCmdCopyBuffer: PFN_vkCmdCopyBuffer,
+    vkCmdCopyImage: PFN_vkCmdCopyImage,
     vkCmdCopyBufferToImage: PFN_vkCmdCopyBufferToImage,
     vkCmdCopyImageToBuffer: PFN_vkCmdCopyImageToBuffer,
+    vkCmdBlitImage: PFN_vkCmdBlitImage,
     vkCmdFillBuffer: PFN_vkCmdFillBuffer,
     vkCmdUpdateBuffer: PFN_vkCmdUpdateBuffer,
     vkCmdResolveImage: PFN_vkCmdResolveImage,
@@ -632,6 +663,9 @@ pub const DeviceDispatch = struct {
     vkCmdResetQueryPool: PFN_vkCmdResetQueryPool,
     vkCmdCopyQueryPoolResults: PFN_vkCmdCopyQueryPoolResults,
     vkCmdWriteTimestamp: PFN_vkCmdWriteTimestamp,
+
+    // Query management functions
+    vkGetQueryPoolResults: PFN_vkGetQueryPoolResults,
 
     // Event synchronization functions
     vkCmdSetEvent: PFN_vkCmdSetEvent,
@@ -752,7 +786,25 @@ pub const DeviceDispatch = struct {
             .vkDestroyPipelineLayout = try loadDeviceFunction(get_proc, device, "vkDestroyPipelineLayout", PFN_vkDestroyPipelineLayout),
 
             .vkCreateGraphicsPipelines = try loadDeviceFunction(get_proc, device, "vkCreateGraphicsPipelines", PFN_vkCreateGraphicsPipelines),
+            .vkCreateComputePipelines = try loadDeviceFunction(get_proc, device, "vkCreateComputePipelines", PFN_vkCreateComputePipelines),
             .vkDestroyPipeline = try loadDeviceFunction(get_proc, device, "vkDestroyPipeline", PFN_vkDestroyPipeline),
+
+            // Pipeline cache management
+            .vkCreatePipelineCache = try loadDeviceFunction(get_proc, device, "vkCreatePipelineCache", PFN_vkCreatePipelineCache),
+            .vkDestroyPipelineCache = try loadDeviceFunction(get_proc, device, "vkDestroyPipelineCache", PFN_vkDestroyPipelineCache),
+            .vkGetPipelineCacheData = try loadDeviceFunction(get_proc, device, "vkGetPipelineCacheData", PFN_vkGetPipelineCacheData),
+            .vkMergePipelineCaches = try loadDeviceFunction(get_proc, device, "vkMergePipelineCaches", PFN_vkMergePipelineCaches),
+
+            // Descriptor management functions
+            .vkCreateDescriptorSetLayout = try loadDeviceFunction(get_proc, device, "vkCreateDescriptorSetLayout", PFN_vkCreateDescriptorSetLayout),
+            .vkDestroyDescriptorSetLayout = try loadDeviceFunction(get_proc, device, "vkDestroyDescriptorSetLayout", PFN_vkDestroyDescriptorSetLayout),
+            .vkCreateDescriptorPool = try loadDeviceFunction(get_proc, device, "vkCreateDescriptorPool", PFN_vkCreateDescriptorPool),
+            .vkDestroyDescriptorPool = try loadDeviceFunction(get_proc, device, "vkDestroyDescriptorPool", PFN_vkDestroyDescriptorPool),
+            .vkAllocateDescriptorSets = try loadDeviceFunction(get_proc, device, "vkAllocateDescriptorSets", PFN_vkAllocateDescriptorSets),
+            .vkFreeDescriptorSets = try loadDeviceFunction(get_proc, device, "vkFreeDescriptorSets", PFN_vkFreeDescriptorSets),
+            .vkUpdateDescriptorSets = try loadDeviceFunction(get_proc, device, "vkUpdateDescriptorSets", PFN_vkUpdateDescriptorSets),
+            .vkCreateSampler = try loadDeviceFunction(get_proc, device, "vkCreateSampler", PFN_vkCreateSampler),
+            .vkDestroySampler = try loadDeviceFunction(get_proc, device, "vkDestroySampler", PFN_vkDestroySampler),
 
             .vkCreateRenderPass = try loadDeviceFunction(get_proc, device, "vkCreateRenderPass", PFN_vkCreateRenderPass),
             .vkDestroyRenderPass = try loadDeviceFunction(get_proc, device, "vkDestroyRenderPass", PFN_vkDestroyRenderPass),
@@ -790,8 +842,11 @@ pub const DeviceDispatch = struct {
             .vkCmdSetStencilReference = try loadDeviceFunction(get_proc, device, "vkCmdSetStencilReference", PFN_vkCmdSetStencilReference),
 
             // Copy and transfer functions
+            .vkCmdCopyBuffer = try loadDeviceFunction(get_proc, device, "vkCmdCopyBuffer", PFN_vkCmdCopyBuffer),
+            .vkCmdCopyImage = try loadDeviceFunction(get_proc, device, "vkCmdCopyImage", PFN_vkCmdCopyImage),
             .vkCmdCopyBufferToImage = try loadDeviceFunction(get_proc, device, "vkCmdCopyBufferToImage", PFN_vkCmdCopyBufferToImage),
             .vkCmdCopyImageToBuffer = try loadDeviceFunction(get_proc, device, "vkCmdCopyImageToBuffer", PFN_vkCmdCopyImageToBuffer),
+            .vkCmdBlitImage = try loadDeviceFunction(get_proc, device, "vkCmdBlitImage", PFN_vkCmdBlitImage),
             .vkCmdFillBuffer = try loadDeviceFunction(get_proc, device, "vkCmdFillBuffer", PFN_vkCmdFillBuffer),
             .vkCmdUpdateBuffer = try loadDeviceFunction(get_proc, device, "vkCmdUpdateBuffer", PFN_vkCmdUpdateBuffer),
             .vkCmdResolveImage = try loadDeviceFunction(get_proc, device, "vkCmdResolveImage", PFN_vkCmdResolveImage),
@@ -806,6 +861,9 @@ pub const DeviceDispatch = struct {
             .vkCmdResetQueryPool = try loadDeviceFunction(get_proc, device, "vkCmdResetQueryPool", PFN_vkCmdResetQueryPool),
             .vkCmdCopyQueryPoolResults = try loadDeviceFunction(get_proc, device, "vkCmdCopyQueryPoolResults", PFN_vkCmdCopyQueryPoolResults),
             .vkCmdWriteTimestamp = try loadDeviceFunction(get_proc, device, "vkCmdWriteTimestamp", PFN_vkCmdWriteTimestamp),
+
+            // Query management functions
+            .vkGetQueryPoolResults = try loadDeviceFunction(get_proc, device, "vkGetQueryPoolResults", PFN_vkGetQueryPoolResults),
 
             // Event synchronization functions
             .vkCmdSetEvent = try loadDeviceFunction(get_proc, device, "vkCmdSetEvent", PFN_vkCmdSetEvent),
