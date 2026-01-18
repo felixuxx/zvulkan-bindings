@@ -287,6 +287,129 @@ pub const MemoryAllocateInfo = extern struct {
     memory_type_index: u32,
 };
 
+pub const MappedMemoryRange = extern struct {
+    s_type: types.StructureType = .mapped_memory_range,
+    p_next: ?*const anyopaque = null,
+    memory: types.DeviceMemory,
+    offset: types.DeviceSize,
+    size: types.DeviceSize,
+};
+
+// ============================================================================
+// Image Subresource Structures
+// ============================================================================
+
+pub const ImageSubresource = extern struct {
+    aspect_mask: types.ImageAspectFlags,
+    mip_level: u32,
+    array_layer: u32,
+};
+
+pub const ImageSubresourceLayers = extern struct {
+    aspect_mask: types.ImageAspectFlags,
+    mip_level: u32,
+    base_array_layer: u32,
+    layer_count: u32,
+};
+
+pub const ImageSubresourceRange = extern struct {
+    aspect_mask: types.ImageAspectFlags,
+    base_mip_level: u32,
+    level_count: u32,
+    base_array_layer: u32,
+    layer_count: u32,
+};
+
+pub const SubresourceLayout = extern struct {
+    offset: types.DeviceSize,
+    size: types.DeviceSize,
+    row_pitch: types.DeviceSize,
+    array_pitch: types.DeviceSize,
+    depth_pitch: types.DeviceSize,
+};
+
+pub const FormatProperties = extern struct {
+    linear_tiling_features: types.FormatFeatureFlags = .{},
+    optimal_tiling_features: types.FormatFeatureFlags = .{},
+    buffer_features: types.FormatFeatureFlags = .{},
+};
+
+pub const ImageFormatProperties = extern struct {
+    max_extent: types.Extent3D,
+    max_mip_levels: u32,
+    max_array_layers: u32,
+    sample_counts: types.SampleCountFlags = .{},
+    max_resource_size: types.DeviceSize,
+};
+
+// ============================================================================
+// Sparse Memory Structures
+// ============================================================================
+
+pub const SparseImageFormatProperties = extern struct {
+    aspect_mask: types.ImageAspectFlags = .{},
+    image_granularity: types.Extent3D,
+    flags: types.SparseImageFormatFlags = .{},
+};
+
+pub const SparseImageMemoryRequirements = extern struct {
+    format_properties: SparseImageFormatProperties,
+    image_mip_tail_first_lod: u32,
+    image_mip_tail_size: types.DeviceSize,
+    image_mip_tail_offset: types.DeviceSize,
+    image_mip_tail_stride: types.DeviceSize,
+};
+
+pub const SparseMemoryBind = extern struct {
+    resource_offset: types.DeviceSize,
+    size: types.DeviceSize,
+    memory: types.DeviceMemory = .null_handle,
+    memory_offset: types.DeviceSize,
+    flags: types.SparseMemoryBindFlags = .{},
+};
+
+pub const SparseImageMemoryBind = extern struct {
+    subresource: ImageSubresource,
+    offset: types.Offset3D,
+    extent: types.Extent3D,
+    memory: types.DeviceMemory = .null_handle,
+    memory_offset: types.DeviceSize,
+    flags: types.SparseMemoryBindFlags = .{},
+};
+
+pub const SparseBufferMemoryBindInfo = extern struct {
+    buffer: types.Buffer,
+    bind_count: u32,
+    p_binds: [*]const SparseMemoryBind,
+};
+
+pub const SparseImageOpaqueMemoryBindInfo = extern struct {
+    image: types.Image,
+    bind_count: u32,
+    p_binds: [*]const SparseMemoryBind,
+};
+
+pub const SparseImageMemoryBindInfo = extern struct {
+    image: types.Image,
+    bind_count: u32,
+    p_binds: [*]const SparseImageMemoryBind,
+};
+
+pub const BindSparseInfo = extern struct {
+    s_type: types.StructureType = .bind_sparse_info,
+    p_next: ?*const anyopaque = null,
+    wait_semaphore_count: u32 = 0,
+    p_wait_semaphores: ?[*]const types.Semaphore = null,
+    buffer_bind_count: u32 = 0,
+    p_buffer_binds: ?[*]const SparseBufferMemoryBindInfo = null,
+    image_opaque_bind_count: u32 = 0,
+    p_image_opaque_binds: ?[*]const SparseImageOpaqueMemoryBindInfo = null,
+    image_bind_count: u32 = 0,
+    p_image_binds: ?[*]const SparseImageMemoryBindInfo = null,
+    signal_semaphore_count: u32 = 0,
+    p_signal_semaphores: ?[*]const types.Semaphore = null,
+};
+
 // ============================================================================
 // Buffer Structures
 // ============================================================================
@@ -415,6 +538,24 @@ pub const ShaderModuleCreateInfo = extern struct {
     flags: u32 = 0,
     code_size: usize,
     p_code: [*]const u32,
+};
+
+pub const PipelineCacheCreateInfo = extern struct {
+    s_type: types.StructureType = .pipeline_cache_create_info,
+    p_next: ?*const anyopaque = null,
+    flags: types.PipelineCacheCreateFlags = .{},
+    initial_data_size: usize = 0,
+    p_initial_data: ?*const anyopaque = null,
+};
+
+pub const ComputePipelineCreateInfo = extern struct {
+    s_type: types.StructureType = .compute_pipeline_create_info,
+    p_next: ?*const anyopaque = null,
+    flags: types.PipelineCreateFlags = .{},
+    stage: PipelineShaderStageCreateInfo,
+    layout: types.PipelineLayout,
+    base_pipeline_handle: types.Pipeline = .null_handle,
+    base_pipeline_index: i32,
 };
 
 pub const PipelineShaderStageCreateInfo = extern struct {
@@ -783,6 +924,31 @@ test "descriptor structures compilation" {
     _ = desc_image_info;
     _ = desc_buffer_info;
 }
+
+// ============================================================================
+// Indirect Command Structures
+// ============================================================================
+
+pub const DrawIndirectCommand = extern struct {
+    vertex_count: u32,
+    instance_count: u32,
+    first_vertex: u32,
+    first_instance: u32,
+};
+
+pub const DrawIndexedIndirectCommand = extern struct {
+    index_count: u32,
+    instance_count: u32,
+    first_index: u32,
+    vertex_offset: i32,
+    first_instance: u32,
+};
+
+pub const DispatchIndirectCommand = extern struct {
+    x: u32,
+    y: u32,
+    z: u32,
+};
 
 // ============================================================================
 // Command Buffer Recording Structures
