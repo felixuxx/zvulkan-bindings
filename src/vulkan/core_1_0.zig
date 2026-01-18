@@ -347,9 +347,9 @@ pub const ImageFormatProperties = extern struct {
 // ============================================================================
 
 pub const SparseImageFormatProperties = extern struct {
-    aspect_mask: types.ImageAspectFlags = .{},
+    aspect_mask: types.ImageAspectFlags,
     image_granularity: types.Extent3D,
-    flags: types.SparseImageFormatFlags = .{},
+    flags: types.SparseImageFormatFlags = 0,
 };
 
 pub const SparseImageMemoryRequirements = extern struct {
@@ -363,18 +363,18 @@ pub const SparseImageMemoryRequirements = extern struct {
 pub const SparseMemoryBind = extern struct {
     resource_offset: types.DeviceSize,
     size: types.DeviceSize,
-    memory: types.DeviceMemory = .null_handle,
+    memory: types.DeviceMemory,
     memory_offset: types.DeviceSize,
-    flags: types.SparseMemoryBindFlags = .{},
+    flags: types.SparseMemoryBindFlags = 0,
 };
 
 pub const SparseImageMemoryBind = extern struct {
-    subresource: ImageSubresource,
+    subresource: types.ImageSubresource,
     offset: types.Offset3D,
     extent: types.Extent3D,
-    memory: types.DeviceMemory = .null_handle,
+    memory: types.DeviceMemory,
     memory_offset: types.DeviceSize,
-    flags: types.SparseMemoryBindFlags = .{},
+    flags: types.SparseMemoryBindFlags = 0,
 };
 
 pub const SparseBufferMemoryBindInfo = extern struct {
@@ -417,7 +417,7 @@ pub const BindSparseInfo = extern struct {
 pub const BufferCreateInfo = extern struct {
     s_type: types.StructureType = .buffer_create_info,
     p_next: ?*const anyopaque = null,
-    flags: types.BufferCreateFlags = .{},
+    flags: types.BufferCreateFlags = 0,
     size: types.DeviceSize,
     usage: types.BufferUsageFlags,
     sharing_mode: types.SharingMode = .exclusive,
@@ -432,7 +432,7 @@ pub const BufferCreateInfo = extern struct {
 pub const ImageCreateInfo = extern struct {
     s_type: types.StructureType = .image_create_info,
     p_next: ?*const anyopaque = null,
-    flags: types.ImageCreateFlags = .{},
+    flags: types.ImageCreateFlags = 0,
     image_type: types.ImageType,
     format: types.Format,
     extent: types.Extent3D,
@@ -470,7 +470,7 @@ pub const ImageViewCreateInfo = extern struct {
 pub const CommandPoolCreateInfo = extern struct {
     s_type: types.StructureType = .command_pool_create_info,
     p_next: ?*const anyopaque = null,
-    flags: types.CommandPoolCreateFlags = .{},
+    flags: types.CommandPoolCreateFlags = 0,
     queue_family_index: u32,
 };
 
@@ -485,7 +485,7 @@ pub const CommandBufferAllocateInfo = extern struct {
 pub const CommandBufferBeginInfo = extern struct {
     s_type: types.StructureType = .command_buffer_begin_info,
     p_next: ?*const anyopaque = null,
-    flags: types.CommandBufferUsageFlags = .{},
+    flags: types.CommandBufferUsageFlags = 0,
     p_inheritance_info: ?*const CommandBufferInheritanceInfo = null,
 };
 
