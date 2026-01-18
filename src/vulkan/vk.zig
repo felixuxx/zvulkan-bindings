@@ -234,6 +234,50 @@ pub const PFN_vkCmdBindVertexBuffers = *const fn (CommandBuffer, u32, u32, ?[*]c
 pub const PFN_vkCmdBindVertexBuffers2EXT = *const fn (CommandBuffer, u32, u32, ?[*]const types.Buffer, [*]const types.DeviceSize, ?[*]const types.DeviceSize, ?[*]const types.DeviceSize) callconv(.c) void;
 pub const PFN_vkCmdBindShadingRateImageNV = *const fn (CommandBuffer, types.ImageView, types.ImageLayout) callconv(.c) void;
 pub const PFN_vkCmdBindTransformFeedbackBuffersEXT = *const fn (CommandBuffer, u32, u32, ?[*]const types.Buffer, ?[*]const types.DeviceSize, ?[*]const types.DeviceSize) callconv(.c) void;
+
+// Core drawing functions
+pub const PFN_vkCmdDraw = *const fn (CommandBuffer, u32, u32, u32, u32) callconv(.c) void;
+pub const PFN_vkCmdDrawIndexed = *const fn (CommandBuffer, u32, u32, u32, u32, u32) callconv(.c) void;
+pub const PFN_vkCmdDrawIndirect = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, u32, u32) callconv(.c) void;
+pub const PFN_vkCmdDrawIndexedIndirect = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, u32, u32) callconv(.c) void;
+pub const PFN_vkCmdDispatch = *const fn (CommandBuffer, u32, u32, u32) callconv(.c) void;
+pub const PFN_vkCmdDispatchIndirect = *const fn (CommandBuffer, types.Buffer, types.DeviceSize) callconv(.c) void;
+
+// State setting functions
+pub const PFN_vkCmdSetViewport = *const fn (CommandBuffer, u32, u32, [*]const types.Viewport) callconv(.c) void;
+pub const PFN_vkCmdSetScissor = *const fn (CommandBuffer, u32, u32, [*]const types.Rect2D) callconv(.c) void;
+pub const PFN_vkCmdSetLineWidth = *const fn (CommandBuffer, f32) callconv(.c) void;
+pub const PFN_vkCmdSetDepthBias = *const fn (CommandBuffer, f32, f32, f32) callconv(.c) void;
+pub const PFN_vkCmdSetBlendConstants = *const fn (CommandBuffer, [4]f32) callconv(.c) void;
+pub const PFN_vkCmdSetDepthBounds = *const fn (CommandBuffer, f32, f32) callconv(.c) void;
+pub const PFN_vkCmdSetStencilCompareMask = *const fn (CommandBuffer, types.StencilFaceFlags, u32) callconv(.c) void;
+pub const PFN_vkCmdSetStencilWriteMask = *const fn (CommandBuffer, types.StencilFaceFlags, u32) callconv(.c) void;
+pub const PFN_vkCmdSetStencilReference = *const fn (CommandBuffer, types.StencilFaceFlags, u32) callconv(.c) void;
+
+// Copy and transfer functions (missing ones only)
+pub const PFN_vkCmdCopyBufferToImage = *const fn (CommandBuffer, types.Buffer, types.Image, types.ImageLayout, u32, [*]const core_1_0.BufferImageCopy) callconv(.c) void;
+pub const PFN_vkCmdCopyImageToBuffer = *const fn (CommandBuffer, types.Image, types.ImageLayout, types.Buffer, u32, [*]const core_1_0.BufferImageCopy) callconv(.c) void;
+pub const PFN_vkCmdFillBuffer = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, types.DeviceSize, u32) callconv(.c) void;
+pub const PFN_vkCmdUpdateBuffer = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, types.DeviceSize, [*]const u8) callconv(.c) void;
+pub const PFN_vkCmdResolveImage = *const fn (CommandBuffer, types.Image, types.ImageLayout, types.Image, types.ImageLayout, u32, [*]const core_1_0.ImageResolve) callconv(.c) void;
+
+// Clear functions (missing ones only)
+pub const PFN_vkCmdClearColorImage = *const fn (CommandBuffer, types.Image, types.ImageLayout, [*]const types.ClearColorValue, u32, [*]const core_1_0.ImageSubresourceRange) callconv(.c) void;
+pub const PFN_vkCmdClearDepthStencilImage = *const fn (CommandBuffer, types.Image, types.ImageLayout, [*]const types.ClearDepthStencilValue, u32, [*]const core_1_0.ImageSubresourceRange) callconv(.c) void;
+
+// Query functions
+pub const PFN_vkCmdBeginQuery = *const fn (CommandBuffer, types.QueryPool, u32, types.QueryControlFlags) callconv(.c) void;
+pub const PFN_vkCmdEndQuery = *const fn (CommandBuffer, types.QueryPool, u32) callconv(.c) void;
+pub const PFN_vkCmdResetQueryPool = *const fn (CommandBuffer, types.QueryPool, u32, u32) callconv(.c) void;
+pub const PFN_vkCmdCopyQueryPoolResults = *const fn (CommandBuffer, types.QueryPool, u32, u32, types.Buffer, types.DeviceSize, types.DeviceSize, types.QueryResultFlags) callconv(.c) void;
+pub const PFN_vkCmdWriteTimestamp = *const fn (CommandBuffer, types.PipelineStageFlagBits, types.QueryPool, u32) callconv(.c) void;
+
+// Event synchronization functions
+pub const PFN_vkCmdSetEvent = *const fn (CommandBuffer, types.Event, types.PipelineStageFlags) callconv(.c) void;
+pub const PFN_vkCmdResetEvent = *const fn (CommandBuffer, types.Event, types.PipelineStageFlags) callconv(.c) void;
+pub const PFN_vkCmdWaitEvents = *const fn (CommandBuffer, u32, [*]const types.Event, types.PipelineStageFlags, types.PipelineStageFlags, u32, [*]const core_1_0.MemoryBarrier, u32, [*]const core_1_0.BufferMemoryBarrier, u32, [*]const core_1_0.ImageMemoryBarrier) callconv(.c) void;
+
+// Dynamic state functions (from Vulkan 1.3)
 pub const PFN_vkCmdSetDepthTestEnable = *const fn (CommandBuffer, types.Bool32) callconv(.c) void;
 pub const PFN_vkCmdSetDepthWriteEnable = *const fn (CommandBuffer, types.Bool32) callconv(.c) void;
 pub const PFN_vkCmdSetDepthCompareOp = *const fn (CommandBuffer, types.CompareOp) callconv(.c) void;
@@ -552,6 +596,48 @@ pub const DeviceDispatch = struct {
     vkCmdBindShadingRateImageNV: ?PFN_vkCmdBindShadingRateImageNV = null,
     vkCmdBindTransformFeedbackBuffersEXT: ?PFN_vkCmdBindTransformFeedbackBuffersEXT = null,
 
+    // Core drawing functions
+    vkCmdDraw: PFN_vkCmdDraw,
+    vkCmdDrawIndexed: PFN_vkCmdDrawIndexed,
+    vkCmdDrawIndirect: PFN_vkCmdDrawIndirect,
+    vkCmdDrawIndexedIndirect: PFN_vkCmdDrawIndexedIndirect,
+    vkCmdDispatch: PFN_vkCmdDispatch,
+    vkCmdDispatchIndirect: PFN_vkCmdDispatchIndirect,
+
+    // State setting functions
+    vkCmdSetViewport: PFN_vkCmdSetViewport,
+    vkCmdSetScissor: PFN_vkCmdSetScissor,
+    vkCmdSetLineWidth: PFN_vkCmdSetLineWidth,
+    vkCmdSetDepthBias: PFN_vkCmdSetDepthBias,
+    vkCmdSetBlendConstants: PFN_vkCmdSetBlendConstants,
+    vkCmdSetDepthBounds: PFN_vkCmdSetDepthBounds,
+    vkCmdSetStencilCompareMask: PFN_vkCmdSetStencilCompareMask,
+    vkCmdSetStencilWriteMask: PFN_vkCmdSetStencilWriteMask,
+    vkCmdSetStencilReference: PFN_vkCmdSetStencilReference,
+
+    // Copy and transfer functions (missing ones only)
+    vkCmdCopyBufferToImage: PFN_vkCmdCopyBufferToImage,
+    vkCmdCopyImageToBuffer: PFN_vkCmdCopyImageToBuffer,
+    vkCmdFillBuffer: PFN_vkCmdFillBuffer,
+    vkCmdUpdateBuffer: PFN_vkCmdUpdateBuffer,
+    vkCmdResolveImage: PFN_vkCmdResolveImage,
+
+    // Clear functions (missing ones only)
+    vkCmdClearColorImage: PFN_vkCmdClearColorImage,
+    vkCmdClearDepthStencilImage: PFN_vkCmdClearDepthStencilImage,
+
+    // Query functions
+    vkCmdBeginQuery: PFN_vkCmdBeginQuery,
+    vkCmdEndQuery: PFN_vkCmdEndQuery,
+    vkCmdResetQueryPool: PFN_vkCmdResetQueryPool,
+    vkCmdCopyQueryPoolResults: PFN_vkCmdCopyQueryPoolResults,
+    vkCmdWriteTimestamp: PFN_vkCmdWriteTimestamp,
+
+    // Event synchronization functions
+    vkCmdSetEvent: PFN_vkCmdSetEvent,
+    vkCmdResetEvent: PFN_vkCmdResetEvent,
+    vkCmdWaitEvents: PFN_vkCmdWaitEvents,
+
     // Vulkan 1.1
     vkBindBufferMemory2: ?PFN_vkBindBufferMemory2 = null,
     vkBindImageMemory2: ?PFN_vkBindImageMemory2 = null,
@@ -683,6 +769,48 @@ pub const DeviceDispatch = struct {
             .vkCmdBindVertexBuffers2EXT = loadOptionalDeviceFunction(get_proc, device, "vkCmdBindVertexBuffers2EXT", PFN_vkCmdBindVertexBuffers2EXT),
             .vkCmdBindShadingRateImageNV = loadOptionalDeviceFunction(get_proc, device, "vkCmdBindShadingRateImageNV", PFN_vkCmdBindShadingRateImageNV),
             .vkCmdBindTransformFeedbackBuffersEXT = loadOptionalDeviceFunction(get_proc, device, "vkCmdBindTransformFeedbackBuffersEXT", PFN_vkCmdBindTransformFeedbackBuffersEXT),
+
+            // Core drawing functions
+            .vkCmdDraw = try loadDeviceFunction(get_proc, device, "vkCmdDraw", PFN_vkCmdDraw),
+            .vkCmdDrawIndexed = try loadDeviceFunction(get_proc, device, "vkCmdDrawIndexed", PFN_vkCmdDrawIndexed),
+            .vkCmdDrawIndirect = try loadDeviceFunction(get_proc, device, "vkCmdDrawIndirect", PFN_vkCmdDrawIndirect),
+            .vkCmdDrawIndexedIndirect = try loadDeviceFunction(get_proc, device, "vkCmdDrawIndexedIndirect", PFN_vkCmdDrawIndexedIndirect),
+            .vkCmdDispatch = try loadDeviceFunction(get_proc, device, "vkCmdDispatch", PFN_vkCmdDispatch),
+            .vkCmdDispatchIndirect = try loadDeviceFunction(get_proc, device, "vkCmdDispatchIndirect", PFN_vkCmdDispatchIndirect),
+
+            // State setting functions
+            .vkCmdSetViewport = try loadDeviceFunction(get_proc, device, "vkCmdSetViewport", PFN_vkCmdSetViewport),
+            .vkCmdSetScissor = try loadDeviceFunction(get_proc, device, "vkCmdSetScissor", PFN_vkCmdSetScissor),
+            .vkCmdSetLineWidth = try loadDeviceFunction(get_proc, device, "vkCmdSetLineWidth", PFN_vkCmdSetLineWidth),
+            .vkCmdSetDepthBias = try loadDeviceFunction(get_proc, device, "vkCmdSetDepthBias", PFN_vkCmdSetDepthBias),
+            .vkCmdSetBlendConstants = try loadDeviceFunction(get_proc, device, "vkCmdSetBlendConstants", PFN_vkCmdSetBlendConstants),
+            .vkCmdSetDepthBounds = try loadDeviceFunction(get_proc, device, "vkCmdSetDepthBounds", PFN_vkCmdSetDepthBounds),
+            .vkCmdSetStencilCompareMask = try loadDeviceFunction(get_proc, device, "vkCmdSetStencilCompareMask", PFN_vkCmdSetStencilCompareMask),
+            .vkCmdSetStencilWriteMask = try loadDeviceFunction(get_proc, device, "vkCmdSetStencilWriteMask", PFN_vkCmdSetStencilWriteMask),
+            .vkCmdSetStencilReference = try loadDeviceFunction(get_proc, device, "vkCmdSetStencilReference", PFN_vkCmdSetStencilReference),
+
+            // Copy and transfer functions
+            .vkCmdCopyBufferToImage = try loadDeviceFunction(get_proc, device, "vkCmdCopyBufferToImage", PFN_vkCmdCopyBufferToImage),
+            .vkCmdCopyImageToBuffer = try loadDeviceFunction(get_proc, device, "vkCmdCopyImageToBuffer", PFN_vkCmdCopyImageToBuffer),
+            .vkCmdFillBuffer = try loadDeviceFunction(get_proc, device, "vkCmdFillBuffer", PFN_vkCmdFillBuffer),
+            .vkCmdUpdateBuffer = try loadDeviceFunction(get_proc, device, "vkCmdUpdateBuffer", PFN_vkCmdUpdateBuffer),
+            .vkCmdResolveImage = try loadDeviceFunction(get_proc, device, "vkCmdResolveImage", PFN_vkCmdResolveImage),
+
+            // Clear functions
+            .vkCmdClearColorImage = try loadDeviceFunction(get_proc, device, "vkCmdClearColorImage", PFN_vkCmdClearColorImage),
+            .vkCmdClearDepthStencilImage = try loadDeviceFunction(get_proc, device, "vkCmdClearDepthStencilImage", PFN_vkCmdClearDepthStencilImage),
+
+            // Query functions
+            .vkCmdBeginQuery = try loadDeviceFunction(get_proc, device, "vkCmdBeginQuery", PFN_vkCmdBeginQuery),
+            .vkCmdEndQuery = try loadDeviceFunction(get_proc, device, "vkCmdEndQuery", PFN_vkCmdEndQuery),
+            .vkCmdResetQueryPool = try loadDeviceFunction(get_proc, device, "vkCmdResetQueryPool", PFN_vkCmdResetQueryPool),
+            .vkCmdCopyQueryPoolResults = try loadDeviceFunction(get_proc, device, "vkCmdCopyQueryPoolResults", PFN_vkCmdCopyQueryPoolResults),
+            .vkCmdWriteTimestamp = try loadDeviceFunction(get_proc, device, "vkCmdWriteTimestamp", PFN_vkCmdWriteTimestamp),
+
+            // Event synchronization functions
+            .vkCmdSetEvent = try loadDeviceFunction(get_proc, device, "vkCmdSetEvent", PFN_vkCmdSetEvent),
+            .vkCmdResetEvent = try loadDeviceFunction(get_proc, device, "vkCmdResetEvent", PFN_vkCmdResetEvent),
+            .vkCmdWaitEvents = try loadDeviceFunction(get_proc, device, "vkCmdWaitEvents", PFN_vkCmdWaitEvents),
 
             // Vulkan 1.1
             .vkBindBufferMemory2 = loadOptionalDeviceFunction(get_proc, device, "vkBindBufferMemory2", PFN_vkBindBufferMemory2),
