@@ -82,3 +82,41 @@ pub const SurfaceFormatKHR = extern struct {
     format: types.Format,
     color_space: ColorSpaceKHR,
 };
+
+pub const SurfaceFormat2KHR = extern struct {
+    s_type: types.StructureType = .surface_format_2_khr,
+    p_next: ?*const anyopaque = null,
+    surface_format: SurfaceFormatKHR,
+};
+
+// ============================================================================
+// Display Structures (for KHR_display extension)
+// ============================================================================
+
+pub const DisplayPropertiesKHR = extern struct {
+    display: types.DisplayKHR,
+    display_name: [*:0]const u8,
+    physical_dimensions: types.Extent2D,
+    physical_resolution: types.Extent2D,
+    supported_transforms: SurfaceTransformFlagBitsKHR,
+    plane_reorder_possible: types.Bool32,
+    persistent_content: types.Bool32,
+};
+
+pub const DisplayModePropertiesKHR = extern struct {
+    display_mode: types.DisplayModeKHR,
+    parameters: types.DisplayModeParametersKHR,
+    visible_region: types.Extent2D,
+    refresh_rate: u32,
+};
+
+pub const DisplayModeParametersKHR = extern struct {
+    visible_region: types.Extent2D,
+    refresh_rate: u32,
+    preferred_refresh_rate: u32,
+};
+
+pub const DisplayPlanePropertiesKHR = extern struct {
+    current_display: types.DisplayKHR,
+    current_stack_index: u32,
+};
