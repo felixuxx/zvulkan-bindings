@@ -412,6 +412,10 @@ pub const Loader = struct {
     pub fn createInstanceDispatch(self: *Loader, instance: Instance) !InstanceDispatch {
         return InstanceDispatch.init(self.vkGetInstanceProcAddr, instance);
     }
+
+    pub fn createDeviceDispatch(_: *Loader, get_device_proc_addr: PFN_vkGetDeviceProcAddr, device: Device) !DeviceDispatch {
+        return DeviceDispatch.init(get_device_proc_addr, device);
+    }
 };
 
 // ============================================================================
