@@ -554,7 +554,7 @@ pub const ComputePipelineCreateInfo = extern struct {
     flags: types.PipelineCreateFlags = 0,
     stage: PipelineShaderStageCreateInfo,
     layout: types.PipelineLayout,
-    base_pipeline_handle: types.Pipeline = .null_handle,
+    base_pipeline_handle: types.Pipeline = 0,
     base_pipeline_index: i32,
 };
 
