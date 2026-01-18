@@ -30,6 +30,14 @@ pub const Queue = types.Queue;
 pub const CommandBuffer = types.CommandBuffer;
 pub const Result = types.Result;
 
+// Re-export new extension types
+pub const khr_dynamic_rendering = extensions.khr_dynamic_rendering;
+pub const khr_synchronization2 = extensions.khr_synchronization2;
+pub const ext_mesh_shader = extensions.ext_mesh_shader;
+pub const ext_validation_features = extensions.ext_validation_features;
+pub const amd_memory_overallocation = extensions.amd_memory_overallocation;
+pub const intel_performance_query = extensions.intel_performance_query;
+
 // ============================================================================
 // Function Pointer Types
 // ============================================================================
