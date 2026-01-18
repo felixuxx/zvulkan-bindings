@@ -136,6 +136,9 @@ pub const PFN_vkCreateGraphicsPipelines = *const fn (Device, types.PipelineCache
 pub const PFN_vkCreateComputePipelines = *const fn (Device, types.PipelineCache, u32, [*]const core_1_0.ComputePipelineCreateInfo, ?*const types.AllocationCallbacks, [*]types.Pipeline) callconv(.c) Result;
 pub const PFN_vkDestroyPipeline = *const fn (Device, types.Pipeline, ?*const types.AllocationCallbacks) callconv(.c) void;
 
+// Timeline semaphore functions
+pub const PFN_vkCreateSemaphoreWithTypesKHR = *const fn (Device, [*]const core_1_2.SemaphoreTypeCreateInfo, ?*const types.AllocationCallbacks, *types.Semaphore) callconv(.c) Result;
+
 // Pipeline cache management
 pub const PFN_vkCreatePipelineCache = *const fn (Device, [*]const core_1_0.PipelineCacheCreateInfo, ?*const types.AllocationCallbacks, *types.PipelineCache) callconv(.c) Result;
 pub const PFN_vkDestroyPipelineCache = *const fn (Device, types.PipelineCache, ?*const types.AllocationCallbacks) callconv(.c) void;
@@ -233,24 +236,7 @@ pub const PFN_vkCmdSetViewportWithCount = *const fn (CommandBuffer, u32, [*]cons
 pub const PFN_vkCmdSetScissorWithCount = *const fn (CommandBuffer, u32, [*]const types.Rect2D) callconv(.c) void;
 pub const PFN_vkCmdBindVertexBuffers2 = *const fn (CommandBuffer, u32, u32, [*]const types.Buffer, [*]const types.DeviceSize, ?[*]const types.DeviceSize, ?[*]const types.DeviceSize) callconv(.c) void;
 
-// Command buffer binding function pointer types
-pub const PFN_vkCmdBindPipeline = *const fn (CommandBuffer, types.PipelineBindPoint, types.Pipeline) callconv(.c) void;
-pub const PFN_vkCmdBindDescriptorSets = *const fn (CommandBuffer, types.PipelineBindPoint, types.PipelineLayout, u32, u32, ?[*]const types.DescriptorSet, u32, ?[*]const u32) callconv(.c) void;
-pub const PFN_vkCmdBindIndexBuffer = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, types.IndexType) callconv(.c) void;
-pub const PFN_vkCmdBindVertexBuffers = *const fn (CommandBuffer, u32, u32, ?[*]const types.Buffer, ?[*]const types.DeviceSize) callconv(.c) void;
-pub const PFN_vkCmdBindVertexBuffers2EXT = *const fn (CommandBuffer, u32, u32, ?[*]const types.Buffer, [*]const types.DeviceSize, ?[*]const types.DeviceSize, ?[*]const types.DeviceSize) callconv(.c) void;
-pub const PFN_vkCmdBindShadingRateImageNV = *const fn (CommandBuffer, types.ImageView, types.ImageLayout) callconv(.c) void;
-pub const PFN_vkCmdBindTransformFeedbackBuffersEXT = *const fn (CommandBuffer, u32, u32, ?[*]const types.Buffer, ?[*]const types.DeviceSize, ?[*]const types.DeviceSize) callconv(.c) void;
-
-// Core drawing functions
-pub const PFN_vkCmdDraw = *const fn (CommandBuffer, u32, u32, u32, u32) callconv(.c) void;
-pub const PFN_vkCmdDrawIndexed = *const fn (CommandBuffer, u32, u32, u32, u32, u32) callconv(.c) void;
-pub const PFN_vkCmdDrawIndirect = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, u32, u32) callconv(.c) void;
-pub const PFN_vkCmdDrawIndexedIndirect = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, u32, u32) callconv(.c) void;
-pub const PFN_vkCmdDispatch = *const fn (CommandBuffer, u32, u32, u32) callconv(.c) void;
-pub const PFN_vkCmdDispatchIndirect = *const fn (CommandBuffer, types.Buffer, types.DeviceSize) callconv(.c) void;
-
-// State setting functions
+// Vulkan 1.0 state setting functions
 pub const PFN_vkCmdSetViewport = *const fn (CommandBuffer, u32, u32, [*]const types.Viewport) callconv(.c) void;
 pub const PFN_vkCmdSetScissor = *const fn (CommandBuffer, u32, u32, [*]const types.Rect2D) callconv(.c) void;
 pub const PFN_vkCmdSetLineWidth = *const fn (CommandBuffer, f32) callconv(.c) void;
@@ -261,14 +247,23 @@ pub const PFN_vkCmdSetStencilCompareMask = *const fn (CommandBuffer, types.Stenc
 pub const PFN_vkCmdSetStencilWriteMask = *const fn (CommandBuffer, types.StencilFaceFlags, u32) callconv(.c) void;
 pub const PFN_vkCmdSetStencilReference = *const fn (CommandBuffer, types.StencilFaceFlags, u32) callconv(.c) void;
 
-// Copy and transfer functions (missing ones only)
+// Command buffer binding function pointer types
+pub const PFN_vkCmdBindPipeline = *const fn (CommandBuffer, types.PipelineBindPoint, types.Pipeline) callconv(.c) void;
+pub const PFN_vkCmdBindDescriptorSets = *const fn (CommandBuffer, types.PipelineBindPoint, types.PipelineLayout, u32, u32, ?[*]const types.DescriptorSet, u32, ?[*]const u32) callconv(.c) void;
+pub const PFN_vkCmdBindIndexBuffer = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, types.IndexType) callconv(.c) void;
+pub const PFN_vkCmdBindVertexBuffers = *const fn (CommandBuffer, u32, u32, ?[*]const types.Buffer, ?[*]const types.DeviceSize) callconv(.c) void;
+pub const PFN_vkCmdBindVertexBuffers2EXT = *const fn (CommandBuffer, u32, u32, ?[*]const types.Buffer, [*]const types.DeviceSize, ?[*]const types.DeviceSize, ?[*]const types.DeviceSize) callconv(.c) void;
+pub const PFN_vkCmdBindShadingRateImageNV = *const fn (CommandBuffer, types.ImageView, types.ImageLayout) callconv(.c) void;
+pub const PFN_vkCmdBindTransformFeedbackBuffersEXT = *const fn (CommandBuffer, u32, u32, ?[*]const types.Buffer, ?[*]const types.DeviceSize, ?[*]const types.DeviceSize) callconv(.c) void;
+
+// Copy functions with correct signatures for DeviceDispatch
 pub const PFN_vkCmdCopyBufferToImage = *const fn (CommandBuffer, types.Buffer, types.Image, types.ImageLayout, u32, [*]const core_1_0.BufferImageCopy) callconv(.c) void;
 pub const PFN_vkCmdCopyImageToBuffer = *const fn (CommandBuffer, types.Image, types.ImageLayout, types.Buffer, u32, [*]const core_1_0.BufferImageCopy) callconv(.c) void;
 pub const PFN_vkCmdFillBuffer = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, types.DeviceSize, u32) callconv(.c) void;
 pub const PFN_vkCmdUpdateBuffer = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, types.DeviceSize, [*]const u8) callconv(.c) void;
 pub const PFN_vkCmdResolveImage = *const fn (CommandBuffer, types.Image, types.ImageLayout, types.Image, types.ImageLayout, u32, [*]const core_1_0.ImageResolve) callconv(.c) void;
 
-// Clear functions (missing ones only)
+// Clear functions
 pub const PFN_vkCmdClearColorImage = *const fn (CommandBuffer, types.Image, types.ImageLayout, [*]const types.ClearColorValue, u32, [*]const core_1_0.ImageSubresourceRange) callconv(.c) void;
 pub const PFN_vkCmdClearDepthStencilImage = *const fn (CommandBuffer, types.Image, types.ImageLayout, [*]const types.ClearDepthStencilValue, u32, [*]const core_1_0.ImageSubresourceRange) callconv(.c) void;
 
@@ -279,13 +274,29 @@ pub const PFN_vkCmdResetQueryPool = *const fn (CommandBuffer, types.QueryPool, u
 pub const PFN_vkCmdCopyQueryPoolResults = *const fn (CommandBuffer, types.QueryPool, u32, u32, types.Buffer, types.DeviceSize, types.DeviceSize, types.QueryResultFlags) callconv(.c) void;
 pub const PFN_vkCmdWriteTimestamp = *const fn (CommandBuffer, types.PipelineStageFlagBits, types.QueryPool, u32) callconv(.c) void;
 
-// Query management functions
-pub const PFN_vkGetQueryPoolResults = *const fn (Device, types.QueryPool, u32, u32, types.DeviceSize, types.DeviceSize, types.QueryResultFlags) callconv(.c) Result;
-
 // Event synchronization functions
 pub const PFN_vkCmdSetEvent = *const fn (CommandBuffer, types.Event, types.PipelineStageFlags) callconv(.c) void;
 pub const PFN_vkCmdResetEvent = *const fn (CommandBuffer, types.Event, types.PipelineStageFlags) callconv(.c) void;
 pub const PFN_vkCmdWaitEvents = *const fn (CommandBuffer, u32, [*]const types.Event, types.PipelineStageFlags, types.PipelineStageFlags, u32, [*]const core_1_0.MemoryBarrier, u32, [*]const core_1_0.BufferMemoryBarrier, u32, [*]const core_1_0.ImageMemoryBarrier) callconv(.c) void;
+
+// Query management functions
+pub const PFN_vkGetQueryPoolResults = *const fn (Device, types.QueryPool, u32, u32, types.DeviceSize, types.DeviceSize, types.QueryResultFlags) callconv(.c) Result;
+
+// Mesh shader functions
+pub const PFN_vkCmdDrawMeshTasksNV = *const fn (CommandBuffer, u32, u32) callconv(.c) void;
+pub const PFN_vkCmdDrawMeshTasksIndirectNV = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, u32, u32) callconv(.c) void;
+pub const PFN_vkCmdDrawMeshTasksIndirectCountNV = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, types.Buffer, types.DeviceSize, u32, u32) callconv(.c) void;
+pub const PFN_vkCmdDrawMeshTasksEXT = *const fn (CommandBuffer, u32, u32, u32) callconv(.c) void;
+pub const PFN_vkCmdDrawMeshTasksIndirectEXT = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, u32, u32) callconv(.c) void;
+pub const PFN_vkCmdDrawMeshTasksIndirectCountEXT = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, types.Buffer, types.DeviceSize, u32, u32) callconv(.c) void;
+
+// Core drawing functions
+pub const PFN_vkCmdDraw = *const fn (CommandBuffer, u32, u32, u32, u32) callconv(.c) void;
+pub const PFN_vkCmdDrawIndexed = *const fn (CommandBuffer, u32, u32, u32, u32, u32) callconv(.c) void;
+pub const PFN_vkCmdDrawIndirect = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, u32, u32) callconv(.c) void;
+pub const PFN_vkCmdDrawIndexedIndirect = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, u32, u32) callconv(.c) void;
+pub const PFN_vkCmdDispatch = *const fn (CommandBuffer, u32, u32, u32) callconv(.c) void;
+pub const PFN_vkCmdDispatchIndirect = *const fn (CommandBuffer, types.Buffer, types.DeviceSize) callconv(.c) void;
 
 // Dynamic state functions (from Vulkan 1.3)
 pub const PFN_vkCmdSetDepthTestEnable = *const fn (CommandBuffer, types.Bool32) callconv(.c) void;
@@ -632,6 +643,14 @@ pub const DeviceDispatch = struct {
     vkCmdDispatch: PFN_vkCmdDispatch,
     vkCmdDispatchIndirect: PFN_vkCmdDispatchIndirect,
 
+    // Mesh shader functions (Phase 3)
+    vkCmdDrawMeshTasksNV: ?PFN_vkCmdDrawMeshTasksNV = null,
+    vkCmdDrawMeshTasksIndirectNV: ?PFN_vkCmdDrawMeshTasksIndirectNV = null,
+    vkCmdDrawMeshTasksIndirectCountNV: ?PFN_vkCmdDrawMeshTasksIndirectCountNV = null,
+    vkCmdDrawMeshTasksEXT: ?PFN_vkCmdDrawMeshTasksEXT = null,
+    vkCmdDrawMeshTasksIndirectEXT: ?PFN_vkCmdDrawMeshTasksIndirectEXT = null,
+    vkCmdDrawMeshTasksIndirectCountEXT: ?PFN_vkCmdDrawMeshTasksIndirectCountEXT = null,
+
     // State setting functions
     vkCmdSetViewport: PFN_vkCmdSetViewport,
     vkCmdSetScissor: PFN_vkCmdSetScissor,
@@ -671,6 +690,9 @@ pub const DeviceDispatch = struct {
     vkCmdSetEvent: PFN_vkCmdSetEvent,
     vkCmdResetEvent: PFN_vkCmdResetEvent,
     vkCmdWaitEvents: PFN_vkCmdWaitEvents,
+
+    // Advanced synchronization functions (Phase 3)
+    vkCreateSemaphoreWithTypesKHR: ?PFN_vkCreateSemaphoreWithTypesKHR = null,
 
     // Vulkan 1.1
     vkBindBufferMemory2: ?PFN_vkBindBufferMemory2 = null,
@@ -865,10 +887,21 @@ pub const DeviceDispatch = struct {
             // Query management functions
             .vkGetQueryPoolResults = try loadDeviceFunction(get_proc, device, "vkGetQueryPoolResults", PFN_vkGetQueryPoolResults),
 
+            // Mesh shader functions
+            .vkCmdDrawMeshTasksNV = loadOptionalDeviceFunction(get_proc, device, "vkCmdDrawMeshTasksNV", PFN_vkCmdDrawMeshTasksNV),
+            .vkCmdDrawMeshTasksIndirectNV = loadOptionalDeviceFunction(get_proc, device, "vkCmdDrawMeshTasksIndirectNV", PFN_vkCmdDrawMeshTasksIndirectNV),
+            .vkCmdDrawMeshTasksIndirectCountNV = loadOptionalDeviceFunction(get_proc, device, "vkCmdDrawMeshTasksIndirectCountNV", PFN_vkCmdDrawMeshTasksIndirectCountNV),
+            .vkCmdDrawMeshTasksEXT = loadOptionalDeviceFunction(get_proc, device, "vkCmdDrawMeshTasksEXT", PFN_vkCmdDrawMeshTasksEXT),
+            .vkCmdDrawMeshTasksIndirectEXT = loadOptionalDeviceFunction(get_proc, device, "vkCmdDrawMeshTasksIndirectEXT", PFN_vkCmdDrawMeshTasksIndirectEXT),
+            .vkCmdDrawMeshTasksIndirectCountEXT = loadOptionalDeviceFunction(get_proc, device, "vkCmdDrawMeshTasksIndirectCountEXT", PFN_vkCmdDrawMeshTasksIndirectCountEXT),
+
             // Event synchronization functions
             .vkCmdSetEvent = try loadDeviceFunction(get_proc, device, "vkCmdSetEvent", PFN_vkCmdSetEvent),
             .vkCmdResetEvent = try loadDeviceFunction(get_proc, device, "vkCmdResetEvent", PFN_vkCmdResetEvent),
             .vkCmdWaitEvents = try loadDeviceFunction(get_proc, device, "vkCmdWaitEvents", PFN_vkCmdWaitEvents),
+
+            // Advanced synchronization functions
+            .vkCreateSemaphoreWithTypesKHR = loadOptionalDeviceFunction(get_proc, device, "vkCreateSemaphoreWithTypesKHR", PFN_vkCreateSemaphoreWithTypesKHR),
 
             // Vulkan 1.1
             .vkBindBufferMemory2 = loadOptionalDeviceFunction(get_proc, device, "vkBindBufferMemory2", PFN_vkBindBufferMemory2),
