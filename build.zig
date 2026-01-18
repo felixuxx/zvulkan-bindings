@@ -31,14 +31,12 @@ pub fn build(b: *std.Build) void {
     const mod = b.addModule("zvulkan_bindings", .{
         // The root source file is the "entry point" of this module. Users of
         // this module will only be able to access public declarations contained
-        // in this file, which means that if you have declarations that you
-        // intend to expose to consumers that were defined in other files part
-        // of this module, you will have to make sure to re-export them from
-        // the root file.
+        // in this file, which have to be re-exported from the root file.
         .root_source_file = b.path("src/root.zig"),
         // Later on we'll use this module as the root module of a test executable
         // which requires us to specify a target.
         .target = target,
+        .link_libc = true,
     });
 
     // Here we define an executable. An executable needs to have a root module
