@@ -296,6 +296,7 @@ pub const PFN_vkCmdDraw = *const fn (CommandBuffer, u32, u32, u32, u32) callconv
 pub const PFN_vkCmdDrawIndexed = *const fn (CommandBuffer, u32, u32, u32, u32, u32) callconv(.c) void;
 pub const PFN_vkCmdDrawIndirect = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, u32, u32) callconv(.c) void;
 pub const PFN_vkCmdDrawIndexedIndirect = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, u32, u32) callconv(.c) void;
+pub const PFN_vkCmdPushConstants = *const fn (CommandBuffer, types.PipelineLayout, types.ShaderStageFlags, u32, u32, ?*const anyopaque) callconv(.c) void;
 pub const PFN_vkCmdDispatch = *const fn (CommandBuffer, u32, u32, u32) callconv(.c) void;
 pub const PFN_vkCmdDispatchIndirect = *const fn (CommandBuffer, types.Buffer, types.DeviceSize) callconv(.c) void;
 
@@ -651,6 +652,7 @@ pub const DeviceDispatch = struct {
     vkCmdDrawIndexed: PFN_vkCmdDrawIndexed,
     vkCmdDrawIndirect: PFN_vkCmdDrawIndirect,
     vkCmdDrawIndexedIndirect: PFN_vkCmdDrawIndexedIndirect,
+    vkCmdPushConstants: PFN_vkCmdPushConstants,
     vkCmdDispatch: PFN_vkCmdDispatch,
     vkCmdDispatchIndirect: PFN_vkCmdDispatchIndirect,
 
@@ -866,6 +868,7 @@ pub const DeviceDispatch = struct {
             .vkCmdDrawIndexed = try loadDeviceFunction(get_proc, device, "vkCmdDrawIndexed", PFN_vkCmdDrawIndexed),
             .vkCmdDrawIndirect = try loadDeviceFunction(get_proc, device, "vkCmdDrawIndirect", PFN_vkCmdDrawIndirect),
             .vkCmdDrawIndexedIndirect = try loadDeviceFunction(get_proc, device, "vkCmdDrawIndexedIndirect", PFN_vkCmdDrawIndexedIndirect),
+            .vkCmdPushConstants = try loadDeviceFunction(get_proc, device, "vkCmdPushConstants", PFN_vkCmdPushConstants),
             .vkCmdDispatch = try loadDeviceFunction(get_proc, device, "vkCmdDispatch", PFN_vkCmdDispatch),
             .vkCmdDispatchIndirect = try loadDeviceFunction(get_proc, device, "vkCmdDispatchIndirect", PFN_vkCmdDispatchIndirect),
 
