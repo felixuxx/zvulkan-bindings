@@ -313,8 +313,8 @@ pub const PFN_vkCmdSetPrimitiveRestartEnable = *const fn (CommandBuffer, types.B
 
 // Vulkan 1.4 / Maintenance5 functions
 pub const PFN_vkCmdBindIndexBuffer2KHR = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, types.DeviceSize, types.IndexType) callconv(.c) void;
-pub const PFN_vkGetDeviceImageSubresourceLayoutKHR = *const fn (Device, *const core_1_4.DeviceImageSubresourceInfoKHR, *types.core_1_4.SubresourceLayout2KHR) callconv(.c) void;
-pub const PFN_vkGetImageSubresourceLayout2KHR = *const fn (Device, types.Image, *const types.core_1_4.ImageSubresource2KHR, *types.core_1_4.SubresourceLayout2KHR) callconv(.c) void;
+pub const PFN_vkGetDeviceImageSubresourceLayoutKHR = *const fn (Device, *const core_1_4.DeviceImageSubresourceInfoKHR, *core_1_4.SubresourceLayout2KHR) callconv(.c) void;
+pub const PFN_vkGetImageSubresourceLayout2KHR = *const fn (Device, types.Image, *const core_1_4.ImageSubresource2KHR, *core_1_4.SubresourceLayout2KHR) callconv(.c) void;
 pub const PFN_vkGetRenderingAreaGranularityKHR = *const fn (Device, *const core_1_4.RenderingAreaInfoKHR, *types.Extent2D) callconv(.c) void;
 
 // ============================================================================
