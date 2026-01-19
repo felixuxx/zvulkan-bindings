@@ -1396,6 +1396,7 @@ pub const PIPELINE_CREATE_FAIL_ON_PIPELINE_COMPILE_REQUIRED_BIT = 0x00000100;
 pub const PIPELINE_CREATE_EARLY_RETURN_ON_FAILURE_BIT = 0x00000200;
 
 pub const CommandPoolTrimFlags = u32;
+pub const CommandPoolResetFlags = u32;
 
 pub const AllocationCallbacks = extern struct {
     user_data: ?*anyopaque,
