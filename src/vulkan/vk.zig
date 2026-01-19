@@ -195,6 +195,7 @@ pub const PFN_vkGetImageMemoryRequirements2 = *const fn (Device, *const types.Im
 pub const PFN_vkGetBufferMemoryRequirements2 = *const fn (Device, *const types.BufferMemoryRequirementsInfo2, *types.MemoryRequirements2) callconv(.c) void;
 pub const PFN_vkGetDeviceQueue2 = *const fn (Device, *const types.DeviceQueueInfo2, *Queue) callconv(.c) void;
 pub const PFN_vkTrimCommandPool = *const fn (Device, types.CommandPool, types.CommandPoolTrimFlags) callconv(.c) void;
+pub const PFN_vkResetCommandPool = *const fn (Device, types.CommandPool, types.CommandPoolResetFlags) callconv(.c) Result;
 
 // Vulkan 1.2 Device
 pub const PFN_vkCmdDrawIndirectCount = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, types.Buffer, types.DeviceSize, u32, u32) callconv(.c) void;
@@ -717,6 +718,7 @@ pub const DeviceDispatch = struct {
     vkGetBufferMemoryRequirements2: ?PFN_vkGetBufferMemoryRequirements2 = null,
     vkGetDeviceQueue2: ?PFN_vkGetDeviceQueue2 = null,
     vkTrimCommandPool: ?PFN_vkTrimCommandPool = null,
+    vkResetCommandPool: ?PFN_vkResetCommandPool = null,
 
     // Vulkan 1.2
     vkCmdDrawIndirectCount: ?PFN_vkCmdDrawIndirectCount = null,
@@ -933,6 +935,7 @@ pub const DeviceDispatch = struct {
             .vkGetBufferMemoryRequirements2 = loadOptionalDeviceFunction(get_proc, device, "vkGetBufferMemoryRequirements2", PFN_vkGetBufferMemoryRequirements2),
             .vkGetDeviceQueue2 = loadOptionalDeviceFunction(get_proc, device, "vkGetDeviceQueue2", PFN_vkGetDeviceQueue2),
             .vkTrimCommandPool = loadOptionalDeviceFunction(get_proc, device, "vkTrimCommandPool", PFN_vkTrimCommandPool),
+            .vkResetCommandPool = loadOptionalDeviceFunction(get_proc, device, "vkResetCommandPool", PFN_vkResetCommandPool),
 
             // Vulkan 1.2
             .vkCmdDrawIndirectCount = loadOptionalDeviceFunction(get_proc, device, "vkCmdDrawIndirectCount", PFN_vkCmdDrawIndirectCount),
