@@ -43,7 +43,7 @@ pub const DeviceImageSubresourceInfoKHR = extern struct {
     s_type: types.StructureType = .device_image_subresource_info,
     p_next: ?*const anyopaque = null,
     image: types.Image,
-    p_create_info: *const types.ImageCreateInfo,
+    p_create_info: *const types.core_1_0.ImageCreateInfo,
 };
 
 pub const ImageSubresource2KHR = extern struct {
