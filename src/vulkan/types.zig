@@ -1177,6 +1177,14 @@ pub const BufferMemoryRequirementsInfo2 = extern struct {
     buffer: Buffer,
 };
 
+pub const SubresourceLayout = extern struct {
+    offset: DeviceSize,
+    size: DeviceSize,
+    row_pitch: DeviceSize,
+    array_pitch: DeviceSize,
+    depth_pitch: DeviceSize,
+};
+
 pub const DeviceQueueInfo2 = extern struct {
     s_type: StructureType,
     p_next: ?*anyopaque,
