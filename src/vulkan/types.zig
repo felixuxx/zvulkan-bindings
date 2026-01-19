@@ -1160,77 +1160,77 @@ pub const MemoryRequirements = extern struct {
 };
 
 pub const MemoryRequirements2 = extern struct {
-    sType: StructureType,
-    pNext: ?*anyopaque,
-    memoryRequirements: MemoryRequirements,
+    s_type: StructureType,
+    p_next: ?*anyopaque,
+    memory_requirements: MemoryRequirements,
 };
 
 pub const ImageMemoryRequirementsInfo2 = extern struct {
-    sType: StructureType,
-    pNext: ?*anyopaque,
+    s_type: StructureType,
+    p_next: ?*anyopaque,
     image: Image,
 };
 
 pub const BufferMemoryRequirementsInfo2 = extern struct {
-    sType: StructureType,
-    pNext: ?*anyopaque,
+    s_type: StructureType,
+    p_next: ?*anyopaque,
     buffer: Buffer,
 };
 
 pub const DeviceQueueInfo2 = extern struct {
-    sType: StructureType,
-    pNext: ?*anyopaque,
+    s_type: StructureType,
+    p_next: ?*anyopaque,
     flags: u32,
-    queueFamilyIndex: u32,
-    queueIndex: u32,
+    queue_family_index: u32,
+    queue_index: u32,
 };
 
 pub const RenderPassCreateInfo2 = extern struct {
-    sType: StructureType,
-    pNext: ?*anyopaque,
+    s_type: StructureType,
+    p_next: ?*anyopaque,
     flags: u32,
-    attachmentCount: u32,
-    pAttachments: ?*const anyopaque,
-    subpassCount: u32,
-    pSubpasses: ?*const anyopaque,
-    dependencyCount: u32,
-    pDependencies: ?*const anyopaque,
-    correlatedViewMaskCount: u32,
-    pCorrelatedViewMasks: ?*const u32,
+    attachment_count: u32,
+    p_attachments: ?*const anyopaque,
+    subpass_count: u32,
+    p_subpasses: ?*const anyopaque,
+    dependency_count: u32,
+    p_dependencies: ?*const anyopaque,
+    correlated_view_mask_count: u32,
+    p_correlated_view_masks: ?*const u32,
 };
 
 pub const RenderPassBeginInfo = extern struct {
-    sType: StructureType,
-    pNext: ?*anyopaque,
-    renderPass: RenderPass,
+    s_type: StructureType,
+    p_next: ?*anyopaque,
+    render_pass: RenderPass,
     framebuffer: Framebuffer,
-    renderArea: Rect2D,
-    clearValueCount: u32,
-    pClearValues: ?*const ClearValue,
+    render_area: Rect2D,
+    clear_value_count: u32,
+    p_clear_values: ?*const ClearValue,
 };
 
 pub const SubpassBeginInfo = extern struct {
-    sType: StructureType,
-    pNext: ?*anyopaque,
+    s_type: StructureType,
+    p_next: ?*anyopaque,
     contents: u32,
 };
 
 pub const SubpassEndInfo = extern struct {
-    sType: StructureType,
-    pNext: ?*anyopaque,
+    s_type: StructureType,
+    p_next: ?*anyopaque,
 };
 
 pub const PrivateDataSlotCreateInfo = extern struct {
-    sType: StructureType,
-    pNext: ?*anyopaque,
+    s_type: StructureType,
+    p_next: ?*anyopaque,
     flags: u32,
 };
 
 pub const StencilFaceFlags = u32;
 
 pub const PhysicalDeviceToolProperties = extern struct {
-    sType: StructureType,
-    pNext: ?*anyopaque,
+    s_type: StructureType,
+    p_next: ?*anyopaque,
     name: [256]u8,
     version: [256]u8,
     purposes: u32,
@@ -1241,78 +1241,78 @@ pub const PhysicalDeviceToolProperties = extern struct {
 pub const PrivateDataSlot = u64;
 
 pub const SubmitInfo2 = extern struct {
-    sType: StructureType,
-    pNext: ?*anyopaque,
+    s_type: StructureType,
+    p_next: ?*anyopaque,
     flags: u32,
-    waitSemaphoreInfoCount: u32,
-    pWaitSemaphoreInfos: ?*const anyopaque,
-    commandBufferInfoCount: u32,
-    pCommandBufferInfos: ?*const anyopaque,
-    signalSemaphoreInfoCount: u32,
-    pSignalSemaphoreInfos: ?*const anyopaque,
+    wait_semaphore_info_count: u32,
+    p_wait_semaphore_infos: ?*const anyopaque,
+    command_buffer_info_count: u32,
+    p_command_buffer_infos: ?*const anyopaque,
+    signal_semaphore_info_count: u32,
+    p_signal_semaphore_infos: ?*const anyopaque,
 };
 
 pub const CopyBufferInfo2 = extern struct {
-    sType: StructureType,
-    pNext: ?*anyopaque,
-    srcBuffer: Buffer,
-    dstBuffer: Buffer,
-    regionCount: u32,
-    pRegions: ?*const anyopaque,
+    s_type: StructureType,
+    p_next: ?*anyopaque,
+    src_buffer: Buffer,
+    dst_buffer: Buffer,
+    region_count: u32,
+    p_regions: ?*const anyopaque,
 };
 
 pub const CopyImageInfo2 = extern struct {
-    sType: StructureType,
-    pNext: ?*anyopaque,
-    srcImage: Image,
-    srcImageLayout: u32,
-    dstImage: Image,
-    dstImageLayout: u32,
-    regionCount: u32,
-    pRegions: ?*const anyopaque,
+    s_type: StructureType,
+    p_next: ?*anyopaque,
+    src_image: Image,
+    src_image_layout: u32,
+    dst_image: Image,
+    dst_image_layout: u32,
+    region_count: u32,
+    p_regions: ?*const anyopaque,
 };
 
 pub const CopyBufferToImageInfo2 = extern struct {
-    sType: StructureType,
-    pNext: ?*anyopaque,
-    srcBuffer: Buffer,
-    dstImage: Image,
-    dstImageLayout: u32,
-    regionCount: u32,
-    pRegions: ?*const anyopaque,
+    s_type: StructureType,
+    p_next: ?*anyopaque,
+    src_buffer: Buffer,
+    dst_image: Image,
+    dst_image_layout: u32,
+    region_count: u32,
+    p_regions: ?*const anyopaque,
 };
 
 pub const CopyImageToBufferInfo2 = extern struct {
-    sType: StructureType,
-    pNext: ?*anyopaque,
-    srcImage: Image,
-    srcImageLayout: u32,
-    dstBuffer: Buffer,
-    regionCount: u32,
-    pRegions: ?*const anyopaque,
+    s_type: StructureType,
+    p_next: ?*anyopaque,
+    src_image: Image,
+    src_image_layout: u32,
+    dst_buffer: Buffer,
+    region_count: u32,
+    p_regions: ?*const anyopaque,
 };
 
 pub const BlitImageInfo2 = extern struct {
-    sType: StructureType,
-    pNext: ?*anyopaque,
-    srcImage: Image,
-    srcImageLayout: u32,
-    dstImage: Image,
-    dstImageLayout: u32,
-    regionCount: u32,
-    pRegions: ?*const anyopaque,
+    s_type: StructureType,
+    p_next: ?*anyopaque,
+    src_image: Image,
+    src_image_layout: u32,
+    dst_image: Image,
+    dst_image_layout: u32,
+    region_count: u32,
+    p_regions: ?*const anyopaque,
     filter: u32,
 };
 
 pub const ResolveImageInfo2 = extern struct {
-    sType: StructureType,
-    pNext: ?*anyopaque,
-    srcImage: Image,
-    srcImageLayout: u32,
-    dstImage: Image,
-    dstImageLayout: u32,
-    regionCount: u32,
-    pRegions: ?*const anyopaque,
+    s_type: StructureType,
+    p_next: ?*anyopaque,
+    src_image: Image,
+    src_image_layout: u32,
+    dst_image: Image,
+    dst_image_layout: u32,
+    region_count: u32,
+    p_regions: ?*const anyopaque,
 };
 
 pub const VertexInputAttributeDescription = extern struct {
@@ -1325,7 +1325,7 @@ pub const VertexInputAttributeDescription = extern struct {
 pub const VertexInputBindingDescription = extern struct {
     binding: u32,
     stride: u32,
-    inputRate: u32,
+    input_rate: u32,
 };
 
 pub const StencilOpState = extern struct {
