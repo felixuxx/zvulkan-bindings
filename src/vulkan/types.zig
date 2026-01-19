@@ -218,6 +218,12 @@ pub const StructureType = enum(i32) {
     win32_surface_create_info_khr = 1000009000,
     xlib_surface_create_info_khr = 1000004000,
     xcb_surface_create_info_khr = 1000005000,
+
+    // Vulkan 1.4 / Maintenance5
+    device_image_subresource_info = 100030000,
+    image_subresource_2 = 100030001,
+    rendering_area_info_khr = 100030002,
+    subresource_layout_2_khr = 100030003,
     _,
 };
 
