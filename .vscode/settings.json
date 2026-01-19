@@ -1,0 +1,76 @@
+{
+    "editor.semanticHighlighting.enabled": true,
+    "editor.semanticTokenColorCustomizations": {
+        "rules": {
+            "type": "#4EC9B0",
+            "struct": "#4EC9B0",
+            "enum": "#4EC9B0",
+            "interface": "#4EC9B0",
+            "typeParameter": "#4EC9B0",
+            "function": "#DCDCAA",
+            "method": "#DCDCAA",
+            "variable": "#9CDCFE",
+            "property": "#9CDCFE",
+            "parameter": "#9CDCFE",
+            "namespace": "#4EC9B0",
+            "keyword": "#569CD6",
+            "modifier": "#569CD6",
+            "comment": "#6A9955",
+            "string": "#CE9178",
+            "number": "#B5CEA8",
+            "operator": "#D4D4D4"
+        }
+    },
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+                "scope": [
+                    "entity.name.type",
+                    "storage.type.zig",
+                    "entity.name.type.struct.zig",
+                    "entity.name.type.enum.zig",
+                    "entity.name.type.union.zig"
+                ],
+                "settings": {
+                    "foreground": "#4EC9B0"
+                }
+            },
+            {
+                "scope": [
+                    "entity.name.function",
+                    "support.function"
+                ],
+                "settings": {
+                    "foreground": "#DCDCAA"
+                }
+            },
+            {
+                "scope": [
+                    "variable.other.member",
+                    "variable.other.property"
+                ],
+                "settings": {
+                    "foreground": "#9CDCFE"
+                }
+            },
+            {
+                "scope": "variable.parameter",
+                "settings": {
+                    "foreground": "#9CDCFE"
+                }
+            },
+            {
+                "scope": "keyword.control.zig",
+                "settings": {
+                    "foreground": "#C586C0"
+                }
+            }
+        ]
+    },
+    "zig.zls.enableSemanticHighlighting": true,
+    "zig.testArgs": [
+        "build",
+        "test",
+        "-Dtest-filter=${filter}"
+    ]
+}
