@@ -71,3 +71,16 @@ pub const PipelineFragmentShadingRateStateCreateInfoKHR = extern struct {
     fragment_size_count: u32 = 0,
     combiner_op: FragmentShadingRateCombinerOpKHR = .replace_khr,
 };
+
+pub const RenderingFragmentShadingRateAttachmentInfoKHR = extern struct {
+    s_type: types.StructureType = .rendering_fragment_shading_rate_attachment_info_khr,
+    p_next: ?*const anyopaque = null,
+    image_view: types.ImageView,
+    image_layout: types.ImageLayout,
+    resolve_mode: types.ResolveModeFlags,
+    resolve_image_view: types.ImageView,
+    resolve_image_layout: types.ImageLayout,
+    load_op: types.AttachmentLoadOp,
+    store_op: types.AttachmentStoreOp,
+    clear_value: types.ClearValue,
+};
