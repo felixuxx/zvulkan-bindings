@@ -858,8 +858,10 @@ pub const WriteDescriptorSet = extern struct {
     dst_binding: u32 = 0,
     dst_array_element: u32 = 0,
     descriptor_count: u32 = 0,
-    p_descriptor_info: ?[*]const DescriptorImageInfo = null,
+    descriptor_type: types.DescriptorType,
+    p_image_info: ?[*]const DescriptorImageInfo = null,
     p_buffer_info: ?[*]const DescriptorBufferInfo = null,
+    p_texel_buffer_view: ?[*]const types.BufferView = null,
 };
 
 pub const CopyDescriptorSet = extern struct {
@@ -892,6 +894,7 @@ test "descriptor structures compilation" {
     };
     const write_info = WriteDescriptorSet{
         .dst_set = undefined,
+        .descriptor_type = undefined,
     };
     const copy_info = CopyDescriptorSet{
         .src_set = undefined,
