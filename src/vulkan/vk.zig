@@ -212,7 +212,6 @@ pub const PFN_vkGetBufferOpaqueCaptureAddress = *const fn (Device, *const core_1
 pub const PFN_vkGetDeviceMemoryOpaqueCaptureAddress = *const fn (Device, *const core_1_2.DeviceMemoryOpaqueCaptureAddressInfo) callconv(.c) u64;
 
 // Vulkan 1.3 Device
-pub const PFN_vkGetPhysicalDeviceToolProperties_Dev = *const fn (PhysicalDevice, *u32, ?[*]types.PhysicalDeviceToolProperties) callconv(.c) Result; // Note: Instance func technically, but often loaded via device
 pub const PFN_vkCreatePrivateDataSlot = *const fn (Device, *const types.PrivateDataSlotCreateInfo, ?*const types.AllocationCallbacks, *types.PrivateDataSlot) callconv(.c) Result;
 pub const PFN_vkDestroyPrivateDataSlot = *const fn (Device, types.PrivateDataSlot, ?*const types.AllocationCallbacks) callconv(.c) void;
 pub const PFN_vkSetPrivateData = *const fn (Device, types.ObjectType, u64, types.PrivateDataSlot, u64) callconv(.c) Result;
@@ -734,7 +733,6 @@ pub const DeviceDispatch = struct {
     vkGetDeviceMemoryOpaqueCaptureAddress: ?PFN_vkGetDeviceMemoryOpaqueCaptureAddress = null,
 
     // Vulkan 1.3
-    vkGetPhysicalDeviceToolProperties: ?PFN_vkGetPhysicalDeviceToolProperties_Dev = null,
     vkCreatePrivateDataSlot: ?PFN_vkCreatePrivateDataSlot = null,
 
     // Vulkan 1.4 / Maintenance5
@@ -951,7 +949,6 @@ pub const DeviceDispatch = struct {
             .vkGetDeviceMemoryOpaqueCaptureAddress = loadOptionalDeviceFunction(get_proc, device, "vkGetDeviceMemoryOpaqueCaptureAddress", PFN_vkGetDeviceMemoryOpaqueCaptureAddress),
 
             // Vulkan 1.3
-            .vkGetPhysicalDeviceToolProperties = loadOptionalDeviceFunction(get_proc, device, "vkGetPhysicalDeviceToolProperties", PFN_vkGetPhysicalDeviceToolProperties_Dev),
             .vkCreatePrivateDataSlot = loadOptionalDeviceFunction(get_proc, device, "vkCreatePrivateDataSlot", PFN_vkCreatePrivateDataSlot),
             .vkDestroyPrivateDataSlot = loadOptionalDeviceFunction(get_proc, device, "vkDestroyPrivateDataSlot", PFN_vkDestroyPrivateDataSlot),
             .vkSetPrivateData = loadOptionalDeviceFunction(get_proc, device, "vkSetPrivateData", PFN_vkSetPrivateData),
