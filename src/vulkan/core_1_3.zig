@@ -87,19 +87,6 @@ pub const PipelineRenderingCreateInfo = extern struct {
     stencil_attachment_format: types.Format,
 };
 
-pub const RenderingLayerInfo = extern struct {
-    s_type: types.StructureType = .rendering_fragment_shading_rate_attachment_info_khr, // Alias, needed to check correct value
-    p_next: ?*const anyopaque = null,
-    image_view: types.ImageView,
-    image_layout: types.ImageLayout,
-    resolve_mode: types.ResolveModeFlags,
-    resolve_image_view: types.ImageView,
-    resolve_image_layout: types.ImageLayout,
-    load_op: types.AttachmentLoadOp,
-    store_op: types.AttachmentStoreOp,
-    clear_value: types.ClearValue,
-};
-
 pub const RenderingInfo = extern struct {
     s_type: types.StructureType = .rendering_info,
     p_next: ?*const anyopaque = null,
@@ -266,9 +253,15 @@ pub const PhysicalDeviceMaintenance4Properties = extern struct {
 pub const CommandBufferInheritanceRenderingInfo = extern struct {
     s_type: types.StructureType = .command_buffer_inheritance_rendering_info,
     p_next: ?*const anyopaque = null,
-    flags: types.CommandBufferInheritanceRenderingFlags,
+    flags: types.RenderingFlags,
     view_mask: u32,
-    render_pass_sample_count: u32,
+    color_attachment_count: u32,
+    p_color_attachment_formats: ?[*]const types.Format,
+    depth_attachment_format: types.Format,
+    stencil_attachment_format: types.Format,
+    depth_stencil_resolve_mode: types.ResolveModeFlags,
+    p_depth_stencil_resolve_attachment: ?*const RenderingAttachmentInfo,
+    rasterization_samples: types.SampleCountFlags,
 };
 
 // ============================================================================
