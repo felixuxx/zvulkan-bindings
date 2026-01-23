@@ -17,8 +17,8 @@ pub const PhysicalDeviceVulkan11Features = extern struct {
     multiview: types.Bool32,
     multiview_geometry_shader: types.Bool32,
     multiview_tessellation_shader: types.Bool32,
-    variable_pointers: types.Bool32,
     variable_pointers_storage_buffer: types.Bool32,
+    variable_pointers: types.Bool32,
     protected_memory: types.Bool32,
     sampler_ycbcr_conversion: types.Bool32,
     shader_draw_parameters: types.Bool32,
@@ -270,10 +270,9 @@ pub const AttachmentReference2 = extern struct {
 // ============================================================================
 
 pub const InputAttachmentAspectReference = extern struct {
-    s_type: types.StructureType = .input_attachment_aspect_reference,
-    p_next: ?*const anyopaque = null,
+    subpass: u32,
+    input_attachment_index: u32,
     aspect_mask: types.ImageAspectFlags,
-    color_attachment: u32,
 };
 
 pub const RenderPassInputAttachmentAspectCreateInfo = extern struct {
@@ -303,13 +302,6 @@ pub const DeviceGroupDeviceCreateInfo = extern struct {
     p_next: ?*const anyopaque = null,
     physical_device_count: u32,
     p_physical_devices: ?[*]const types.PhysicalDevice,
-    p_physical_devices_s8: ?[*:0]const u8,
-    p_next_chain: ?*const anyopaque = null,
-    p_physical_devices_s16: ?[*:0]const i16,
-    p_physical_devices_s32: ?[*:0]const i32,
-    p_physical_devices_s64: ?[*:0]const i64,
-    p_physical_devices_f32: ?[*]const f32,
-    p_physical_devices_f64: ?[*:0]const f64,
 };
 
 pub const DeviceGroupSubmitInfo = extern struct {
