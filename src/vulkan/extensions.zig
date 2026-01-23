@@ -15,3 +15,4 @@ pub const ext_mesh_shader = @import("extensions/ext_mesh_shader.zig");
 pub const ext_validation_features = @import("extensions/ext_validation_features.zig");
 pub const amd_memory_overallocation = @import("extensions/amd_memory_overallocation.zig");
 pub const intel_performance_query = @import("extensions/intel_performance_query.zig");
+pub const ext_host_image_copy = @import("extensions/ext_host_image_copy.zig");
