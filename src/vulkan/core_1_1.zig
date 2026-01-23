@@ -240,7 +240,7 @@ pub const PhysicalDeviceProperties2 = extern struct {
             max_viewport_dimensions: [2]u32,
             viewport_bounds_range: [2]f32,
             viewport_sub_pixel_bits: u32,
-            min_memory_map_alignment: usize,
+            min_memory_map_alignment: types.DeviceSize,
             min_texel_buffer_offset_alignment: types.DeviceSize,
             min_uniform_buffer_offset_alignment: types.DeviceSize,
             min_storage_buffer_offset_alignment: types.DeviceSize,
