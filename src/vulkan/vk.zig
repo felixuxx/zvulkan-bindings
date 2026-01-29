@@ -316,8 +316,8 @@ pub const PFN_vkDestroyDescriptorUpdateTemplateKHR = *const fn (Device, types.De
 pub const PFN_vkUpdateDescriptorSetWithTemplateKHR = *const fn (Device, types.DescriptorSet, types.DescriptorUpdateTemplateKHR, *const anyopaque) callconv(.c) void;
 
 // VK_KHR_fragment_shading_rate
-pub const PFN_vkCmdSetFragmentShadingRateKHR = *const fn (CommandBuffer, *const types.Extent2D, [*]const khr_fragment_shading_rate.FragmentShadingRateCombinerOpKHR) callconv(.c) void;
-pub const PFN_vkGetPhysicalDeviceFragmentShadingRatesKHR = *const fn (PhysicalDevice, *u32, ?[*]khr_fragment_shading_rate.PhysicalDeviceFragmentShadingRatePropertiesKHR) callconv(.c) Result;
+pub const PFN_vkCmdSetFragmentShadingRateKHR = *const fn (CommandBuffer, *const types.Extent2D, *const [2]khr_fragment_shading_rate.FragmentShadingRateCombinerOpKHR) callconv(.c) void;
+pub const PFN_vkGetPhysicalDeviceFragmentShadingRatesKHR = *const fn (PhysicalDevice, *u32, ?[*]khr_fragment_shading_rate.PhysicalDeviceFragmentShadingRateKHR) callconv(.c) Result;
 
 // VK_INTEL_performance_query
 pub const PFN_vkInitializePerformanceApiINTEL = *const fn (Device, *const intel_performance_query.InitializePerformanceApiInfoINTEL) callconv(.c) Result;

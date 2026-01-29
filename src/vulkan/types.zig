@@ -240,9 +240,11 @@ pub const StructureType = enum(i32) {
     write_descriptor_set_inline_uniform_block = 1000281000,
 
     // VK_KHR_fragment_shading_rate
-    physical_device_fragment_shading_rate_features_khr = 1000226000,
-    physical_device_fragment_shading_rate_properties_khr = 1000226001,
-    pipeline_fragment_shading_rate_state_create_info_khr = 1000226002,
+    fragment_shading_rate_attachment_info_khr = 1000226000,
+    pipeline_fragment_shading_rate_state_create_info_khr = 1000226001,
+    physical_device_fragment_shading_rate_properties_khr = 1000226002,
+    physical_device_fragment_shading_rate_features_khr = 1000226003,
+    physical_device_fragment_shading_rate_khr = 1000226004,
 
     // VK_INTEL_performance_query
     initialize_performance_api_info_intel = 1000210000,
