@@ -22,7 +22,7 @@ pub const DescriptorUpdateTemplateTypeKHR = enum(i32) {
 pub const DescriptorUpdateTemplateCreateInfoKHR = extern struct {
     s_type: types.StructureType = .descriptor_update_template_create_info_khr,
     p_next: ?*const anyopaque = null,
-    flags: types.DescriptorUpdateTemplateCreateFlagsKHR = .{},
+    flags: types.DescriptorUpdateTemplateCreateFlagsKHR = 0,
     descriptor_update_entry_count: u32 = 0,
     p_descriptor_update_entries: [*]const DescriptorUpdateTemplateEntryKHR,
     template_type: DescriptorUpdateTemplateTypeKHR,
@@ -43,7 +43,7 @@ pub const DescriptorUpdateTemplateKHR = extern struct {
     s_type: types.StructureType = .descriptor_update_template_khr,
     p_next: ?*const anyopaque = null,
     descriptor_update_template_type: DescriptorUpdateTemplateTypeKHR,
-    flags: types.DescriptorUpdateTemplateCreateFlagsKHR = .{},
+    flags: types.DescriptorUpdateTemplateCreateFlagsKHR = 0,
     descriptor_set_layout: types.DescriptorSetLayout,
     pipeline_bind_point: types.PipelineBindPoint,
     pipeline_layout: types.PipelineLayout,

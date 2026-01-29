@@ -741,6 +741,17 @@ pub const DeviceDispatch = struct {
     // VK_KHR_fragment_shading_rate
     vkCmdSetFragmentShadingRateKHR: ?PFN_vkCmdSetFragmentShadingRateKHR = null,
 
+    // VK_INTEL_performance_query
+    vkInitializePerformanceApiINTEL: ?PFN_vkInitializePerformanceApiINTEL = null,
+    vkUninitializePerformanceApiINTEL: ?PFN_vkUninitializePerformanceApiINTEL = null,
+    vkCmdSetPerformanceMarkerINTEL: ?PFN_vkCmdSetPerformanceMarkerINTEL = null,
+    vkCmdSetPerformanceStreamMarkerINTEL: ?PFN_vkCmdSetPerformanceStreamMarkerINTEL = null,
+    vkCmdSetPerformanceOverrideINTEL: ?PFN_vkCmdSetPerformanceOverrideINTEL = null,
+    vkAcquirePerformanceConfigurationINTEL: ?PFN_vkAcquirePerformanceConfigurationINTEL = null,
+    vkReleasePerformanceConfigurationINTEL: ?PFN_vkReleasePerformanceConfigurationINTEL = null,
+    vkQueueSetPerformanceConfigurationINTEL: ?PFN_vkQueueSetPerformanceConfigurationINTEL = null,
+    vkGetPerformanceParameterINTEL: ?PFN_vkGetPerformanceParameterINTEL = null,
+
     vkCreateGraphicsPipelines: PFN_vkCreateGraphicsPipelines,
     vkCreateComputePipelines: PFN_vkCreateComputePipelines,
     vkDestroyPipeline: PFN_vkDestroyPipeline,
