@@ -17,10 +17,10 @@ pub const FragmentShadingRateNV = enum(u32) {
     @"1_invocation_per_8_pixels" = 8,
     @"1_invocation_per_16_pixels" = 16,
     @"1_invocation_per_32_pixels" = 32,
-    @"2_invocations_per_pixel" = 4,
-    @"4_invocations_per_pixel" = 8,
-    @"8_invocations_per_pixel" = 16,
-    @"16_invocations_per_pixel" = 32,
+    @"2_invocations_per_pixel" = 11,
+    @"4_invocations_per_pixel" = 12,
+    @"8_invocations_per_pixel" = 13,
+    @"16_invocations_per_pixel" = 14,
 };
 
 pub const FragmentShadingRateTypeNV = enum(u32) {
