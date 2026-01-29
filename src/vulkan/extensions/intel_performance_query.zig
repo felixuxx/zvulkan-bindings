@@ -1,8 +1,8 @@
 //! VK_INTEL_performance_query extension
 //! Intel-specific performance monitoring
 
-const types = @import("../types.zig");
 const constants = @import("../constants.zig");
+const types = @import("../types.zig");
 
 pub const INTEL_PERFORMANCE_QUERY_EXTENSION_NAME = "VK_INTEL_performance_query";
 
@@ -94,4 +94,23 @@ pub const QueryPoolPerformanceQueryCreateInfoINTEL = extern struct {
     s_type: types.StructureType = .query_pool_performance_query_create_info_intel,
     p_next: ?*const anyopaque = null,
     query: u32 = 0,
+};
+
+pub const PerformanceConfigurationAcquireInfoINTEL = extern struct {
+    s_type: types.StructureType = .performance_configuration_acquire_info_intel,
+    p_next: ?*const anyopaque = null,
+    type: PerformanceConfigurationTypeINTEL,
+};
+
+pub const PerformanceValueINTEL = extern struct {
+    type: PerformanceValueTypeINTEL,
+    value: extern union {
+        value32: u32,
+        value64: u64,
+        value_float: f32,
+        value_float64: f64,
+        value_bool: types.Bool32,
+        value_bool64: u64,
+        value_string: [*:0]const u8,
+    },
 };

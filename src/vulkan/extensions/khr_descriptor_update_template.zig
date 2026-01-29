@@ -57,7 +57,7 @@ pub const DescriptorDataInlineUniformBlock = extern struct {
 };
 
 pub const WriteDescriptorSetInlineUniformBlock = extern struct {
-    s_type: types.StructureType = .write_descriptor_set_inline_uniform_block_khr,
+    s_type: types.StructureType = .write_descriptor_set_inline_uniform_block,
     p_next: ?*const anyopaque = null,
     descriptor_set: types.DescriptorSet,
     data: DescriptorDataInlineUniformBlock,

@@ -2,9 +2,7 @@
 //! Provides dynamic loading and function pointer dispatch for Vulkan API
 
 const std = @import("std");
-const platform = @import("platform.zig");
 
-pub const types = @import("types.zig");
 pub const constants = @import("constants.zig");
 pub const core_1_0 = @import("core_1_0.zig");
 pub const core_1_1 = @import("core_1_1.zig");
@@ -12,18 +10,23 @@ pub const core_1_2 = @import("core_1_2.zig");
 pub const core_1_3 = @import("core_1_3.zig");
 pub const core_1_4 = @import("core_1_4.zig");
 pub const extensions = @import("extensions.zig");
-
-// Keep these for internal use and legacy compatibility if needed,
-// OR switch internal usage to use 'extensions.khr_surface' etc.
-// For now, aliasing them to the new extensions module is cleaner.
 pub const khr_surface = extensions.khr_surface;
 pub const khr_swapchain = extensions.khr_swapchain;
 pub const khr_wayland_surface = extensions.khr_wayland_surface;
 pub const khr_xcb_surface = extensions.khr_xcb_surface;
 pub const khr_xlib_surface = extensions.khr_xlib_surface;
 pub const khr_win32_surface = extensions.khr_win32_surface;
-
-// Re-export commonly used types
+pub const khr_dynamic_rendering = extensions.khr_dynamic_rendering;
+pub const khr_synchronization2 = extensions.khr_synchronization2;
+pub const khr_push_descriptor = extensions.khr_push_descriptor;
+pub const khr_descriptor_update_template = extensions.khr_descriptor_update_template;
+pub const khr_fragment_shading_rate = extensions.khr_fragment_shading_rate;
+pub const ext_mesh_shader = extensions.ext_mesh_shader;
+pub const ext_validation_features = extensions.ext_validation_features;
+pub const amd_memory_overallocation = extensions.amd_memory_overallocation;
+pub const intel_performance_query = extensions.intel_performance_query;
+const platform = @import("platform.zig");
+pub const types = @import("types.zig");
 pub const Instance = types.Instance;
 pub const PhysicalDevice = types.PhysicalDevice;
 pub const Device = types.Device;
@@ -31,16 +34,11 @@ pub const Queue = types.Queue;
 pub const CommandBuffer = types.CommandBuffer;
 pub const Result = types.Result;
 
+// Keep these for internal use and legacy compatibility if needed,
+// OR switch internal usage to use 'extensions.khr_surface' etc.
+// For now, aliasing them to the new extensions module is cleaner.
+// Re-export commonly used types
 // Re-export new extension types
-pub const khr_dynamic_rendering = extensions.khr_dynamic_rendering;
-pub const khr_synchronization2 = extensions.khr_synchronization2;
-pub const khr_push_descriptor = extensions.khr_push_descriptor;
-pub const khr_fragment_shading_rate = extensions.khr_fragment_shading_rate;
-pub const ext_mesh_shader = extensions.ext_mesh_shader;
-pub const ext_validation_features = extensions.ext_validation_features;
-pub const amd_memory_overallocation = extensions.amd_memory_overallocation;
-pub const intel_performance_query = extensions.intel_performance_query;
-
 // ============================================================================
 // Function Pointer Types
 // ============================================================================
@@ -65,9 +63,13 @@ pub const PFN_vkGetPhysicalDeviceProperties = *const fn (PhysicalDevice, *core_1
 pub const PFN_vkGetPhysicalDeviceFeatures = *const fn (PhysicalDevice, *core_1_0.PhysicalDeviceFeatures) callconv(.c) void;
 pub const PFN_vkGetPhysicalDeviceMemoryProperties = *const fn (PhysicalDevice, *core_1_0.PhysicalDeviceMemoryProperties) callconv(.c) void;
 pub const PFN_vkGetPhysicalDeviceQueueFamilyProperties = *const fn (PhysicalDevice, *u32, ?[*]core_1_0.QueueFamilyProperties) callconv(.c) void;
+pub const PFN_vkGetPhysicalDeviceFormatProperties = *const fn (PhysicalDevice, types.Format, *core_1_0.FormatProperties) callconv(.c) void;
+pub const PFN_vkGetPhysicalDeviceImageFormatProperties = *const fn (PhysicalDevice, types.Format, types.ImageType, types.ImageTiling, types.ImageUsageFlags, types.ImageCreateFlags, *core_1_0.ImageFormatProperties) callconv(.c) Result;
+pub const PFN_vkGetPhysicalDeviceSparseImageFormatProperties = *const fn (PhysicalDevice, types.Format, types.ImageType, u32, types.ImageUsageFlags, types.ImageTiling, *u32, ?[*]core_1_0.SparseImageFormatProperties) callconv(.c) void;
 pub const PFN_vkCreateDevice = *const fn (PhysicalDevice, *const core_1_0.DeviceCreateInfo, ?*const types.AllocationCallbacks, *Device) callconv(.c) Result;
 
 // Vulkan 1.1 Instance
+pub const PFN_vkEnumeratePhysicalDeviceGroups = *const fn (Instance, *u32, ?[*]core_1_1.PhysicalDeviceGroupProperties) callconv(.c) Result;
 pub const PFN_vkGetPhysicalDeviceFeatures2 = *const fn (PhysicalDevice, *core_1_1.PhysicalDeviceFeatures2) callconv(.c) void;
 pub const PFN_vkGetPhysicalDeviceProperties2 = *const fn (PhysicalDevice, *core_1_1.PhysicalDeviceProperties2) callconv(.c) void;
 pub const PFN_vkGetPhysicalDeviceFormatProperties2 = *const fn (PhysicalDevice, types.Format, *core_1_1.FormatProperties2) callconv(.c) void;
@@ -94,18 +96,24 @@ pub const PFN_vkAllocateMemory = *const fn (Device, *const core_1_0.MemoryAlloca
 pub const PFN_vkFreeMemory = *const fn (Device, types.DeviceMemory, ?*const types.AllocationCallbacks) callconv(.c) void;
 pub const PFN_vkMapMemory = *const fn (Device, types.DeviceMemory, types.DeviceSize, types.DeviceSize, u32, *?*anyopaque) callconv(.c) Result;
 pub const PFN_vkUnmapMemory = *const fn (Device, types.DeviceMemory) callconv(.c) void;
+pub const PFN_vkFlushMappedMemoryRanges = *const fn (Device, u32, [*]const core_1_0.MappedMemoryRange) callconv(.c) Result;
+pub const PFN_vkInvalidateMappedMemoryRanges = *const fn (Device, u32, [*]const core_1_0.MappedMemoryRange) callconv(.c) Result;
+pub const PFN_vkGetDeviceMemoryCommitment = *const fn (Device, types.DeviceMemory, *types.DeviceSize) callconv(.c) void;
 
 // Buffer functions
 pub const PFN_vkCreateBuffer = *const fn (Device, *const core_1_0.BufferCreateInfo, ?*const types.AllocationCallbacks, *types.Buffer) callconv(.c) Result;
 pub const PFN_vkDestroyBuffer = *const fn (Device, types.Buffer, ?*const types.AllocationCallbacks) callconv(.c) void;
 pub const PFN_vkGetBufferMemoryRequirements = *const fn (Device, types.Buffer, *types.MemoryRequirements) callconv(.c) void;
 pub const PFN_vkBindBufferMemory = *const fn (Device, types.Buffer, types.DeviceMemory, types.DeviceSize) callconv(.c) Result;
+pub const PFN_vkCreateBufferView = *const fn (Device, *const core_1_0.BufferViewCreateInfo, ?*const types.AllocationCallbacks, *types.BufferView) callconv(.c) Result;
+pub const PFN_vkDestroyBufferView = *const fn (Device, types.BufferView, ?*const types.AllocationCallbacks) callconv(.c) void;
 
 // Image functions
 pub const PFN_vkCreateImage = *const fn (Device, *const core_1_0.ImageCreateInfo, ?*const types.AllocationCallbacks, *types.Image) callconv(.c) Result;
 pub const PFN_vkDestroyImage = *const fn (Device, types.Image, ?*const types.AllocationCallbacks) callconv(.c) void;
 pub const PFN_vkGetImageMemoryRequirements = *const fn (Device, types.Image, *types.MemoryRequirements) callconv(.c) void;
 pub const PFN_vkBindImageMemory = *const fn (Device, types.Image, types.DeviceMemory, types.DeviceSize) callconv(.c) Result;
+pub const PFN_vkGetImageSubresourceLayout = *const fn (Device, types.Image, *const types.ImageSubresource, *types.SubresourceLayout) callconv(.c) void;
 pub const PFN_vkCreateImageView = *const fn (Device, *const core_1_0.ImageViewCreateInfo, ?*const types.AllocationCallbacks, *types.ImageView) callconv(.c) Result;
 pub const PFN_vkDestroyImageView = *const fn (Device, types.ImageView, ?*const types.AllocationCallbacks) callconv(.c) void;
 
@@ -117,10 +125,12 @@ pub const PFN_vkFreeCommandBuffers = *const fn (Device, types.CommandPool, u32, 
 pub const PFN_vkBeginCommandBuffer = *const fn (CommandBuffer, *const core_1_0.CommandBufferBeginInfo) callconv(.c) Result;
 pub const PFN_vkEndCommandBuffer = *const fn (CommandBuffer) callconv(.c) Result;
 pub const PFN_vkResetCommandBuffer = *const fn (CommandBuffer, u32) callconv(.c) Result;
+pub const PFN_vkCmdExecuteCommands = *const fn (CommandBuffer, u32, [*]const CommandBuffer) callconv(.c) void;
 
 // Synchronization functions
 pub const PFN_vkCreateFence = *const fn (Device, *const core_1_0.FenceCreateInfo, ?*const types.AllocationCallbacks, *types.Fence) callconv(.c) Result;
 pub const PFN_vkDestroyFence = *const fn (Device, types.Fence, ?*const types.AllocationCallbacks) callconv(.c) void;
+pub const PFN_vkGetFenceStatus = *const fn (Device, types.Fence) callconv(.c) Result;
 pub const PFN_vkWaitForFences = *const fn (Device, u32, [*]const types.Fence, types.Bool32, u64) callconv(.c) Result;
 pub const PFN_vkResetFences = *const fn (Device, u32, [*]const types.Fence) callconv(.c) Result;
 pub const PFN_vkCreateSemaphore = *const fn (Device, *const core_1_0.SemaphoreCreateInfo, ?*const types.AllocationCallbacks, *types.Semaphore) callconv(.c) Result;
@@ -152,12 +162,13 @@ pub const PFN_vkDestroyDescriptorSetLayout = *const fn (Device, types.Descriptor
 
 pub const PFN_vkCreateDescriptorPool = *const fn (Device, [*]const core_1_0.DescriptorPoolCreateInfo, ?*const types.AllocationCallbacks, *types.DescriptorPool) callconv(.c) Result;
 pub const PFN_vkDestroyDescriptorPool = *const fn (Device, types.DescriptorPool, ?*const types.AllocationCallbacks) callconv(.c) void;
+pub const PFN_vkResetDescriptorPool = *const fn (Device, types.DescriptorPool, u32) callconv(.c) Result;
 
 pub const PFN_vkAllocateDescriptorSets = *const fn (Device, [*]const core_1_0.DescriptorSetAllocateInfo, ?*const types.AllocationCallbacks, [*]types.DescriptorSet) callconv(.c) Result;
 
 pub const PFN_vkFreeDescriptorSets = *const fn (Device, u32, [*]types.DescriptorSet, ?*const types.AllocationCallbacks) callconv(.c) void;
 
-pub const PFN_vkUpdateDescriptorSets = *const fn (Device, u32, [*]const core_1_0.WriteDescriptorSet, u32, [*]const core_1_0.CopyDescriptorSet, ?*const types.AllocationCallbacks) callconv(.c) void;
+pub const PFN_vkUpdateDescriptorSets = *const fn (Device, u32, [*]const core_1_0.WriteDescriptorSet, u32, [*]const core_1_0.CopyDescriptorSet) callconv(.c) void;
 
 pub const PFN_vkCreateSampler = *const fn (Device, [*]const core_1_0.SamplerCreateInfo, ?*const types.AllocationCallbacks, *types.Sampler) callconv(.c) Result;
 pub const PFN_vkDestroySampler = *const fn (Device, types.Sampler, ?*const types.AllocationCallbacks) callconv(.c) void;
@@ -168,6 +179,9 @@ pub const PFN_vkDestroyQueryPool = *const fn (Device, types.QueryPool, ?*const t
 
 pub const PFN_vkCreateEvent = *const fn (Device, [*]const core_1_0.EventCreateInfo, ?*const types.AllocationCallbacks, *types.Event) callconv(.c) Result;
 pub const PFN_vkDestroyEvent = *const fn (Device, types.Event, ?*const types.AllocationCallbacks) callconv(.c) void;
+pub const PFN_vkGetEventStatus = *const fn (Device, types.Event) callconv(.c) Result;
+pub const PFN_vkSetEvent = *const fn (Device, types.Event) callconv(.c) Result;
+pub const PFN_vkResetEvent = *const fn (Device, types.Event) callconv(.c) Result;
 
 pub const PFN_vkCmdPipelineBarrier = *const fn (types.CommandBuffer, types.PipelineStageFlags, types.PipelineStageFlags, types.DependencyFlags, u32, [*]const core_1_0.MemoryBarrier, u32, [*]const core_1_0.BufferMemoryBarrier, u32, [*]const core_1_0.ImageMemoryBarrier) callconv(.c) void;
 
@@ -183,6 +197,7 @@ pub const PFN_vkDestroyRenderPass = *const fn (Device, types.RenderPass, ?*const
 pub const PFN_vkCreateFramebuffer = *const fn (Device, *const core_1_0.FramebufferCreateInfo, ?*const types.AllocationCallbacks, *types.Framebuffer) callconv(.c) Result;
 pub const PFN_vkDestroyFramebuffer = *const fn (Device, types.Framebuffer, ?*const types.AllocationCallbacks) callconv(.c) void;
 pub const PFN_vkCmdBeginRenderPass = *const fn (CommandBuffer, *const core_1_0.RenderPassBeginInfo, types.SubpassContents) callconv(.c) void;
+pub const PFN_vkCmdNextSubpass = *const fn (CommandBuffer, types.SubpassContents) callconv(.c) void;
 pub const PFN_vkCmdEndRenderPass = *const fn (CommandBuffer) callconv(.c) void;
 
 // Vulkan 1.1 Device
@@ -202,6 +217,7 @@ pub const PFN_vkCmdDrawIndirectCount = *const fn (CommandBuffer, types.Buffer, t
 pub const PFN_vkCmdDrawIndexedIndirectCount = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, types.Buffer, types.DeviceSize, u32, u32) callconv(.c) void;
 pub const PFN_vkCreateRenderPass2 = *const fn (Device, *const types.RenderPassCreateInfo2, ?*const types.AllocationCallbacks, *types.RenderPass) callconv(.c) Result;
 pub const PFN_vkCmdBeginRenderPass2 = *const fn (CommandBuffer, *const types.RenderPassBeginInfo, *const types.SubpassBeginInfo) callconv(.c) void;
+pub const PFN_vkCmdNextSubpass2 = *const fn (CommandBuffer, *const types.SubpassBeginInfo, *const types.SubpassEndInfo) callconv(.c) void;
 pub const PFN_vkCmdEndRenderPass2 = *const fn (CommandBuffer, *const types.SubpassEndInfo) callconv(.c) void;
 pub const PFN_vkResetQueryPool = *const fn (Device, types.QueryPool, u32, u32) callconv(.c) void;
 pub const PFN_vkGetSemaphoreCounterValue = *const fn (Device, types.Semaphore, *u64) callconv(.c) Result;
@@ -219,6 +235,7 @@ pub const PFN_vkGetPrivateData = *const fn (Device, types.ObjectType, u64, types
 pub const PFN_vkCmdSetEvent2 = *const fn (CommandBuffer, types.Event, *const core_1_3.DependencyInfo) callconv(.c) void;
 pub const PFN_vkCmdResetEvent2 = *const fn (CommandBuffer, types.Event, types.PipelineStageFlags2) callconv(.c) void;
 pub const PFN_vkCmdWaitEvents2 = *const fn (CommandBuffer, u32, [*]const types.Event, *const core_1_3.DependencyInfo) callconv(.c) void;
+pub const PFN_vkCmdPipelineBarrier2 = *const fn (CommandBuffer, *const core_1_3.DependencyInfo) callconv(.c) void;
 pub const PFN_vkQueueSubmit2 = *const fn (Queue, u32, [*]const types.SubmitInfo2, types.Fence) callconv(.c) Result;
 pub const PFN_vkCmdWriteTimestamp2 = *const fn (CommandBuffer, types.PipelineStageFlags2, types.QueryPool, u32) callconv(.c) void;
 pub const PFN_vkCmdCopyBuffer2 = *const fn (CommandBuffer, *const types.CopyBufferInfo2) callconv(.c) void;
@@ -289,6 +306,29 @@ pub const PFN_vkCmdDrawMeshTasksIndirectCountNV = *const fn (CommandBuffer, type
 pub const PFN_vkCmdDrawMeshTasksEXT = *const fn (CommandBuffer, u32, u32, u32) callconv(.c) void;
 pub const PFN_vkCmdDrawMeshTasksIndirectEXT = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, u32, u32) callconv(.c) void;
 pub const PFN_vkCmdDrawMeshTasksIndirectCountEXT = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, types.Buffer, types.DeviceSize, u32, u32) callconv(.c) void;
+
+// VK_KHR_push_descriptor
+pub const PFN_vkCmdPushDescriptorSetKHR = *const fn (CommandBuffer, types.PipelineBindPoint, types.PipelineLayout, u32, u32, [*]const core_1_0.WriteDescriptorSet) callconv(.c) void;
+
+// VK_KHR_descriptor_update_template
+pub const PFN_vkCreateDescriptorUpdateTemplateKHR = *const fn (Device, *const khr_descriptor_update_template.DescriptorUpdateTemplateCreateInfoKHR, ?*const types.AllocationCallbacks, *types.DescriptorUpdateTemplateKHR) callconv(.c) Result;
+pub const PFN_vkDestroyDescriptorUpdateTemplateKHR = *const fn (Device, types.DescriptorUpdateTemplateKHR, ?*const types.AllocationCallbacks) callconv(.c) void;
+pub const PFN_vkUpdateDescriptorSetWithTemplateKHR = *const fn (Device, types.DescriptorSet, types.DescriptorUpdateTemplateKHR, *const anyopaque) callconv(.c) void;
+
+// VK_KHR_fragment_shading_rate
+pub const PFN_vkCmdSetFragmentShadingRateKHR = *const fn (CommandBuffer, *const types.Extent2D, [*]const khr_fragment_shading_rate.FragmentShadingRateCombinerOpKHR) callconv(.c) void;
+pub const PFN_vkGetPhysicalDeviceFragmentShadingRatesKHR = *const fn (PhysicalDevice, *u32, ?[*]khr_fragment_shading_rate.PhysicalDeviceFragmentShadingRatePropertiesKHR) callconv(.c) Result;
+
+// VK_INTEL_performance_query
+pub const PFN_vkInitializePerformanceApiINTEL = *const fn (Device, *const intel_performance_query.InitializePerformanceApiInfoINTEL) callconv(.c) Result;
+pub const PFN_vkUninitializePerformanceApiINTEL = *const fn (Device) callconv(.c) void;
+pub const PFN_vkCmdSetPerformanceMarkerINTEL = *const fn (CommandBuffer, *const intel_performance_query.PerformanceMarkerInfoINTEL) callconv(.c) Result;
+pub const PFN_vkCmdSetPerformanceStreamMarkerINTEL = *const fn (CommandBuffer, *const intel_performance_query.PerformanceStreamMarkerInfoINTEL) callconv(.c) Result;
+pub const PFN_vkCmdSetPerformanceOverrideINTEL = *const fn (CommandBuffer, *const intel_performance_query.PerformanceOverrideInfoINTEL) callconv(.c) Result;
+pub const PFN_vkAcquirePerformanceConfigurationINTEL = *const fn (Device, *const intel_performance_query.PerformanceConfigurationAcquireInfoINTEL, *intel_performance_query.PerformanceConfigurationINTEL) callconv(.c) Result;
+pub const PFN_vkReleasePerformanceConfigurationINTEL = *const fn (Device, intel_performance_query.PerformanceConfigurationINTEL) callconv(.c) Result;
+pub const PFN_vkQueueSetPerformanceConfigurationINTEL = *const fn (Queue, intel_performance_query.PerformanceConfigurationINTEL) callconv(.c) Result;
+pub const PFN_vkGetPerformanceParameterINTEL = *const fn (Device, intel_performance_query.PerformanceParameterTypeINTEL, *intel_performance_query.PerformanceValueINTEL) callconv(.c) Result;
 
 // Core drawing functions
 pub const PFN_vkCmdDraw = *const fn (CommandBuffer, u32, u32, u32, u32) callconv(.c) void;
@@ -436,10 +476,14 @@ pub const InstanceDispatch = struct {
     vkGetPhysicalDeviceFeatures: PFN_vkGetPhysicalDeviceFeatures,
     vkGetPhysicalDeviceMemoryProperties: PFN_vkGetPhysicalDeviceMemoryProperties,
     vkGetPhysicalDeviceQueueFamilyProperties: PFN_vkGetPhysicalDeviceQueueFamilyProperties,
+    vkGetPhysicalDeviceFormatProperties: PFN_vkGetPhysicalDeviceFormatProperties,
+    vkGetPhysicalDeviceImageFormatProperties: PFN_vkGetPhysicalDeviceImageFormatProperties,
+    vkGetPhysicalDeviceSparseImageFormatProperties: PFN_vkGetPhysicalDeviceSparseImageFormatProperties,
     vkCreateDevice: PFN_vkCreateDevice,
     vkGetDeviceProcAddr: PFN_vkGetDeviceProcAddr,
 
     // Vulkan 1.1
+    vkEnumeratePhysicalDeviceGroups: ?PFN_vkEnumeratePhysicalDeviceGroups = null,
     vkGetPhysicalDeviceFeatures2: ?PFN_vkGetPhysicalDeviceFeatures2 = null,
     vkGetPhysicalDeviceProperties2: ?PFN_vkGetPhysicalDeviceProperties2 = null,
     vkGetPhysicalDeviceFormatProperties2: ?PFN_vkGetPhysicalDeviceFormatProperties2 = null,
@@ -473,6 +517,9 @@ pub const InstanceDispatch = struct {
     vkCreateWin32SurfaceKHR: ?PFN_vkCreateWin32SurfaceKHR = null,
     vkGetPhysicalDeviceWin32PresentationSupportKHR: ?PFN_vkGetPhysicalDeviceWin32PresentationSupportKHR = null,
 
+    // VK_KHR_fragment_shading_rate
+    vkGetPhysicalDeviceFragmentShadingRatesKHR: ?PFN_vkGetPhysicalDeviceFragmentShadingRatesKHR = null,
+
     fn init(get_proc: PFN_vkGetInstanceProcAddr, instance: Instance) !InstanceDispatch {
         return InstanceDispatch{
             .vkDestroyInstance = try loadInstanceFunction(get_proc, instance, "vkDestroyInstance", PFN_vkDestroyInstance),
@@ -481,10 +528,14 @@ pub const InstanceDispatch = struct {
             .vkGetPhysicalDeviceFeatures = try loadInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceFeatures", PFN_vkGetPhysicalDeviceFeatures),
             .vkGetPhysicalDeviceMemoryProperties = try loadInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceMemoryProperties", PFN_vkGetPhysicalDeviceMemoryProperties),
             .vkGetPhysicalDeviceQueueFamilyProperties = try loadInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceQueueFamilyProperties", PFN_vkGetPhysicalDeviceQueueFamilyProperties),
+            .vkGetPhysicalDeviceFormatProperties = try loadInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceFormatProperties", PFN_vkGetPhysicalDeviceFormatProperties),
+            .vkGetPhysicalDeviceImageFormatProperties = try loadInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceImageFormatProperties", PFN_vkGetPhysicalDeviceImageFormatProperties),
+            .vkGetPhysicalDeviceSparseImageFormatProperties = try loadInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceSparseImageFormatProperties", PFN_vkGetPhysicalDeviceSparseImageFormatProperties),
             .vkCreateDevice = try loadInstanceFunction(get_proc, instance, "vkCreateDevice", PFN_vkCreateDevice),
             .vkGetDeviceProcAddr = try loadInstanceFunction(get_proc, instance, "vkGetDeviceProcAddr", PFN_vkGetDeviceProcAddr),
 
             // Vulkan 1.1
+            .vkEnumeratePhysicalDeviceGroups = loadOptionalInstanceFunction(get_proc, instance, "vkEnumeratePhysicalDeviceGroups", PFN_vkEnumeratePhysicalDeviceGroups),
             .vkGetPhysicalDeviceFeatures2 = loadOptionalInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceFeatures2", PFN_vkGetPhysicalDeviceFeatures2),
             .vkGetPhysicalDeviceProperties2 = loadOptionalInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceProperties2", PFN_vkGetPhysicalDeviceProperties2),
             .vkGetPhysicalDeviceFormatProperties2 = loadOptionalInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceFormatProperties2", PFN_vkGetPhysicalDeviceFormatProperties2),
@@ -517,6 +568,9 @@ pub const InstanceDispatch = struct {
 
             .vkCreateWin32SurfaceKHR = loadOptionalInstanceFunction(get_proc, instance, "vkCreateWin32SurfaceKHR", PFN_vkCreateWin32SurfaceKHR),
             .vkGetPhysicalDeviceWin32PresentationSupportKHR = loadOptionalInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceWin32PresentationSupportKHR", PFN_vkGetPhysicalDeviceWin32PresentationSupportKHR),
+
+            // VK_KHR_fragment_shading_rate
+            .vkGetPhysicalDeviceFragmentShadingRatesKHR = loadOptionalInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceFragmentShadingRatesKHR", PFN_vkGetPhysicalDeviceFragmentShadingRatesKHR),
         };
     }
 
@@ -576,16 +630,22 @@ pub const DeviceDispatch = struct {
     vkFreeMemory: PFN_vkFreeMemory,
     vkMapMemory: PFN_vkMapMemory,
     vkUnmapMemory: PFN_vkUnmapMemory,
+    vkFlushMappedMemoryRanges: PFN_vkFlushMappedMemoryRanges,
+    vkInvalidateMappedMemoryRanges: PFN_vkInvalidateMappedMemoryRanges,
+    vkGetDeviceMemoryCommitment: PFN_vkGetDeviceMemoryCommitment,
 
     vkCreateBuffer: PFN_vkCreateBuffer,
     vkDestroyBuffer: PFN_vkDestroyBuffer,
     vkGetBufferMemoryRequirements: PFN_vkGetBufferMemoryRequirements,
     vkBindBufferMemory: PFN_vkBindBufferMemory,
+    vkCreateBufferView: PFN_vkCreateBufferView,
+    vkDestroyBufferView: PFN_vkDestroyBufferView,
 
     vkCreateImage: PFN_vkCreateImage,
     vkDestroyImage: PFN_vkDestroyImage,
     vkGetImageMemoryRequirements: PFN_vkGetImageMemoryRequirements,
     vkBindImageMemory: PFN_vkBindImageMemory,
+    vkGetImageSubresourceLayout: PFN_vkGetImageSubresourceLayout,
     vkCreateImageView: PFN_vkCreateImageView,
     vkDestroyImageView: PFN_vkDestroyImageView,
 
@@ -596,9 +656,11 @@ pub const DeviceDispatch = struct {
     vkBeginCommandBuffer: PFN_vkBeginCommandBuffer,
     vkEndCommandBuffer: PFN_vkEndCommandBuffer,
     vkResetCommandBuffer: PFN_vkResetCommandBuffer,
+    vkCmdExecuteCommands: PFN_vkCmdExecuteCommands,
 
     vkCreateFence: PFN_vkCreateFence,
     vkDestroyFence: PFN_vkDestroyFence,
+    vkGetFenceStatus: PFN_vkGetFenceStatus,
     vkWaitForFences: PFN_vkWaitForFences,
     vkResetFences: PFN_vkResetFences,
     vkCreateSemaphore: PFN_vkCreateSemaphore,
@@ -614,6 +676,7 @@ pub const DeviceDispatch = struct {
     vkDestroyDescriptorSetLayout: PFN_vkDestroyDescriptorSetLayout,
     vkCreateDescriptorPool: PFN_vkCreateDescriptorPool,
     vkDestroyDescriptorPool: PFN_vkDestroyDescriptorPool,
+    vkResetDescriptorPool: PFN_vkResetDescriptorPool,
     vkAllocateDescriptorSets: PFN_vkAllocateDescriptorSets,
     vkFreeDescriptorSets: PFN_vkFreeDescriptorSets,
     vkUpdateDescriptorSets: PFN_vkUpdateDescriptorSets,
@@ -635,6 +698,7 @@ pub const DeviceDispatch = struct {
     vkCreateFramebuffer: PFN_vkCreateFramebuffer,
     vkDestroyFramebuffer: PFN_vkDestroyFramebuffer,
     vkCmdBeginRenderPass: PFN_vkCmdBeginRenderPass,
+    vkCmdNextSubpass: PFN_vkCmdNextSubpass,
     vkCmdEndRenderPass: PFN_vkCmdEndRenderPass,
 
     // Command buffer binding functions
@@ -699,6 +763,11 @@ pub const DeviceDispatch = struct {
     vkGetQueryPoolResults: PFN_vkGetQueryPoolResults,
 
     // Event synchronization functions
+    vkCreateEvent: PFN_vkCreateEvent,
+    vkDestroyEvent: PFN_vkDestroyEvent,
+    vkGetEventStatus: PFN_vkGetEventStatus,
+    vkSetEvent: PFN_vkSetEvent,
+    vkResetEvent: PFN_vkResetEvent,
     vkCmdSetEvent: PFN_vkCmdSetEvent,
     vkCmdResetEvent: PFN_vkCmdResetEvent,
     vkCmdWaitEvents: PFN_vkCmdWaitEvents,
@@ -723,6 +792,7 @@ pub const DeviceDispatch = struct {
     vkCmdDrawIndexedIndirectCount: ?PFN_vkCmdDrawIndexedIndirectCount = null,
     vkCreateRenderPass2: ?PFN_vkCreateRenderPass2 = null,
     vkCmdBeginRenderPass2: ?PFN_vkCmdBeginRenderPass2 = null,
+    vkCmdNextSubpass2: ?PFN_vkCmdNextSubpass2 = null,
     vkCmdEndRenderPass2: ?PFN_vkCmdEndRenderPass2 = null,
     vkResetQueryPool: ?PFN_vkResetQueryPool = null,
     vkGetSemaphoreCounterValue: ?PFN_vkGetSemaphoreCounterValue = null,
@@ -747,6 +817,7 @@ pub const DeviceDispatch = struct {
     vkCmdResetEvent2: ?PFN_vkCmdResetEvent2 = null,
     vkCmdWaitEvents2: ?PFN_vkCmdWaitEvents2 = null,
     vkCmdPipelineBarrier: ?PFN_vkCmdPipelineBarrier = null,
+    vkCmdPipelineBarrier2: ?PFN_vkCmdPipelineBarrier2 = null,
     vkQueueSubmit2: ?PFN_vkQueueSubmit2 = null,
     vkCmdWriteTimestamp2: ?PFN_vkCmdWriteTimestamp2 = null,
     vkCmdCopyBuffer2: ?PFN_vkCmdCopyBuffer2 = null,
@@ -792,16 +863,22 @@ pub const DeviceDispatch = struct {
             .vkFreeMemory = try loadDeviceFunction(get_proc, device, "vkFreeMemory", PFN_vkFreeMemory),
             .vkMapMemory = try loadDeviceFunction(get_proc, device, "vkMapMemory", PFN_vkMapMemory),
             .vkUnmapMemory = try loadDeviceFunction(get_proc, device, "vkUnmapMemory", PFN_vkUnmapMemory),
+            .vkFlushMappedMemoryRanges = try loadDeviceFunction(get_proc, device, "vkFlushMappedMemoryRanges", PFN_vkFlushMappedMemoryRanges),
+            .vkInvalidateMappedMemoryRanges = try loadDeviceFunction(get_proc, device, "vkInvalidateMappedMemoryRanges", PFN_vkInvalidateMappedMemoryRanges),
+            .vkGetDeviceMemoryCommitment = try loadDeviceFunction(get_proc, device, "vkGetDeviceMemoryCommitment", PFN_vkGetDeviceMemoryCommitment),
 
             .vkCreateBuffer = try loadDeviceFunction(get_proc, device, "vkCreateBuffer", PFN_vkCreateBuffer),
             .vkDestroyBuffer = try loadDeviceFunction(get_proc, device, "vkDestroyBuffer", PFN_vkDestroyBuffer),
             .vkGetBufferMemoryRequirements = try loadDeviceFunction(get_proc, device, "vkGetBufferMemoryRequirements", PFN_vkGetBufferMemoryRequirements),
             .vkBindBufferMemory = try loadDeviceFunction(get_proc, device, "vkBindBufferMemory", PFN_vkBindBufferMemory),
+            .vkCreateBufferView = try loadDeviceFunction(get_proc, device, "vkCreateBufferView", PFN_vkCreateBufferView),
+            .vkDestroyBufferView = try loadDeviceFunction(get_proc, device, "vkDestroyBufferView", PFN_vkDestroyBufferView),
 
             .vkCreateImage = try loadDeviceFunction(get_proc, device, "vkCreateImage", PFN_vkCreateImage),
             .vkDestroyImage = try loadDeviceFunction(get_proc, device, "vkDestroyImage", PFN_vkDestroyImage),
             .vkGetImageMemoryRequirements = try loadDeviceFunction(get_proc, device, "vkGetImageMemoryRequirements", PFN_vkGetImageMemoryRequirements),
             .vkBindImageMemory = try loadDeviceFunction(get_proc, device, "vkBindImageMemory", PFN_vkBindImageMemory),
+            .vkGetImageSubresourceLayout = try loadDeviceFunction(get_proc, device, "vkGetImageSubresourceLayout", PFN_vkGetImageSubresourceLayout),
             .vkCreateImageView = try loadDeviceFunction(get_proc, device, "vkCreateImageView", PFN_vkCreateImageView),
             .vkDestroyImageView = try loadDeviceFunction(get_proc, device, "vkDestroyImageView", PFN_vkDestroyImageView),
 
@@ -812,9 +889,11 @@ pub const DeviceDispatch = struct {
             .vkBeginCommandBuffer = try loadDeviceFunction(get_proc, device, "vkBeginCommandBuffer", PFN_vkBeginCommandBuffer),
             .vkEndCommandBuffer = try loadDeviceFunction(get_proc, device, "vkEndCommandBuffer", PFN_vkEndCommandBuffer),
             .vkResetCommandBuffer = try loadDeviceFunction(get_proc, device, "vkResetCommandBuffer", PFN_vkResetCommandBuffer),
+            .vkCmdExecuteCommands = try loadDeviceFunction(get_proc, device, "vkCmdExecuteCommands", PFN_vkCmdExecuteCommands),
 
             .vkCreateFence = try loadDeviceFunction(get_proc, device, "vkCreateFence", PFN_vkCreateFence),
             .vkDestroyFence = try loadDeviceFunction(get_proc, device, "vkDestroyFence", PFN_vkDestroyFence),
+            .vkGetFenceStatus = try loadDeviceFunction(get_proc, device, "vkGetFenceStatus", PFN_vkGetFenceStatus),
             .vkWaitForFences = try loadDeviceFunction(get_proc, device, "vkWaitForFences", PFN_vkWaitForFences),
             .vkResetFences = try loadDeviceFunction(get_proc, device, "vkResetFences", PFN_vkResetFences),
             .vkCreateSemaphore = try loadDeviceFunction(get_proc, device, "vkCreateSemaphore", PFN_vkCreateSemaphore),
@@ -840,6 +919,7 @@ pub const DeviceDispatch = struct {
             .vkDestroyDescriptorSetLayout = try loadDeviceFunction(get_proc, device, "vkDestroyDescriptorSetLayout", PFN_vkDestroyDescriptorSetLayout),
             .vkCreateDescriptorPool = try loadDeviceFunction(get_proc, device, "vkCreateDescriptorPool", PFN_vkCreateDescriptorPool),
             .vkDestroyDescriptorPool = try loadDeviceFunction(get_proc, device, "vkDestroyDescriptorPool", PFN_vkDestroyDescriptorPool),
+            .vkResetDescriptorPool = try loadDeviceFunction(get_proc, device, "vkResetDescriptorPool", PFN_vkResetDescriptorPool),
             .vkAllocateDescriptorSets = try loadDeviceFunction(get_proc, device, "vkAllocateDescriptorSets", PFN_vkAllocateDescriptorSets),
             .vkFreeDescriptorSets = try loadDeviceFunction(get_proc, device, "vkFreeDescriptorSets", PFN_vkFreeDescriptorSets),
             .vkUpdateDescriptorSets = try loadDeviceFunction(get_proc, device, "vkUpdateDescriptorSets", PFN_vkUpdateDescriptorSets),
@@ -851,6 +931,7 @@ pub const DeviceDispatch = struct {
             .vkCreateFramebuffer = try loadDeviceFunction(get_proc, device, "vkCreateFramebuffer", PFN_vkCreateFramebuffer),
             .vkDestroyFramebuffer = try loadDeviceFunction(get_proc, device, "vkDestroyFramebuffer", PFN_vkDestroyFramebuffer),
             .vkCmdBeginRenderPass = try loadDeviceFunction(get_proc, device, "vkCmdBeginRenderPass", PFN_vkCmdBeginRenderPass),
+            .vkCmdNextSubpass = try loadDeviceFunction(get_proc, device, "vkCmdNextSubpass", PFN_vkCmdNextSubpass),
             .vkCmdEndRenderPass = try loadDeviceFunction(get_proc, device, "vkCmdEndRenderPass", PFN_vkCmdEndRenderPass),
 
             // Command buffer binding functions
@@ -915,6 +996,11 @@ pub const DeviceDispatch = struct {
             .vkCmdDrawMeshTasksIndirectCountEXT = loadOptionalDeviceFunction(get_proc, device, "vkCmdDrawMeshTasksIndirectCountEXT", PFN_vkCmdDrawMeshTasksIndirectCountEXT),
 
             // Event synchronization functions
+            .vkCreateEvent = try loadDeviceFunction(get_proc, device, "vkCreateEvent", PFN_vkCreateEvent),
+            .vkDestroyEvent = try loadDeviceFunction(get_proc, device, "vkDestroyEvent", PFN_vkDestroyEvent),
+            .vkGetEventStatus = try loadDeviceFunction(get_proc, device, "vkGetEventStatus", PFN_vkGetEventStatus),
+            .vkSetEvent = try loadDeviceFunction(get_proc, device, "vkSetEvent", PFN_vkSetEvent),
+            .vkResetEvent = try loadDeviceFunction(get_proc, device, "vkResetEvent", PFN_vkResetEvent),
             .vkCmdSetEvent = try loadDeviceFunction(get_proc, device, "vkCmdSetEvent", PFN_vkCmdSetEvent),
             .vkCmdResetEvent = try loadDeviceFunction(get_proc, device, "vkCmdResetEvent", PFN_vkCmdResetEvent),
             .vkCmdWaitEvents = try loadDeviceFunction(get_proc, device, "vkCmdWaitEvents", PFN_vkCmdWaitEvents),
@@ -939,6 +1025,7 @@ pub const DeviceDispatch = struct {
             .vkCmdDrawIndexedIndirectCount = loadOptionalDeviceFunction(get_proc, device, "vkCmdDrawIndexedIndirectCount", PFN_vkCmdDrawIndexedIndirectCount),
             .vkCreateRenderPass2 = loadOptionalDeviceFunction(get_proc, device, "vkCreateRenderPass2", PFN_vkCreateRenderPass2),
             .vkCmdBeginRenderPass2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdBeginRenderPass2", PFN_vkCmdBeginRenderPass2),
+            .vkCmdNextSubpass2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdNextSubpass2", PFN_vkCmdNextSubpass2),
             .vkCmdEndRenderPass2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdEndRenderPass2", PFN_vkCmdEndRenderPass2),
             .vkResetQueryPool = loadOptionalDeviceFunction(get_proc, device, "vkResetQueryPool", PFN_vkResetQueryPool),
             .vkGetSemaphoreCounterValue = loadOptionalDeviceFunction(get_proc, device, "vkGetSemaphoreCounterValue", PFN_vkGetSemaphoreCounterValue),
@@ -957,6 +1044,7 @@ pub const DeviceDispatch = struct {
             .vkCmdResetEvent2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdResetEvent2", PFN_vkCmdResetEvent2),
             .vkCmdWaitEvents2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdWaitEvents2", PFN_vkCmdWaitEvents2),
             .vkCmdPipelineBarrier = loadOptionalDeviceFunction(get_proc, device, "vkCmdPipelineBarrier", PFN_vkCmdPipelineBarrier),
+            .vkCmdPipelineBarrier2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdPipelineBarrier2", PFN_vkCmdPipelineBarrier2),
             .vkQueueSubmit2 = loadOptionalDeviceFunction(get_proc, device, "vkQueueSubmit2", PFN_vkQueueSubmit2),
             .vkCmdWriteTimestamp2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdWriteTimestamp2", PFN_vkCmdWriteTimestamp2),
             .vkCmdCopyBuffer2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdCopyBuffer2", PFN_vkCmdCopyBuffer2),
@@ -995,6 +1083,28 @@ pub const DeviceDispatch = struct {
             .vkGetSwapchainImagesKHR = loadOptionalDeviceFunction(get_proc, device, "vkGetSwapchainImagesKHR", PFN_vkGetSwapchainImagesKHR),
             .vkAcquireNextImageKHR = loadOptionalDeviceFunction(get_proc, device, "vkAcquireNextImageKHR", PFN_vkAcquireNextImageKHR),
             .vkQueuePresentKHR = loadOptionalDeviceFunction(get_proc, device, "vkQueuePresentKHR", PFN_vkQueuePresentKHR),
+
+            // VK_KHR_push_descriptor
+            .vkCmdPushDescriptorSetKHR = loadOptionalDeviceFunction(get_proc, device, "vkCmdPushDescriptorSetKHR", PFN_vkCmdPushDescriptorSetKHR),
+
+            // VK_KHR_descriptor_update_template
+            .vkCreateDescriptorUpdateTemplateKHR = loadOptionalDeviceFunction(get_proc, device, "vkCreateDescriptorUpdateTemplateKHR", PFN_vkCreateDescriptorUpdateTemplateKHR),
+            .vkDestroyDescriptorUpdateTemplateKHR = loadOptionalDeviceFunction(get_proc, device, "vkDestroyDescriptorUpdateTemplateKHR", PFN_vkDestroyDescriptorUpdateTemplateKHR),
+            .vkUpdateDescriptorSetWithTemplateKHR = loadOptionalDeviceFunction(get_proc, device, "vkUpdateDescriptorSetWithTemplateKHR", PFN_vkUpdateDescriptorSetWithTemplateKHR),
+
+            // VK_KHR_fragment_shading_rate
+            .vkCmdSetFragmentShadingRateKHR = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetFragmentShadingRateKHR", PFN_vkCmdSetFragmentShadingRateKHR),
+
+            // VK_INTEL_performance_query
+            .vkInitializePerformanceApiINTEL = loadOptionalDeviceFunction(get_proc, device, "vkInitializePerformanceApiINTEL", PFN_vkInitializePerformanceApiINTEL),
+            .vkUninitializePerformanceApiINTEL = loadOptionalDeviceFunction(get_proc, device, "vkUninitializePerformanceApiINTEL", PFN_vkUninitializePerformanceApiINTEL),
+            .vkCmdSetPerformanceMarkerINTEL = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetPerformanceMarkerINTEL", PFN_vkCmdSetPerformanceMarkerINTEL),
+            .vkCmdSetPerformanceStreamMarkerINTEL = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetPerformanceStreamMarkerINTEL", PFN_vkCmdSetPerformanceStreamMarkerINTEL),
+            .vkCmdSetPerformanceOverrideINTEL = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetPerformanceOverrideINTEL", PFN_vkCmdSetPerformanceOverrideINTEL),
+            .vkAcquirePerformanceConfigurationINTEL = loadOptionalDeviceFunction(get_proc, device, "vkAcquirePerformanceConfigurationINTEL", PFN_vkAcquirePerformanceConfigurationINTEL),
+            .vkReleasePerformanceConfigurationINTEL = loadOptionalDeviceFunction(get_proc, device, "vkReleasePerformanceConfigurationINTEL", PFN_vkReleasePerformanceConfigurationINTEL),
+            .vkQueueSetPerformanceConfigurationINTEL = loadOptionalDeviceFunction(get_proc, device, "vkQueueSetPerformanceConfigurationINTEL", PFN_vkQueueSetPerformanceConfigurationINTEL),
+            .vkGetPerformanceParameterINTEL = loadOptionalDeviceFunction(get_proc, device, "vkGetPerformanceParameterINTEL", PFN_vkGetPerformanceParameterINTEL),
         };
     }
 };

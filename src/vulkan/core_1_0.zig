@@ -2,8 +2,9 @@
 //! This module contains all the structures needed for Vulkan 1.0 core functionality
 
 const std = @import("std");
-const types = @import("types.zig");
+
 const c = @import("constants.zig");
+const types = @import("types.zig");
 
 // ============================================================================
 // Application and Instance Structures
@@ -425,6 +426,16 @@ pub const BufferCreateInfo = extern struct {
     p_queue_family_indices: ?[*]const u32 = null,
 };
 
+pub const BufferViewCreateInfo = extern struct {
+    s_type: types.StructureType = .buffer_view_create_info,
+    p_next: ?*const anyopaque = null,
+    flags: u32 = 0,
+    buffer: types.Buffer,
+    format: types.Format,
+    offset: types.DeviceSize,
+    range: types.DeviceSize,
+};
+
 // ============================================================================
 // Image Structures
 // ============================================================================
@@ -522,8 +533,8 @@ pub const SubmitInfo = extern struct {
     wait_semaphore_count: u32 = 0,
     p_wait_semaphores: ?[*]const types.Semaphore = null,
     p_wait_dst_stage_mask: ?[*]const types.PipelineStageFlags = null,
-    command_buffer_count: u32,
-    p_command_buffers: [*]const types.CommandBuffer,
+    command_buffer_count: u32 = 0,
+    p_command_buffers: ?[*]const types.CommandBuffer = null,
     signal_semaphore_count: u32 = 0,
     p_signal_semaphores: ?[*]const types.Semaphore = null,
 };
@@ -562,7 +573,7 @@ pub const PipelineShaderStageCreateInfo = extern struct {
     s_type: types.StructureType = .pipeline_shader_stage_create_info,
     p_next: ?*const anyopaque = null,
     flags: u32 = 0,
-    stage: types.ShaderStageFlags,
+    stage: u32, // VkShaderStageFlagBits - using u32 to match C header exactly
     module: types.ShaderModule,
     p_name: [*:0]const u8,
     p_specialization_info: ?*const SpecializationInfo = null,
@@ -658,8 +669,8 @@ pub const FramebufferCreateInfo = extern struct {
     p_next: ?*const anyopaque = null,
     flags: u32 = 0,
     render_pass: types.RenderPass,
-    attachment_count: u32,
-    p_attachments: [*]const types.ImageView,
+    attachment_count: u32 = 0,
+    p_attachments: ?[*]const types.ImageView = null,
     width: u32,
     height: u32,
     layers: u32,

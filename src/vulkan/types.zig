@@ -196,10 +196,22 @@ pub const StructureType = enum(i32) {
     semaphore_signal_info = 1000207005,
     device_memory_opaque_capture_address_info = 1000257004,
     buffer_device_address_info = 1000244001,
+    render_pass_create_info_2 = 1000109000,
+    attachment_description_2 = 1000109001,
+    attachment_reference_2 = 1000109002,
+    subpass_description_2 = 1000109003,
+    subpass_dependency_2 = 1000109004,
+    render_pass_input_attachment_aspect_create_info = 1000117000,
+    input_attachment_aspect_reference = 1000117001,
+    image_format_list_create_info = 1000147000,
 
     // Vulkan 1.3
     physical_device_vulkan_1_3_features = 53,
     physical_device_vulkan_1_3_properties = 54,
+
+    // Vulkan 1.4
+    physical_device_vulkan_1_4_features = 55,
+    physical_device_vulkan_1_4_properties = 56,
     pipeline_creation_feedback_create_info = 1000192000,
     pipeline_rendering_create_info = 1000044000,
     rendering_info = 1000044001,
@@ -214,6 +226,28 @@ pub const StructureType = enum(i32) {
 
     swapchain_create_info_khr = 1000001000,
     present_info_khr = 1000001001,
+
+    // VK_KHR_descriptor_update_template (promoted to core 1.1, but keeping KHR alias)
+    descriptor_update_template_create_info_khr = 1000080000,
+    descriptor_update_template_khr = 1000080001,
+
+    // VK_KHR_push_descriptor
+    physical_device_push_descriptor_properties_khr = 1000080003,
+    push_descriptor_set_info_khr = 1000080004,
+    push_descriptor_update_info_khr = 1000080005,
+
+    // Inline uniform block (shared by both extensions)
+    write_descriptor_set_inline_uniform_block = 1000281000,
+
+    // VK_KHR_fragment_shading_rate
+    physical_device_fragment_shading_rate_features_khr = 1000226000,
+    physical_device_fragment_shading_rate_properties_khr = 1000226001,
+    pipeline_fragment_shading_rate_state_create_info_khr = 1000226002,
+
+    // VK_INTEL_performance_query
+    initialize_performance_api_info_intel = 1000210000,
+    performance_configuration_acquire_info_intel = 1000210001,
+
     wayland_surface_create_info_khr = 1000006000,
     win32_surface_create_info_khr = 1000009000,
     xlib_surface_create_info_khr = 1000004000,
@@ -224,6 +258,7 @@ pub const StructureType = enum(i32) {
     image_subresource_2 = 100030001,
     rendering_area_info_khr = 100030002,
     subresource_layout_2_khr = 100030003,
+    bind_memory_status_khr = 1000331000,
     _,
 };
 
@@ -870,6 +905,26 @@ pub const BufferCreateFlags = packed struct(u32) {
     _padding: u28 = 0,
 };
 
+pub const ShaderStageFlagBits = enum(u32) {
+    vertex_bit = 0x00000001,
+    tessellation_control_bit = 0x00000002,
+    tessellation_evaluation_bit = 0x00000004,
+    geometry_bit = 0x00000008,
+    fragment_bit = 0x00000010,
+    compute_bit = 0x00000020,
+    all_graphics = 0x0000007F,
+    all = 0x7FFFFFFF,
+    raygen_bit_khr = 0x00000100,
+    any_hit_bit_khr = 0x00000200,
+    closest_hit_bit_khr = 0x00000400,
+    miss_bit_khr = 0x00000800,
+    intersection_bit_khr = 0x00001000,
+    callable_bit_khr = 0x00002000,
+    task_bit_ext = 0x00000040,
+    mesh_bit_ext = 0x00000080,
+    _,
+};
+
 pub const ShaderStageFlags = packed struct(u32) {
     vertex: bool = false,
     tessellation_control: bool = false,
@@ -1019,6 +1074,24 @@ pub const CommandBufferUsageFlags = packed struct(u32) {
 pub const DependencyFlags = packed struct(u32) {
     by_region: bool = false,
     _padding: u31 = 0,
+};
+
+pub const RenderPassCreateFlags = u32;
+pub const AttachmentDescriptionFlags = u32;
+pub const SubpassDescriptionFlags = u32;
+
+// Vulkan 1.1 Subgroup Flags
+pub const SubgroupFeatureFlags = packed struct(u32) {
+    basic: bool = false,
+    vote: bool = false,
+    arithmetic: bool = false,
+    ballot: bool = false,
+    shuffle: bool = false,
+    shuffle_relative: bool = false,
+    clustered: bool = false,
+    quad: bool = false,
+    partitioned_nv: bool = false,
+    _padding: u23 = 0,
 };
 
 // Vulkan 1.3 Flags
