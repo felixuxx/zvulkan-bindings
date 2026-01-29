@@ -733,6 +733,14 @@ pub const DeviceDispatch = struct {
     vkDestroySampler: PFN_vkDestroySampler,
     vkCmdPushDescriptorSetKHR: ?PFN_vkCmdPushDescriptorSetKHR = null,
 
+    // VK_KHR_descriptor_update_template
+    vkCreateDescriptorUpdateTemplateKHR: ?PFN_vkCreateDescriptorUpdateTemplateKHR = null,
+    vkDestroyDescriptorUpdateTemplateKHR: ?PFN_vkDestroyDescriptorUpdateTemplateKHR = null,
+    vkUpdateDescriptorSetWithTemplateKHR: ?PFN_vkUpdateDescriptorSetWithTemplateKHR = null,
+
+    // VK_KHR_fragment_shading_rate
+    vkCmdSetFragmentShadingRateKHR: ?PFN_vkCmdSetFragmentShadingRateKHR = null,
+
     vkCreateGraphicsPipelines: PFN_vkCreateGraphicsPipelines,
     vkCreateComputePipelines: PFN_vkCreateComputePipelines,
     vkDestroyPipeline: PFN_vkDestroyPipeline,
