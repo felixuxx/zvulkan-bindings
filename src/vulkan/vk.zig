@@ -731,6 +731,7 @@ pub const DeviceDispatch = struct {
     vkUpdateDescriptorSets: PFN_vkUpdateDescriptorSets,
     vkCreateSampler: PFN_vkCreateSampler,
     vkDestroySampler: PFN_vkDestroySampler,
+    vkCmdPushDescriptorSetKHR: ?PFN_vkCmdPushDescriptorSetKHR = null,
 
     vkCreateGraphicsPipelines: PFN_vkCreateGraphicsPipelines,
     vkCreateComputePipelines: PFN_vkCreateComputePipelines,
