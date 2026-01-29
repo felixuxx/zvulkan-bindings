@@ -250,6 +250,13 @@ pub const StructureType = enum(i32) {
     // VK_INTEL_performance_query
     initialize_performance_api_info_intel = 1000210000,
     performance_configuration_acquire_info_intel = 1000210001,
+    query_pool_performance_create_info_intel = 1000210002,
+    performance_query_info_intel = 1000210003,
+    performance_marker_info_intel = 1000210004,
+    performance_override_info_intel = 1000210005,
+    performance_stream_marker_info_intel = 1000210006,
+    performance_configuration_intel = 1000210007,
+    query_pool_performance_query_create_info_intel = 1000210008,
 
     wayland_surface_create_info_khr = 1000006000,
     win32_surface_create_info_khr = 1000009000,
