@@ -807,6 +807,7 @@ pub const DeviceDispatch = struct {
     vkCmdResolveImage: PFN_vkCmdResolveImage,
 
     // Clear functions (missing ones only)
+    vkCmdClearAttachments: PFN_vkCmdClearAttachments,
     vkCmdClearColorImage: PFN_vkCmdClearColorImage,
     vkCmdClearDepthStencilImage: PFN_vkCmdClearDepthStencilImage,
 
@@ -818,6 +819,8 @@ pub const DeviceDispatch = struct {
     vkCmdWriteTimestamp: PFN_vkCmdWriteTimestamp,
 
     // Query management functions
+    vkCreateQueryPool: PFN_vkCreateQueryPool,
+    vkDestroyQueryPool: PFN_vkDestroyQueryPool,
     vkGetQueryPoolResults: PFN_vkGetQueryPoolResults,
 
     // Event synchronization functions
@@ -1032,6 +1035,7 @@ pub const DeviceDispatch = struct {
             .vkCmdResolveImage = try loadDeviceFunction(get_proc, device, "vkCmdResolveImage", PFN_vkCmdResolveImage),
 
             // Clear functions
+            .vkCmdClearAttachments = try loadDeviceFunction(get_proc, device, "vkCmdClearAttachments", PFN_vkCmdClearAttachments),
             .vkCmdClearColorImage = try loadDeviceFunction(get_proc, device, "vkCmdClearColorImage", PFN_vkCmdClearColorImage),
             .vkCmdClearDepthStencilImage = try loadDeviceFunction(get_proc, device, "vkCmdClearDepthStencilImage", PFN_vkCmdClearDepthStencilImage),
 
@@ -1043,6 +1047,8 @@ pub const DeviceDispatch = struct {
             .vkCmdWriteTimestamp = try loadDeviceFunction(get_proc, device, "vkCmdWriteTimestamp", PFN_vkCmdWriteTimestamp),
 
             // Query management functions
+            .vkCreateQueryPool = try loadDeviceFunction(get_proc, device, "vkCreateQueryPool", PFN_vkCreateQueryPool),
+            .vkDestroyQueryPool = try loadDeviceFunction(get_proc, device, "vkDestroyQueryPool", PFN_vkDestroyQueryPool),
             .vkGetQueryPoolResults = try loadDeviceFunction(get_proc, device, "vkGetQueryPoolResults", PFN_vkGetQueryPoolResults),
 
             // Mesh shader functions
