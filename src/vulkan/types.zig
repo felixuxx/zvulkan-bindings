@@ -39,6 +39,7 @@ pub const SurfaceKHR = u64;
 pub const SwapchainKHR = u64;
 pub const DebugUtilsMessengerEXT = u64;
 pub const DebugReportCallbackEXT = u64;
+pub const DescriptorUpdateTemplateKHR = u64;
 
 // ============================================================================
 // Basic Types
@@ -256,10 +257,10 @@ pub const StructureType = enum(i32) {
     xcb_surface_create_info_khr = 1000005000,
 
     // Vulkan 1.4 / Maintenance5
-    device_image_subresource_info = 100030000,
-    image_subresource_2 = 100030001,
-    rendering_area_info_khr = 100030002,
-    subresource_layout_2_khr = 100030003,
+    device_image_subresource_info = 1000300000,
+    image_subresource_2 = 1000300001,
+    rendering_area_info_khr = 1000300002,
+    subresource_layout_2_khr = 1000300003,
     bind_memory_status_khr = 1000331000,
     _,
 };
@@ -1078,6 +1079,7 @@ pub const DependencyFlags = packed struct(u32) {
     _padding: u31 = 0,
 };
 
+pub const DescriptorUpdateTemplateCreateFlagsKHR = u32;
 pub const RenderPassCreateFlags = u32;
 pub const AttachmentDescriptionFlags = u32;
 pub const SubpassDescriptionFlags = u32;

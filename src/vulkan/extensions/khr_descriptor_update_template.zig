@@ -1,8 +1,8 @@
 //! VK_KHR_descriptor_update_template extension
 //! Efficient descriptor set updates using templates
 
-const types = @import("../types.zig");
 const constants = @import("../constants.zig");
+const types = @import("../types.zig");
 
 pub const KHR_DESCRIPTOR_UPDATE_TEMPLATE_EXTENSION_NAME = "VK_KHR_descriptor_update_template";
 
@@ -62,5 +62,3 @@ pub const WriteDescriptorSetInlineUniformBlock = extern struct {
     descriptor_set: types.DescriptorSet,
     data: DescriptorDataInlineUniformBlock,
 };
-
-pub const DescriptorUpdateTemplateCreateFlagsKHR = types.DescriptorUpdateTemplateCreateFlagsKHR;
