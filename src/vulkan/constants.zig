@@ -45,7 +45,7 @@ pub const LOD_CLAMP_NONE: f32 = 1000.0;
 
 // Array sizes
 pub const MAX_PHYSICAL_DEVICE_NAME_SIZE: u32 = 256;
-pub const MAX_DEVICE_GROUP_SIZE = 32;
+pub const MAX_DEVICE_GROUP_SIZE: u32 = 32;
 pub const UUID_SIZE: u32 = 16;
 pub const LUID_SIZE: u32 = 8;
 pub const MAX_EXTENSION_NAME_SIZE: u32 = 256;
