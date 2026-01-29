@@ -1,7 +1,7 @@
 //! Vulkan 1.1 Core Structures and Functions
 
-const types = @import("types.zig");
 const constants = @import("constants.zig");
+const types = @import("types.zig");
 
 // ============================================================================
 // Structures
@@ -105,7 +105,7 @@ pub const PhysicalDeviceFeatures2 = extern struct {
     p_next: ?*anyopaque = null,
     features: extern struct {
         robust_buffer_access: types.Bool32,
-        full_draw_index_uint32: types.Bool32,
+        full_draw_index_uint_32: types.Bool32,
         image_cube_array: types.Bool32,
         independent_blend: types.Bool32,
         geometry_shader: types.Bool32,
@@ -143,9 +143,9 @@ pub const PhysicalDeviceFeatures2 = extern struct {
         shader_storage_image_array_dynamic_indexing: types.Bool32,
         shader_clip_distance: types.Bool32,
         shader_cull_distance: types.Bool32,
-        shader_float64: types.Bool32,
-        shader_int64: types.Bool32,
-        shader_int16: types.Bool32,
+        shader_float_64: types.Bool32,
+        shader_int_64: types.Bool32,
+        shader_int_16: types.Bool32,
         shader_resource_residency: types.Bool32,
         shader_resource_min_lod: types.Bool32,
         sparse_binding: types.Bool32,

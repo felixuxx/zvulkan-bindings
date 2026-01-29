@@ -410,6 +410,11 @@ pub const LayerProperties = extern struct {
 // Vulkan Loader
 // ============================================================================
 
+pub const LoaderError = error{
+    FunctionNotAvailable,
+    EnumerationFailed,
+};
+
 pub const Loader = struct {
     library_handle: platform.LibraryHandle,
     vkGetInstanceProcAddr: PFN_vkGetInstanceProcAddr,
@@ -446,6 +451,50 @@ pub const Loader = struct {
 
     pub fn deinit(self: *Loader) void {
         platform.unloadLibrary(self.library_handle);
+    }
+
+    /// Enumerates available instance extensions.
+    ///
+    /// If `p_layer_name` is null, returns all available instance extensions.
+    /// If `p_layer_name` is provided, returns extensions for that specific layer.
+    ///
+    /// The caller is responsible for freeing the returned slice using the same allocator.
+    ///
+    /// Returns an error if:
+    /// - `vkEnumerateInstanceExtensionProperties` is not available
+    /// - The Vulkan call fails
+    /// - Memory allocation fails
+    pub fn getVulkanInstanceExtensions(
+        self: *const Loader,
+        allocator: std.mem.Allocator,
+        p_layer_name: ?[:0]const u8,
+    ) LoaderError![]ExtensionProperties {
+        const enumerate_fn = self.vkEnumerateInstanceExtensionProperties orelse
+            return LoaderError.FunctionNotAvailable;
+
+        // First call: get the count
+        var extension_count: u32 = 0;
+        const layer_name_ptr: ?[*:0]const u8 = if (p_layer_name) |name| name.ptr else null;
+        const result = enumerate_fn(layer_name_ptr, &extension_count, null);
+
+        if (result != .success and result != .incomplete) {
+            return LoaderError.EnumerationFailed;
+        }
+
+        if (extension_count == 0) {
+            return try allocator.alloc(ExtensionProperties, 0);
+        }
+
+        // Second call: get the actual data
+        const extension_list = try allocator.alloc(ExtensionProperties, extension_count);
+        errdefer allocator.free(extension_list);
+
+        const result2 = enumerate_fn(layer_name_ptr, &extension_count, extension_list.ptr);
+        if (result2 != .success) {
+            return LoaderError.EnumerationFailed;
+        }
+
+        return extension_list;
     }
 
     fn loadGlobalFunction(self: *Loader, comptime name: [:0]const u8, comptime FnType: type) ?FnType {
