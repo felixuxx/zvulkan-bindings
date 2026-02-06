@@ -394,6 +394,20 @@ pub fn main() !void {
     std.debug.print("\nTesting Intel performance query structures...\n", .{});
     testIntelPerformanceQueryStructures();
 
+    // Test instance creation structures
+    std.debug.print("\nTesting instance creation structures...\n", .{});
+    testInstanceCreationStructures();
+
+    // Test layer enumeration
+    std.debug.print("\nTesting layer enumeration...\n", .{});
+    try testLayerEnumeration(&loader, allocator);
+
+    // Test physical device format queries
+    if (device_count > 0) {
+        std.debug.print("\nTesting physical device format queries...\n", .{});
+        try testPhysicalDeviceFormatQueries(&instance_dispatch, physical_devices[0]);
+    }
+
     std.debug.print("\n✓ All tests completed successfully!\n", .{});
 }
 
@@ -2450,4 +2464,207 @@ fn testIntelPerformanceQueryStructures() void {
     _ = config_info;
 
     std.debug.print("  ✓ Intel performance query structures initialized successfully\n", .{});
+}
+
+fn testInstanceCreationStructures() void {
+    // Test ApplicationInfo with various configurations
+    const app_info_minimal = vk.core_1_0.ApplicationInfo{
+        .p_application_name = null,
+        .application_version = 0,
+        .p_engine_name = null,
+        .engine_version = 0,
+        .api_version = vk.constants.API_VERSION_1_0,
+    };
+
+    const app_info_full = vk.core_1_0.ApplicationInfo{
+        .p_application_name = "Test Application",
+        .application_version = vk.constants.makeApiVersion(0, 1, 0, 0),
+        .p_engine_name = "Test Engine",
+        .engine_version = vk.constants.makeApiVersion(0, 1, 0, 0),
+        .api_version = vk.constants.makeApiVersion(0, 1, 3, 0),
+    };
+
+    // Test InstanceCreateInfo with no extensions/layers
+    const instance_info_minimal = vk.core_1_0.InstanceCreateInfo{
+        .flags = 0,
+        .p_application_info = &app_info_minimal,
+        .enabled_layer_count = 0,
+        .pp_enabled_layer_names = null,
+        .enabled_extension_count = 0,
+        .pp_enabled_extension_names = null,
+    };
+    _ = instance_info_minimal;
+
+    // Test InstanceCreateInfo with extensions
+    const extension_names = [_][*:0]const u8{ vk.khr_surface.KHR_SURFACE_EXTENSION_NAME };
+    const instance_info_with_extensions = vk.core_1_0.InstanceCreateInfo{
+        .flags = 0,
+        .p_application_info = &app_info_full,
+        .enabled_layer_count = 0,
+        .pp_enabled_layer_names = null,
+        .enabled_extension_count = extension_names.len,
+        .pp_enabled_extension_names = &extension_names,
+    };
+    _ = instance_info_with_extensions;
+
+    // Test InstanceCreateInfo with layers (empty for now, but structure is correct)
+    const layer_names: [0][*:0]const u8 = undefined;
+    const instance_info_with_layers = vk.core_1_0.InstanceCreateInfo{
+        .flags = 0,
+        .p_application_info = &app_info_full,
+        .enabled_layer_count = 0,
+        .pp_enabled_layer_names = &layer_names,
+        .enabled_extension_count = 0,
+        .pp_enabled_extension_names = null,
+    };
+    _ = instance_info_with_layers;
+
+    std.debug.print("  ✓ Instance creation structures initialized successfully\n", .{});
+}
+
+fn testLayerEnumeration(loader: *const vk.Loader, allocator: std.mem.Allocator) !void {
+    const enumerate_fn = loader.vkEnumerateInstanceLayerProperties orelse {
+        std.debug.print("  ⚠ Layer enumeration not available\n", .{});
+        return;
+    };
+
+    // First call: get the count
+    var layer_count: u32 = 0;
+    const result = enumerate_fn(&layer_count, null);
+
+    if (result != .success and result != .incomplete) {
+        std.debug.print("  ⚠ Layer enumeration failed: {}\n", .{result});
+        return;
+    }
+
+    if (layer_count == 0) {
+        std.debug.print("  Found 0 layers\n", .{});
+        return;
+    }
+
+    // Second call: get the actual data
+    // LayerProperties is defined in vk.zig, accessed via vk module
+    const layers = try allocator.alloc(vk.vk.LayerProperties, layer_count);
+    defer allocator.free(layers);
+
+    const result2 = enumerate_fn(&layer_count, layers.ptr);
+    if (result2 != .success) {
+        std.debug.print("  ⚠ Layer enumeration failed: {}\n", .{result2});
+        return;
+    }
+
+    std.debug.print("  Found {} layers\n", .{layers.len});
+
+    // Print first few layers
+    const max_print = @min(layers.len, 5);
+    for (layers[0..max_print], 0..) |layer, i| {
+        const name_slice = std.mem.sliceTo(&layer.layer_name, 0);
+        const desc_slice = std.mem.sliceTo(&layer.description, 0);
+        std.debug.print("    Layer {}: {s} (spec: {}.{}.{}, impl: {})\n", .{
+            i,
+            name_slice,
+            vk.constants.versionMajor(layer.spec_version),
+            vk.constants.versionMinor(layer.spec_version),
+            vk.constants.versionPatch(layer.spec_version),
+            layer.implementation_version,
+        });
+        if (desc_slice.len > 0) {
+            std.debug.print("      Description: {s}\n", .{desc_slice});
+        }
+    }
+    if (layers.len > max_print) {
+        std.debug.print("    ... and {} more\n", .{layers.len - max_print});
+    }
+
+    std.debug.print("  ✓ Layer enumeration completed successfully\n", .{});
+}
+
+fn testPhysicalDeviceFormatQueries(instance_dispatch: *const vk.InstanceDispatch, physical_device: vk.PhysicalDevice) !void {
+    // Test GetPhysicalDeviceFormatProperties
+    var format_props = vk.core_1_0.FormatProperties{};
+    instance_dispatch.vkGetPhysicalDeviceFormatProperties(physical_device, .r8g8b8a8_unorm, &format_props);
+
+    // Test GetPhysicalDeviceImageFormatProperties
+    var image_format_props = std.mem.zeroes(vk.core_1_0.ImageFormatProperties);
+    const image_result = instance_dispatch.vkGetPhysicalDeviceImageFormatProperties(
+        physical_device,
+        .r8g8b8a8_unorm,
+        .@"2d",
+        .optimal,
+        .{ .color_attachment = true },
+        .{},
+        &image_format_props,
+    );
+    _ = image_result;
+
+    // Test GetPhysicalDeviceSparseImageFormatProperties
+    var sparse_format_count: u32 = 0;
+    instance_dispatch.vkGetPhysicalDeviceSparseImageFormatProperties(
+        physical_device,
+        .r8g8b8a8_unorm,
+        .@"2d",
+        1, // samples
+        .{ .color_attachment = true },
+        .optimal,
+        &sparse_format_count,
+        null,
+    );
+
+    if (sparse_format_count > 0) {
+        const sparse_props = try std.heap.page_allocator.alloc(vk.core_1_0.SparseImageFormatProperties, sparse_format_count);
+        defer std.heap.page_allocator.free(sparse_props);
+
+        instance_dispatch.vkGetPhysicalDeviceSparseImageFormatProperties(
+            physical_device,
+            .r8g8b8a8_unorm,
+            .@"2d",
+            1,
+            .{ .color_attachment = true },
+            .optimal,
+            &sparse_format_count,
+            sparse_props.ptr,
+        );
+    }
+
+    // Test Vulkan 1.1+ format queries if available
+    if (instance_dispatch.vkGetPhysicalDeviceFormatProperties2) |get_format_props2| {
+        var format_props2 = vk.core_1_1.FormatProperties2{
+            .format_properties = undefined,
+        };
+        get_format_props2(physical_device, .r8g8b8a8_unorm, &format_props2);
+    }
+
+    if (instance_dispatch.vkGetPhysicalDeviceImageFormatProperties2) |get_image_format_props2| {
+        const image_format_info2 = vk.core_1_1.PhysicalDeviceImageFormatInfo2{
+            .format = .r8g8b8a8_unorm,
+            .type = .@"2d",
+            .tiling = .optimal,
+            .usage = .{ .color_attachment = true },
+            .flags = .{},
+        };
+        var image_format_props2 = std.mem.zeroes(vk.core_1_1.ImageFormatProperties2);
+        const image_result2 = get_image_format_props2(physical_device, &image_format_info2, &image_format_props2);
+        _ = image_result2;
+    }
+
+    if (instance_dispatch.vkGetPhysicalDeviceSparseImageFormatProperties2) |get_sparse_format_props2| {
+        const sparse_format_info2 = vk.core_1_1.PhysicalDeviceSparseImageFormatInfo2{
+            .format = .r8g8b8a8_unorm,
+            .type = .@"2d",
+            .samples = vk.types.SampleCountFlagBits.@"1",
+            .usage = .{ .color_attachment = true },
+            .tiling = .optimal,
+        };
+        var sparse_format_count2: u32 = 0;
+        get_sparse_format_props2(physical_device, &sparse_format_info2, &sparse_format_count2, null);
+
+        if (sparse_format_count2 > 0) {
+            const sparse_props2 = try std.heap.page_allocator.alloc(vk.core_1_1.SparseImageFormatProperties2, sparse_format_count2);
+            defer std.heap.page_allocator.free(sparse_props2);
+
+            get_sparse_format_props2(physical_device, &sparse_format_info2, &sparse_format_count2, sparse_props2.ptr);
+        }
+    }
+
+    std.debug.print("  ✓ Physical device format queries completed successfully\n", .{});
 }
