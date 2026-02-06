@@ -843,6 +843,7 @@ pub const DeviceDispatch = struct {
     vkCmdSetEvent: PFN_vkCmdSetEvent,
     vkCmdResetEvent: PFN_vkCmdResetEvent,
     vkCmdWaitEvents: PFN_vkCmdWaitEvents,
+    vkCmdPipelineBarrier: PFN_vkCmdPipelineBarrier,
 
     // Advanced synchronization functions (Phase 3)
     vkCreateSemaphoreWithTypesKHR: ?PFN_vkCreateSemaphoreWithTypesKHR = null,
@@ -888,7 +889,6 @@ pub const DeviceDispatch = struct {
     vkCmdSetEvent2: ?PFN_vkCmdSetEvent2 = null,
     vkCmdResetEvent2: ?PFN_vkCmdResetEvent2 = null,
     vkCmdWaitEvents2: ?PFN_vkCmdWaitEvents2 = null,
-    vkCmdPipelineBarrier: ?PFN_vkCmdPipelineBarrier = null,
     vkCmdPipelineBarrier2: ?PFN_vkCmdPipelineBarrier2 = null,
     vkQueueSubmit2: ?PFN_vkQueueSubmit2 = null,
     vkCmdWriteTimestamp2: ?PFN_vkCmdWriteTimestamp2 = null,
@@ -1079,6 +1079,7 @@ pub const DeviceDispatch = struct {
             .vkCmdSetEvent = try loadDeviceFunction(get_proc, device, "vkCmdSetEvent", PFN_vkCmdSetEvent),
             .vkCmdResetEvent = try loadDeviceFunction(get_proc, device, "vkCmdResetEvent", PFN_vkCmdResetEvent),
             .vkCmdWaitEvents = try loadDeviceFunction(get_proc, device, "vkCmdWaitEvents", PFN_vkCmdWaitEvents),
+            .vkCmdPipelineBarrier = try loadDeviceFunction(get_proc, device, "vkCmdPipelineBarrier", PFN_vkCmdPipelineBarrier),
 
             // Advanced synchronization functions
             .vkCreateSemaphoreWithTypesKHR = loadOptionalDeviceFunction(get_proc, device, "vkCreateSemaphoreWithTypesKHR", PFN_vkCreateSemaphoreWithTypesKHR),
@@ -1118,7 +1119,6 @@ pub const DeviceDispatch = struct {
             .vkCmdSetEvent2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetEvent2", PFN_vkCmdSetEvent2),
             .vkCmdResetEvent2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdResetEvent2", PFN_vkCmdResetEvent2),
             .vkCmdWaitEvents2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdWaitEvents2", PFN_vkCmdWaitEvents2),
-            .vkCmdPipelineBarrier = loadOptionalDeviceFunction(get_proc, device, "vkCmdPipelineBarrier", PFN_vkCmdPipelineBarrier),
             .vkCmdPipelineBarrier2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdPipelineBarrier2", PFN_vkCmdPipelineBarrier2),
             .vkQueueSubmit2 = loadOptionalDeviceFunction(get_proc, device, "vkQueueSubmit2", PFN_vkQueueSubmit2),
             .vkCmdWriteTimestamp2 = loadOptionalDeviceFunction(get_proc, device, "vkCmdWriteTimestamp2", PFN_vkCmdWriteTimestamp2),
