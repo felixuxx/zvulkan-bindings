@@ -147,9 +147,6 @@ pub const PFN_vkCreateGraphicsPipelines = *const fn (Device, types.PipelineCache
 pub const PFN_vkCreateComputePipelines = *const fn (Device, types.PipelineCache, u32, [*]const core_1_0.ComputePipelineCreateInfo, ?*const types.AllocationCallbacks, [*]types.Pipeline) callconv(.c) Result;
 pub const PFN_vkDestroyPipeline = *const fn (Device, types.Pipeline, ?*const types.AllocationCallbacks) callconv(.c) void;
 
-// Timeline semaphore functions
-pub const PFN_vkCreateSemaphoreWithTypesKHR = *const fn (Device, [*]const core_1_2.SemaphoreTypeCreateInfo, ?*const types.AllocationCallbacks, *types.Semaphore) callconv(.c) Result;
-
 // Pipeline cache management
 pub const PFN_vkCreatePipelineCache = *const fn (Device, *const core_1_0.PipelineCacheCreateInfo, ?*const types.AllocationCallbacks, *types.PipelineCache) callconv(.c) Result;
 pub const PFN_vkDestroyPipelineCache = *const fn (Device, types.PipelineCache, ?*const types.AllocationCallbacks) callconv(.c) void;
@@ -845,9 +842,6 @@ pub const DeviceDispatch = struct {
     vkCmdWaitEvents: PFN_vkCmdWaitEvents,
     vkCmdPipelineBarrier: PFN_vkCmdPipelineBarrier,
 
-    // Advanced synchronization functions (Phase 3)
-    vkCreateSemaphoreWithTypesKHR: ?PFN_vkCreateSemaphoreWithTypesKHR = null,
-
     // Vulkan 1.1
     vkBindBufferMemory2: ?PFN_vkBindBufferMemory2 = null,
     vkBindImageMemory2: ?PFN_vkBindImageMemory2 = null,
@@ -1080,9 +1074,6 @@ pub const DeviceDispatch = struct {
             .vkCmdResetEvent = try loadDeviceFunction(get_proc, device, "vkCmdResetEvent", PFN_vkCmdResetEvent),
             .vkCmdWaitEvents = try loadDeviceFunction(get_proc, device, "vkCmdWaitEvents", PFN_vkCmdWaitEvents),
             .vkCmdPipelineBarrier = try loadDeviceFunction(get_proc, device, "vkCmdPipelineBarrier", PFN_vkCmdPipelineBarrier),
-
-            // Advanced synchronization functions
-            .vkCreateSemaphoreWithTypesKHR = loadOptionalDeviceFunction(get_proc, device, "vkCreateSemaphoreWithTypesKHR", PFN_vkCreateSemaphoreWithTypesKHR),
 
             // Vulkan 1.1
             .vkBindBufferMemory2 = loadOptionalDeviceFunction(get_proc, device, "vkBindBufferMemory2", PFN_vkBindBufferMemory2),
