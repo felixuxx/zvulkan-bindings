@@ -151,22 +151,22 @@ pub const PFN_vkDestroyPipeline = *const fn (Device, types.Pipeline, ?*const typ
 pub const PFN_vkCreateSemaphoreWithTypesKHR = *const fn (Device, [*]const core_1_2.SemaphoreTypeCreateInfo, ?*const types.AllocationCallbacks, *types.Semaphore) callconv(.c) Result;
 
 // Pipeline cache management
-pub const PFN_vkCreatePipelineCache = *const fn (Device, [*]const core_1_0.PipelineCacheCreateInfo, ?*const types.AllocationCallbacks, *types.PipelineCache) callconv(.c) Result;
+pub const PFN_vkCreatePipelineCache = *const fn (Device, *const core_1_0.PipelineCacheCreateInfo, ?*const types.AllocationCallbacks, *types.PipelineCache) callconv(.c) Result;
 pub const PFN_vkDestroyPipelineCache = *const fn (Device, types.PipelineCache, ?*const types.AllocationCallbacks) callconv(.c) void;
-pub const PFN_vkGetPipelineCacheData = *const fn (Device, types.PipelineCache, [*]u8, [*]usize) callconv(.c) Result;
-pub const PFN_vkMergePipelineCaches = *const fn (Device, u32, [*]const types.PipelineCache, *types.PipelineCache, [*]u8) callconv(.c) Result;
+pub const PFN_vkGetPipelineCacheData = *const fn (Device, types.PipelineCache, *usize, ?[*]u8) callconv(.c) Result;
+pub const PFN_vkMergePipelineCaches = *const fn (Device, types.PipelineCache, u32, [*]const types.PipelineCache) callconv(.c) Result;
 
 // Descriptor management functions
-pub const PFN_vkCreateDescriptorSetLayout = *const fn (Device, [*]const core_1_0.DescriptorSetLayoutCreateInfo, ?*const types.AllocationCallbacks, *types.DescriptorSetLayout) callconv(.c) Result;
+pub const PFN_vkCreateDescriptorSetLayout = *const fn (Device, *const core_1_0.DescriptorSetLayoutCreateInfo, ?*const types.AllocationCallbacks, *types.DescriptorSetLayout) callconv(.c) Result;
 pub const PFN_vkDestroyDescriptorSetLayout = *const fn (Device, types.DescriptorSetLayout, ?*const types.AllocationCallbacks) callconv(.c) void;
 
-pub const PFN_vkCreateDescriptorPool = *const fn (Device, [*]const core_1_0.DescriptorPoolCreateInfo, ?*const types.AllocationCallbacks, *types.DescriptorPool) callconv(.c) Result;
+pub const PFN_vkCreateDescriptorPool = *const fn (Device, *const core_1_0.DescriptorPoolCreateInfo, ?*const types.AllocationCallbacks, *types.DescriptorPool) callconv(.c) Result;
 pub const PFN_vkDestroyDescriptorPool = *const fn (Device, types.DescriptorPool, ?*const types.AllocationCallbacks) callconv(.c) void;
 pub const PFN_vkResetDescriptorPool = *const fn (Device, types.DescriptorPool, u32) callconv(.c) Result;
 
-pub const PFN_vkAllocateDescriptorSets = *const fn (Device, [*]const core_1_0.DescriptorSetAllocateInfo, ?*const types.AllocationCallbacks, [*]types.DescriptorSet) callconv(.c) Result;
+pub const PFN_vkAllocateDescriptorSets = *const fn (Device, *const core_1_0.DescriptorSetAllocateInfo, [*]types.DescriptorSet) callconv(.c) Result;
 
-pub const PFN_vkFreeDescriptorSets = *const fn (Device, u32, [*]types.DescriptorSet, ?*const types.AllocationCallbacks) callconv(.c) void;
+pub const PFN_vkFreeDescriptorSets = *const fn (Device, types.DescriptorPool, u32, [*]const types.DescriptorSet) callconv(.c) Result;
 
 pub const PFN_vkUpdateDescriptorSets = *const fn (Device, u32, [*]const core_1_0.WriteDescriptorSet, u32, [*]const core_1_0.CopyDescriptorSet) callconv(.c) void;
 
@@ -297,7 +297,7 @@ pub const PFN_vkCmdResetEvent = *const fn (CommandBuffer, types.Event, types.Pip
 pub const PFN_vkCmdWaitEvents = *const fn (CommandBuffer, u32, [*]const types.Event, types.PipelineStageFlags, types.PipelineStageFlags, u32, [*]const core_1_0.MemoryBarrier, u32, [*]const core_1_0.BufferMemoryBarrier, u32, [*]const core_1_0.ImageMemoryBarrier) callconv(.c) void;
 
 // Query management functions
-pub const PFN_vkGetQueryPoolResults = *const fn (Device, types.QueryPool, u32, u32, types.DeviceSize, types.DeviceSize, types.QueryResultFlags) callconv(.c) Result;
+pub const PFN_vkGetQueryPoolResults = *const fn (Device, types.QueryPool, u32, u32, usize, ?[*]u8, types.DeviceSize, types.QueryResultFlags) callconv(.c) Result;
 
 // Mesh shader functions
 pub const PFN_vkCmdDrawMeshTasksNV = *const fn (CommandBuffer, u32, u32) callconv(.c) void;

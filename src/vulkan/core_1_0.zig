@@ -507,8 +507,8 @@ pub const CommandBufferInheritanceInfo = extern struct {
     subpass: u32,
     framebuffer: types.Framebuffer,
     occlusion_query_enable: types.Bool32,
-    query_flags: u32,
-    pipeline_statistics: u32,
+    query_flags: types.QueryControlFlags,
+    pipeline_statistics: u32, // QueryPipelineStatisticFlags - using u32 for ABI compatibility
 };
 
 // ============================================================================
@@ -893,8 +893,8 @@ pub const DescriptorImageInfo = extern struct {
 
 pub const DescriptorBufferInfo = extern struct {
     buffer: types.Buffer,
-    offset: u64 = 0,
-    range: u64 = 0xFFFFFFFFFFFFFFFF, // WHOLE_SIZE equivalent
+    offset: types.DeviceSize = 0,
+    range: types.DeviceSize = 0xFFFFFFFFFFFFFFFF, // WHOLE_SIZE equivalent
 };
 
 test "descriptor structures compilation" {
@@ -983,8 +983,8 @@ pub const BufferMemoryBarrier = extern struct {
     src_queue_family_index: u32 = 0,
     dst_queue_family_index: u32 = 0,
     buffer: types.Buffer,
-    offset: u64 = 0,
-    size: u64 = 0xFFFFFFFFFFFFFFFF, // WHOLE_SIZE equivalent
+    offset: types.DeviceSize = 0,
+    size: types.DeviceSize = 0xFFFFFFFFFFFFFFFF, // WHOLE_SIZE equivalent
 };
 
 pub const ImageMemoryBarrier = extern struct {
@@ -1001,9 +1001,9 @@ pub const ImageMemoryBarrier = extern struct {
 };
 
 pub const BufferCopy = extern struct {
-    src_offset: u64 = 0,
-    dst_offset: u64 = 0,
-    size: u64 = 0,
+    src_offset: types.DeviceSize = 0,
+    dst_offset: types.DeviceSize = 0,
+    size: types.DeviceSize = 0,
 };
 
 pub const ImageCopy = extern struct {
@@ -1015,7 +1015,7 @@ pub const ImageCopy = extern struct {
 };
 
 pub const BufferImageCopy = extern struct {
-    buffer_offset: u64 = 0,
+    buffer_offset: types.DeviceSize = 0,
     buffer_row_length: u32 = 0,
     buffer_image_height: u32 = 0,
     image_subresource: types.ImageSubresourceLayers,
@@ -1040,8 +1040,7 @@ pub const ImageResolve = extern struct {
 
 pub const ClearAttachment = extern struct {
     aspect_mask: types.ImageAspectFlags,
-    color_attachment: u32 = 0,
-    image_view: types.ImageView,
+    color_attachment: u32,
     clear_value: types.ClearValue,
 };
 
