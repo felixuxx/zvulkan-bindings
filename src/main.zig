@@ -298,6 +298,42 @@ pub fn main() !void {
     std.debug.print("\nTesting render pass structures...\n", .{});
     testRenderPassStructures();
 
+    // Test synchronization structures
+    std.debug.print("\nTesting synchronization structures...\n", .{});
+    testSynchronizationStructures();
+
+    // Test Vulkan 1.1+ memory structures
+    std.debug.print("\nTesting Vulkan 1.1+ memory structures...\n", .{});
+    testVulkan11MemoryStructures();
+
+    // Test Vulkan 1.2+ features and properties
+    std.debug.print("\nTesting Vulkan 1.2+ features and properties...\n", .{});
+    testVulkan12FeaturesAndProperties();
+
+    // Test Vulkan 1.3+ features and properties
+    std.debug.print("\nTesting Vulkan 1.3+ features and properties...\n", .{});
+    testVulkan13FeaturesAndProperties();
+
+    // Test indirect command structures
+    std.debug.print("\nTesting indirect command structures...\n", .{});
+    testIndirectCommandStructures();
+
+    // Test image and buffer view structures
+    std.debug.print("\nTesting image and buffer view structures...\n", .{});
+    testImageViewStructures();
+
+    // Test pipeline cache structures
+    std.debug.print("\nTesting pipeline cache structures...\n", .{});
+    testPipelineCacheStructures();
+
+    // Test shader module structures
+    std.debug.print("\nTesting shader module structures...\n", .{});
+    testShaderModuleStructures();
+
+    // Test more extension structures
+    std.debug.print("\nTesting more extension structures...\n", .{});
+    testMoreExtensionStructures();
+
     std.debug.print("\n✓ All tests completed successfully!\n", .{});
 }
 
@@ -1243,4 +1279,422 @@ fn testRenderPassStructures() void {
     _ = subpass_dep;
 
     std.debug.print("  ✓ Render pass structures initialized successfully\n", .{});
+}
+
+fn testSynchronizationStructures() void {
+    // Test FenceCreateInfo
+    const fence_info = vk.core_1_0.FenceCreateInfo{
+        .flags = 0,
+    };
+    _ = fence_info;
+
+    // Test SemaphoreCreateInfo
+    const semaphore_info = vk.core_1_0.SemaphoreCreateInfo{
+        .flags = 0,
+    };
+    _ = semaphore_info;
+
+    // Test EventCreateInfo
+    const event_info = vk.core_1_0.EventCreateInfo{
+        .flags = 0,
+    };
+    _ = event_info;
+
+    // Test SemaphoreSignalInfo (Vulkan 1.2)
+    const semaphore_signal_info = vk.core_1_2.SemaphoreSignalInfo{
+        .semaphore = 0, // Dummy handle
+        .value = 1,
+    };
+    _ = semaphore_signal_info;
+
+    std.debug.print("  ✓ Synchronization structures initialized successfully\n", .{});
+}
+
+fn testVulkan11MemoryStructures() void {
+    // Test BindBufferMemoryInfo
+    const bind_buffer_info = vk.core_1_1.BindBufferMemoryInfo{
+        .buffer = 0, // Dummy handle
+        .memory = 0, // Dummy handle
+        .memory_offset = 0,
+    };
+    _ = bind_buffer_info;
+
+    // Test BindImageMemoryInfo
+    const bind_image_info = vk.core_1_1.BindImageMemoryInfo{
+        .image = 0, // Dummy handle
+        .memory = 0, // Dummy handle
+        .memory_offset = 0,
+    };
+    _ = bind_image_info;
+
+    // Test MemoryDedicatedAllocateInfo
+    const dedicated_alloc_info = vk.core_1_1.MemoryDedicatedAllocateInfo{
+        .image = 0, // Dummy handle (or buffer)
+        .buffer = 0, // Dummy handle
+    };
+    _ = dedicated_alloc_info;
+
+    // Test MemoryAllocateFlagsInfo
+    const alloc_flags_info = vk.core_1_1.MemoryAllocateFlagsInfo{
+        .flags = .{},
+        .device_mask = 1,
+    };
+    _ = alloc_flags_info;
+
+    // Test MemoryDedicatedRequirements
+    const dedicated_reqs = vk.core_1_1.MemoryDedicatedRequirements{
+        .prefers_dedicated_allocation = 0,
+        .requires_dedicated_allocation = 0,
+    };
+    _ = dedicated_reqs;
+
+    // Test DeviceGroupDeviceCreateInfo
+    const empty_physical_devices: [0]vk.types.PhysicalDevice = undefined;
+    const device_group_info = vk.core_1_1.DeviceGroupDeviceCreateInfo{
+        .physical_device_count = 0,
+        .p_physical_devices = &empty_physical_devices,
+    };
+    _ = device_group_info;
+
+    // Test PhysicalDeviceGroupProperties
+    const device_group_props = vk.core_1_1.PhysicalDeviceGroupProperties{
+        .physical_device_count = 0,
+        .physical_devices = undefined,
+        .subset_allocation = 0,
+    };
+    _ = device_group_props;
+
+    std.debug.print("  ✓ Vulkan 1.1+ memory structures initialized successfully\n", .{});
+}
+
+fn testVulkan12FeaturesAndProperties() void {
+    // Test PhysicalDeviceVulkan12Features
+    const features12 = vk.core_1_2.PhysicalDeviceVulkan12Features{
+        .sampler_mirror_clamp_to_edge = 0,
+        .draw_indirect_count = 0,
+        .storage_buffer_8_bit_access = 0,
+        .uniform_and_storage_buffer_8_bit_access = 0,
+        .storage_push_constant_8_bit = 0,
+        .shader_buffer_int64_atomics = 0,
+        .shader_shared_int64_atomics = 0,
+        .shader_float16 = 0,
+        .shader_int8 = 0,
+        .descriptor_indexing = 0,
+        .shader_input_attachment_array_dynamic_indexing = 0,
+        .shader_uniform_texel_buffer_array_dynamic_indexing = 0,
+        .shader_storage_texel_buffer_array_dynamic_indexing = 0,
+        .shader_uniform_buffer_array_non_uniform_indexing = 0,
+        .shader_sampled_image_array_non_uniform_indexing = 0,
+        .shader_storage_buffer_array_non_uniform_indexing = 0,
+        .shader_storage_image_array_non_uniform_indexing = 0,
+        .shader_input_attachment_array_non_uniform_indexing = 0,
+        .shader_uniform_texel_buffer_array_non_uniform_indexing = 0,
+        .shader_storage_texel_buffer_array_non_uniform_indexing = 0,
+        .descriptor_binding_uniform_buffer_update_after_bind = 0,
+        .descriptor_binding_sampled_image_update_after_bind = 0,
+        .descriptor_binding_storage_image_update_after_bind = 0,
+        .descriptor_binding_storage_buffer_update_after_bind = 0,
+        .descriptor_binding_uniform_texel_buffer_update_after_bind = 0,
+        .descriptor_binding_storage_texel_buffer_update_after_bind = 0,
+        .descriptor_binding_update_unused_while_pending = 0,
+        .descriptor_binding_partially_bound = 0,
+        .descriptor_binding_variable_descriptor_count = 0,
+        .runtime_descriptor_array = 0,
+        .sampler_filter_minmax = 0,
+        .scalar_block_layout = 0,
+        .imageless_framebuffer = 0,
+        .uniform_buffer_standard_layout = 0,
+        .shader_subgroup_extended_types = 0,
+        .separate_depth_stencil_layouts = 0,
+        .host_query_reset = 0,
+        .timeline_semaphore = 0,
+        .buffer_device_address = 0,
+        .buffer_device_address_capture_replay = 0,
+        .buffer_device_address_multi_device = 0,
+        .vulkan_memory_model = 0,
+        .vulkan_memory_model_device_scope = 0,
+        .vulkan_memory_model_availability_visibility_chains = 0,
+        .shader_output_viewport_index = 0,
+        .shader_output_layer = 0,
+        .subgroup_broadcast_dynamic_id = 0,
+    };
+    _ = features12;
+
+    // Test PhysicalDeviceVulkan12Properties
+    const props12 = vk.core_1_2.PhysicalDeviceVulkan12Properties{
+        .driver_id = @enumFromInt(0), // Use first enum value
+        .driver_name = undefined,
+        .driver_info = undefined,
+        .conformance_version = .{ .major = 1, .minor = 0, .subminor = 0, .patch = 0 },
+        .denorm_behavior_independence = .all,
+        .rounding_mode_independence = .all,
+        .shader_signed_zero_inf_nan_preserve_float16 = 0,
+        .shader_signed_zero_inf_nan_preserve_float32 = 0,
+        .shader_signed_zero_inf_nan_preserve_float64 = 0,
+        .shader_denorm_preserve_float16 = 0,
+        .shader_denorm_preserve_float32 = 0,
+        .shader_denorm_preserve_float64 = 0,
+        .shader_denorm_flush_to_zero_float16 = 0,
+        .shader_denorm_flush_to_zero_float32 = 0,
+        .shader_denorm_flush_to_zero_float64 = 0,
+        .shader_rounding_mode_rte_float16 = 0,
+        .shader_rounding_mode_rte_float32 = 0,
+        .shader_rounding_mode_rte_float64 = 0,
+        .shader_rounding_mode_rtz_float16 = 0,
+        .shader_rounding_mode_rtz_float32 = 0,
+        .shader_rounding_mode_rtz_float64 = 0,
+        .max_update_after_bind_descriptors_in_all_pools = 0,
+        .shader_uniform_buffer_array_non_uniform_indexing_native = 0,
+        .shader_sampled_image_array_non_uniform_indexing_native = 0,
+        .shader_storage_buffer_array_non_uniform_indexing_native = 0,
+        .shader_storage_image_array_non_uniform_indexing_native = 0,
+        .shader_input_attachment_array_non_uniform_indexing_native = 0,
+        .robust_buffer_access_update_after_bind = 0,
+        .quad_divergent_implicit_lod = 0,
+        .max_per_stage_descriptor_update_after_bind_samplers = 0,
+        .max_per_stage_descriptor_update_after_bind_uniform_buffers = 0,
+        .max_per_stage_descriptor_update_after_bind_storage_buffers = 0,
+        .max_per_stage_descriptor_update_after_bind_sampled_images = 0,
+        .max_per_stage_descriptor_update_after_bind_storage_images = 0,
+        .max_per_stage_descriptor_update_after_bind_input_attachments = 0,
+        .max_descriptor_set_update_after_bind_samplers = 0,
+        .max_descriptor_set_update_after_bind_uniform_buffers = 0,
+        .max_descriptor_set_update_after_bind_uniform_buffers_dynamic = 0,
+        .max_descriptor_set_update_after_bind_storage_buffers = 0,
+        .max_descriptor_set_update_after_bind_storage_buffers_dynamic = 0,
+        .max_descriptor_set_update_after_bind_sampled_images = 0,
+        .max_descriptor_set_update_after_bind_storage_images = 0,
+        .max_descriptor_set_update_after_bind_input_attachments = 0,
+        .supported_depth_resolve_modes = .{},
+        .supported_stencil_resolve_modes = .{},
+        .independent_resolve_none = 0,
+        .independent_resolve = 0,
+        .filter_minmax_single_component_formats = 0,
+        .filter_minmax_image_component_mapping = 0,
+        .max_timeline_semaphore_value_difference = 0,
+        .framebuffer_integer_color_sample_counts = .{ .@"1" = true },
+    };
+    _ = props12;
+
+    // Test DeviceMemoryOpaqueCaptureAddressInfo
+    const opaque_addr_info = vk.core_1_2.DeviceMemoryOpaqueCaptureAddressInfo{
+        .memory = 0, // Dummy handle
+    };
+    _ = opaque_addr_info;
+
+    std.debug.print("  ✓ Vulkan 1.2+ features and properties initialized successfully\n", .{});
+}
+
+fn testVulkan13FeaturesAndProperties() void {
+    // Test PhysicalDeviceVulkan13Features
+    const features13 = vk.core_1_3.PhysicalDeviceVulkan13Features{
+        .robust_image_access = 0,
+        .inline_uniform_block = 0,
+        .descriptor_binding_inline_uniform_block_update_after_bind = 0,
+        .pipeline_creation_cache_control = 0,
+        .private_data = 0,
+        .shader_demote_to_helper_invocation = 0,
+        .shader_terminate_invocation = 0,
+        .subgroup_size_control = 0,
+        .compute_full_subgroups = 0,
+        .synchronization2 = 0,
+        .texture_compression_astc_hdr = 0,
+        .shader_zero_initialize_workgroup_memory = 0,
+        .dynamic_rendering = 0,
+        .shader_integer_dot_product = 0,
+        .maintenance4 = 0,
+    };
+    _ = features13;
+
+    // Test PhysicalDeviceVulkan13Properties
+    const props13 = vk.core_1_3.PhysicalDeviceVulkan13Properties{
+        .min_subgroup_size = 1,
+        .max_subgroup_size = 64,
+        .max_compute_workgroup_subgroups = 0,
+        .required_subgroup_size_stages = .{ .compute = true },
+        .max_inline_uniform_block_size = 0,
+        .max_per_stage_descriptor_inline_uniform_blocks = 0,
+        .max_per_stage_descriptor_update_after_bind_inline_uniform_blocks = 0,
+        .max_descriptor_set_inline_uniform_blocks = 0,
+        .max_descriptor_set_update_after_bind_inline_uniform_blocks = 0,
+        .max_inline_uniform_total_size = 0,
+        .integer_dot_product_8_bit_unsigned_accelerated = 0,
+        .integer_dot_product_8_bit_signed_accelerated = 0,
+        .integer_dot_product_8_bit_mixed_signedness_accelerated = 0,
+        .integer_dot_product_4_x_8_bit_packed_unsigned_accelerated = 0,
+        .integer_dot_product_4_x_8_bit_packed_signed_accelerated = 0,
+        .integer_dot_product_4_x_8_bit_packed_mixed_signedness_accelerated = 0,
+        .integer_dot_product_16_bit_unsigned_accelerated = 0,
+        .integer_dot_product_16_bit_signed_accelerated = 0,
+        .integer_dot_product_16_bit_mixed_signedness_accelerated = 0,
+        .integer_dot_product_32_bit_unsigned_accelerated = 0,
+        .integer_dot_product_32_bit_signed_accelerated = 0,
+        .integer_dot_product_32_bit_mixed_signedness_accelerated = 0,
+        .integer_dot_product_64_bit_unsigned_accelerated = 0,
+        .integer_dot_product_64_bit_signed_accelerated = 0,
+        .integer_dot_product_64_bit_mixed_signedness_accelerated = 0,
+        .integer_dot_product_accumulating_saturating_8_bit_unsigned_accelerated = 0,
+        .integer_dot_product_accumulating_saturating_8_bit_signed_accelerated = 0,
+        .integer_dot_product_accumulating_saturating_8_bit_mixed_signedness_accelerated = 0,
+        .integer_dot_product_accumulating_saturating_4_x_8_bit_packed_unsigned_accelerated = 0,
+        .integer_dot_product_accumulating_saturating_4_x_8_bit_packed_signed_accelerated = 0,
+        .integer_dot_product_accumulating_saturating_4_x_8_bit_packed_mixed_signedness_accelerated = 0,
+        .integer_dot_product_accumulating_saturating_16_bit_unsigned_accelerated = 0,
+        .integer_dot_product_accumulating_saturating_16_bit_signed_accelerated = 0,
+        .integer_dot_product_accumulating_saturating_16_bit_mixed_signedness_accelerated = 0,
+        .integer_dot_product_accumulating_saturating_32_bit_unsigned_accelerated = 0,
+        .integer_dot_product_accumulating_saturating_32_bit_signed_accelerated = 0,
+        .integer_dot_product_accumulating_saturating_32_bit_mixed_signedness_accelerated = 0,
+        .integer_dot_product_accumulating_saturating_64_bit_unsigned_accelerated = 0,
+        .integer_dot_product_accumulating_saturating_64_bit_signed_accelerated = 0,
+        .integer_dot_product_accumulating_saturating_64_bit_mixed_signedness_accelerated = 0,
+        .storage_texel_buffer_offset_alignment_bytes = 0,
+        .storage_texel_buffer_offset_single_texel_alignment = 0,
+        .uniform_texel_buffer_offset_alignment_bytes = 0,
+        .uniform_texel_buffer_offset_single_texel_alignment = 0,
+        .max_buffer_size = 0,
+    };
+    _ = props13;
+
+    std.debug.print("  ✓ Vulkan 1.3+ features and properties initialized successfully\n", .{});
+}
+
+fn testIndirectCommandStructures() void {
+    // Test DrawIndirectCommand
+    const draw_cmd = vk.core_1_0.DrawIndirectCommand{
+        .vertex_count = 3,
+        .instance_count = 1,
+        .first_vertex = 0,
+        .first_instance = 0,
+    };
+    _ = draw_cmd;
+
+    // Test DrawIndexedIndirectCommand
+    const draw_indexed_cmd = vk.core_1_0.DrawIndexedIndirectCommand{
+        .index_count = 3,
+        .instance_count = 1,
+        .first_index = 0,
+        .vertex_offset = 0,
+        .first_instance = 0,
+    };
+    _ = draw_indexed_cmd;
+
+    // Test DispatchIndirectCommand
+    const dispatch_cmd = vk.core_1_0.DispatchIndirectCommand{
+        .x = 1,
+        .y = 1,
+        .z = 1,
+    };
+    _ = dispatch_cmd;
+
+    std.debug.print("  ✓ Indirect command structures initialized successfully\n", .{});
+}
+
+fn testImageViewStructures() void {
+    // Test ImageViewCreateInfo
+    const image_view_info = vk.core_1_0.ImageViewCreateInfo{
+        .flags = 0,
+        .image = 0, // Dummy handle
+        .view_type = .@"2d",
+        .format = .r8g8b8a8_unorm,
+        .components = .{ .r = .identity, .g = .identity, .b = .identity, .a = .identity },
+        .subresource_range = .{
+            .aspect_mask = .{ .color = true },
+            .base_mip_level = 0,
+            .level_count = 1,
+            .base_array_layer = 0,
+            .layer_count = 1,
+        },
+    };
+    _ = image_view_info;
+
+    // Test BufferViewCreateInfo
+    const buffer_view_info = vk.core_1_0.BufferViewCreateInfo{
+        .flags = 0,
+        .buffer = 0, // Dummy handle
+        .format = .r32_uint,
+        .offset = 0,
+        .range = vk.constants.WHOLE_SIZE,
+    };
+    _ = buffer_view_info;
+
+    std.debug.print("  ✓ Image and buffer view structures initialized successfully\n", .{});
+}
+
+fn testPipelineCacheStructures() void {
+    // Test PipelineCacheCreateInfo
+    const cache_info = vk.core_1_0.PipelineCacheCreateInfo{
+        .flags = 0,
+        .initial_data_size = 0,
+        .p_initial_data = null,
+    };
+    _ = cache_info;
+
+    std.debug.print("  ✓ Pipeline cache structures initialized successfully\n", .{});
+}
+
+fn testShaderModuleStructures() void {
+    // Test ShaderModuleCreateInfo
+    const empty_code: [0]u32 = undefined;
+    const shader_info = vk.core_1_0.ShaderModuleCreateInfo{
+        .flags = 0,
+        .code_size = 0,
+        .p_code = &empty_code,
+    };
+    _ = shader_info;
+
+    // Test PipelineShaderStageCreateInfo
+    const shader_stage_info = vk.core_1_0.PipelineShaderStageCreateInfo{
+        .flags = 0,
+        .stage = 0x00000001, // VK_SHADER_STAGE_VERTEX_BIT
+        .module = 0, // Dummy handle (u64)
+        .p_name = "main",
+        .p_specialization_info = null,
+    };
+    _ = shader_stage_info;
+
+    std.debug.print("  ✓ Shader module structures initialized successfully\n", .{});
+}
+
+fn testMoreExtensionStructures() void {
+    // Test KHR_push_descriptor structures
+    const push_descriptor_props = vk.extensions.khr_push_descriptor.PhysicalDevicePushDescriptorPropertiesKHR{
+        .max_push_descriptors = 32,
+    };
+    _ = push_descriptor_props;
+
+    const empty_writes: [0]vk.core_1_0.WriteDescriptorSet = undefined;
+    const push_descriptor_info = vk.extensions.khr_push_descriptor.PushDescriptorSetInfoKHR{
+        .stage_flags = .{ .vertex = true, .fragment = true },
+        .layout = 0, // Dummy handle (u64)
+        .set = 0,
+        .descriptor_write_count = 0,
+        .p_descriptor_writes = &empty_writes,
+    };
+    _ = push_descriptor_info;
+
+    // Test KHR_descriptor_update_template structures
+    const update_template_entry = vk.extensions.khr_descriptor_update_template.DescriptorUpdateTemplateEntryKHR{
+        .dst_binding = 0,
+        .dst_array_element = 0,
+        .descriptor_count = 1,
+        .descriptor_type = .uniform_buffer,
+        .offset = 0,
+        .stride = 0,
+    };
+    _ = update_template_entry;
+
+    const update_template_info = vk.extensions.khr_descriptor_update_template.DescriptorUpdateTemplateCreateInfoKHR{
+        .flags = 0,
+        .descriptor_update_entry_count = 0,
+        .p_descriptor_update_entries = undefined,
+        .template_type = .descriptor_set_khr,
+        .descriptor_set_layout = 0, // Dummy handle
+        .pipeline_bind_point = .graphics,
+        .pipeline_layout = 0, // Dummy handle
+        .set = 0,
+    };
+    _ = update_template_info;
+
+    std.debug.print("  ✓ More extension structures initialized successfully\n", .{});
 }

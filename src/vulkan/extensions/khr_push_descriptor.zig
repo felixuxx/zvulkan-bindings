@@ -3,6 +3,7 @@
 
 const types = @import("../types.zig");
 const constants = @import("../constants.zig");
+const core_1_0 = @import("../core_1_0.zig");
 
 pub const KHR_PUSH_DESCRIPTOR_EXTENSION_NAME = "VK_KHR_push_descriptor";
 
@@ -30,10 +31,10 @@ pub const PushDescriptorSetInfoKHR = extern struct {
     s_type: types.StructureType = .push_descriptor_set_info_khr,
     p_next: ?*const anyopaque = null,
     stage_flags: types.ShaderStageFlags,
-    layout: types.PipelineLayout = .null_handle,
+    layout: types.PipelineLayout = 0,
     set: u32 = 0,
     descriptor_write_count: u32,
-    p_descriptor_writes: [*]const types.WriteDescriptorSet,
+    p_descriptor_writes: [*]const core_1_0.WriteDescriptorSet,
 };
 
 pub const PushDescriptorUpdateInfoKHR = extern struct {
@@ -41,9 +42,9 @@ pub const PushDescriptorUpdateInfoKHR = extern struct {
     p_next: ?*const anyopaque = null,
     descriptor_set: types.DescriptorSet,
     descriptor_write_count: u32,
-    p_descriptor_writes: ?[*]const types.WriteDescriptorSet = null,
+    p_descriptor_writes: ?[*]const core_1_0.WriteDescriptorSet = null,
     descriptor_copy_count: u32,
-    p_descriptor_copies: ?[*]const types.CopyDescriptorSet = null,
+    p_descriptor_copies: ?[*]const core_1_0.CopyDescriptorSet = null,
     inline_uniform_block_write_count: u32,
     p_inline_uniform_block_writes: ?[*]const WriteDescriptorSetInlineUniformBlockKHR = null,
 };
