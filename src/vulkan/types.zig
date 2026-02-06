@@ -274,6 +274,16 @@ pub const StructureType = enum(i32) {
     rendering_area_info_khr = 1000300002,
     subresource_layout_2_khr = 1000300003,
     bind_memory_status_khr = 1000331000,
+
+    // VK_EXT_mesh_shader
+    physical_device_mesh_shader_features_ext = 1000328000,
+    physical_device_mesh_shader_properties_ext = 1000328001,
+
+    // VK_EXT_validation_features
+    validation_features_ext = 1000247000,
+
+    // VK_AMD_memory_overallocation_behavior
+    device_memory_overallocation_create_info_amd = 1000181000,
     _,
 };
 

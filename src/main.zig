@@ -262,6 +262,42 @@ pub fn main() !void {
     std.debug.print("\nTesting Vulkan 1.3+ structures...\n", .{});
     testVulkan13PlusStructures();
 
+    // Test Vulkan 1.2 structures
+    std.debug.print("\nTesting Vulkan 1.2 structures...\n", .{});
+    testVulkan12Structures();
+
+    // Test Vulkan 1.4 structures
+    std.debug.print("\nTesting Vulkan 1.4 structures...\n", .{});
+    testVulkan14Structures();
+
+    // Test additional extension structures
+    std.debug.print("\nTesting additional extension structures...\n", .{});
+    testAdditionalExtensionStructures();
+
+    // Test flag types
+    std.debug.print("\nTesting flag types...\n", .{});
+    testFlagTypes();
+
+    // Test constants
+    std.debug.print("\nTesting constants...\n", .{});
+    testConstants();
+
+    // Test descriptor structures
+    std.debug.print("\nTesting descriptor structures...\n", .{});
+    testDescriptorStructures();
+
+    // Test sampler structures
+    std.debug.print("\nTesting sampler structures...\n", .{});
+    testSamplerStructures();
+
+    // Test query pool structures
+    std.debug.print("\nTesting query pool structures...\n", .{});
+    testQueryPoolStructures();
+
+    // Test render pass structures
+    std.debug.print("\nTesting render pass structures...\n", .{});
+    testRenderPassStructures();
+
     std.debug.print("\n✓ All tests completed successfully!\n", .{});
 }
 
@@ -276,7 +312,7 @@ fn testGraphicsPipelineStructures() void {
 
     // Test multisample state
     const multisample_state = vk.core_1_0.PipelineMultisampleStateCreateInfo{
-        .rasterization_samples = .@"4",
+        .rasterization_samples = vk.types.SampleCountFlagBits.@"4",
         .sample_shading_enable = 0,
         .min_sample_shading = 0.0,
         .alpha_to_coverage_enable = 0,
@@ -800,4 +836,411 @@ fn testVulkan13PlusStructures() void {
     _ = submit_info2;
 
     std.debug.print("  ✓ Vulkan 1.3+ structures initialized successfully\n", .{});
+}
+
+fn testVulkan12Structures() void {
+    // Test SemaphoreTypeCreateInfo
+    const semaphore_type_info = vk.core_1_2.SemaphoreTypeCreateInfo{
+        .semaphore_type = vk.types.SemaphoreType.binary,
+        .initial_value = 0,
+    };
+    _ = semaphore_type_info;
+
+    // Test TimelineSemaphoreSubmitInfo
+    const timeline_submit_info = vk.core_1_2.TimelineSemaphoreSubmitInfo{
+        .wait_semaphore_value_count = 0,
+        .p_wait_semaphore_values = null,
+        .signal_semaphore_value_count = 0,
+        .p_signal_semaphore_values = null,
+    };
+    _ = timeline_submit_info;
+
+    // Test SemaphoreWaitInfo
+    const semaphore_wait_info = vk.core_1_2.SemaphoreWaitInfo{
+        .flags = .{},
+        .semaphore_count = 0,
+        .p_semaphores = null,
+        .p_values = null,
+    };
+    _ = semaphore_wait_info;
+
+    // Test BufferDeviceAddressInfo
+    const buffer_addr_info = vk.core_1_2.BufferDeviceAddressInfo{
+        .buffer = 0, // Dummy handle
+    };
+    _ = buffer_addr_info;
+
+    std.debug.print("  ✓ Vulkan 1.2 structures initialized successfully\n", .{});
+}
+
+fn testVulkan14Structures() void {
+    // Test PhysicalDeviceVulkan14Features
+    // Note: core_1_4 is not exported in root, skip this test for now
+    // const features14 = vk.core_1_4.PhysicalDeviceVulkan14Features{
+    //     .global_priority_query = 0,
+    //     ...
+    // };
+    // _ = features14;
+    
+    std.debug.print("  ⚠ Vulkan 1.4 structures test skipped (core_1_4 not exported)\n", .{});
+}
+
+fn testAdditionalExtensionStructures() void {
+    // Test EXT_mesh_shader structures
+    const mesh_shader_features = vk.ext_mesh_shader.PhysicalDeviceMeshShaderFeaturesEXT{
+        .task_shader = 0,
+        .mesh_shader = 0,
+        .multiview_mesh_shader = 0,
+        .primitive_fragment_shading_rate_mesh_shader = 0,
+        .mesh_shader_queries = 0,
+    };
+    _ = mesh_shader_features;
+
+    const mesh_shader_props = vk.ext_mesh_shader.PhysicalDeviceMeshShaderPropertiesEXT{
+        .max_task_work_group_total_count = 0,
+        .max_task_work_group_count = .{ 0, 0, 0 },
+        .max_task_work_group_invocations = 0,
+        .max_task_work_group_size = .{ 0, 0, 0 },
+        .max_task_payload_size = 0,
+        .max_task_shared_memory_size = 0,
+        .max_task_payload_and_shared_memory_size = 0,
+        .max_mesh_work_group_total_count = 0,
+        .max_mesh_work_group_count = .{ 0, 0, 0 },
+        .max_mesh_work_group_invocations = 0,
+        .max_mesh_work_group_size = .{ 0, 0, 0 },
+        .max_mesh_shared_memory_size = 0,
+        .max_mesh_payload_and_shared_memory_size = 0,
+        .max_mesh_output_memory_size = 0,
+        .max_mesh_payload_and_output_memory_size = 0,
+        .max_mesh_output_components = 0,
+        .max_mesh_output_vertices = 0,
+        .max_mesh_output_primitives = 0,
+        .max_mesh_output_layers = 0,
+        .max_mesh_multiview_view_count = 0,
+        .mesh_output_per_vertex_granularity = 0,
+        .mesh_output_per_primitive_granularity = 0,
+        .max_preferred_task_work_group_invocations = 0,
+        .max_preferred_mesh_work_group_invocations = 0,
+        .prefers_local_invocation_vertex_output = 0,
+        .prefers_local_invocation_primitive_output = 0,
+        .prefers_compact_vertex_output = 0,
+        .prefers_compact_primitive_output = 0,
+    };
+    _ = mesh_shader_props;
+
+    const draw_mesh_tasks_cmd = vk.ext_mesh_shader.DrawMeshTasksIndirectCommandEXT{
+        .group_count_x = 1,
+        .group_count_y = 1,
+        .group_count_z = 1,
+    };
+    _ = draw_mesh_tasks_cmd;
+
+    // Test EXT_validation_features structures
+    const validation_features = vk.ext_validation_features.ValidationFeaturesEXT{
+        .enabled_validation_feature_count = 0,
+        .p_enabled_validation_features = null,
+        .disabled_validation_feature_count = 0,
+        .p_disabled_validation_features = null,
+    };
+    _ = validation_features;
+
+    // Test KHR_fragment_shading_rate structures
+    // Access via vk module's extensions export
+    const fragment_shading_rate_props = vk.extensions.khr_fragment_shading_rate.PhysicalDeviceFragmentShadingRatePropertiesKHR{
+        .min_fragment_shading_rate_attachment_texel_size = .{ .width = 1, .height = 1 },
+        .max_fragment_shading_rate_attachment_texel_size = .{ .width = 256, .height = 256 },
+        .max_fragment_shading_rate_attachment_texel_size_aspect_ratio = 256,
+        .primitive_fragment_shading_rate_with_multiple_viewports = 0,
+        .layered_shading_rate_attachments = 0,
+        .fragment_shading_rate_non_trivial_combiner_ops = 0,
+        .max_fragment_size = .{ .width = 256, .height = 256 },
+        .max_fragment_size_aspect_ratio = 256,
+        .max_fragment_shading_rate_coverage_samples = 0,
+        .max_fragment_shading_rate_rasterization_samples = .{ .@"1" = true },
+        .fragment_shading_rate_with_shader_depth_stencil_writes = 0,
+        .fragment_shading_rate_with_sample_mask = 0,
+        .fragment_shading_rate_with_shader_sample_mask = 0,
+        .fragment_shading_rate_with_conservative_rasterization = 0,
+        .fragment_shading_rate_with_fragment_shader_interlock = 0,
+        .fragment_shading_rate_with_custom_sample_locations = 0,
+        .fragment_shading_rate_strict_multiply_combiner = 0,
+    };
+    _ = fragment_shading_rate_props;
+
+    // Test AMD_memory_overallocation structures
+    const memory_overallocation_info = vk.amd_memory_overallocation.DeviceMemoryOverallocationCreateInfoAMD{
+        .overallocation_behavior = .default_amd,
+    };
+    _ = memory_overallocation_info;
+
+    std.debug.print("  ✓ Additional extension structures initialized successfully\n", .{});
+}
+
+fn testFlagTypes() void {
+    // Test QueueFlags
+    const queue_flags = vk.types.QueueFlags{
+        .graphics = true,
+        .compute = false,
+        .transfer = false,
+        .sparse_binding = false,
+        .protected = false,
+    };
+    _ = queue_flags;
+
+    // Test MemoryPropertyFlags
+    const mem_props = vk.types.MemoryPropertyFlags{
+        .device_local = true,
+        .host_visible = true,
+        .host_coherent = false,
+        .host_cached = false,
+        .lazily_allocated = false,
+        .protected = false,
+    };
+    _ = mem_props;
+
+    // Test BufferUsageFlags
+    const buffer_usage = vk.types.BufferUsageFlags{
+        .transfer_src = true,
+        .transfer_dst = true,
+        .uniform_texel_buffer = false,
+        .storage_texel_buffer = false,
+        .uniform_buffer = true,
+        .storage_buffer = false,
+        .index_buffer = true,
+        .vertex_buffer = true,
+        .indirect_buffer = false,
+    };
+    _ = buffer_usage;
+
+    // Test ImageAspectFlags
+    const aspect_flags = vk.types.ImageAspectFlags{
+        .color = true,
+        .depth = true,
+        .stencil = false,
+        .metadata = false,
+    };
+    _ = aspect_flags;
+
+    // Test PipelineStageFlags
+    const stage_flags = vk.types.PipelineStageFlags{
+        .top_of_pipe = true,
+        .draw_indirect = true,
+        .vertex_input = true,
+        .vertex_shader = true,
+        .fragment_shader = true,
+        .color_attachment_output = true,
+        .compute_shader = false,
+        .transfer = false,
+        .bottom_of_pipe = false,
+        .host = false,
+        .all_graphics = false,
+        .all_commands = false,
+    };
+    _ = stage_flags;
+
+    // Test AccessFlags
+    const access_flags = vk.types.AccessFlags{
+        .indirect_command_read = true,
+        .index_read = true,
+        .vertex_attribute_read = true,
+        .uniform_read = true,
+        .input_attachment_read = false,
+        .shader_read = true,
+        .shader_write = false,
+        .color_attachment_read = false,
+        .color_attachment_write = true,
+        .depth_stencil_attachment_read = false,
+        .depth_stencil_attachment_write = true,
+        .transfer_read = false,
+        .transfer_write = false,
+        .host_read = false,
+        .host_write = false,
+        .memory_read = false,
+        .memory_write = false,
+    };
+    _ = access_flags;
+
+    std.debug.print("  ✓ Flag types initialized successfully\n", .{});
+}
+
+fn testConstants() void {
+    // Test API version constants
+    const version_1_0 = vk.constants.makeApiVersion(0, 1, 0, 0);
+    const version_1_3 = vk.constants.makeApiVersion(0, 1, 3, 0);
+    // Verify versions are valid
+    std.debug.assert(vk.constants.versionMajor(version_1_0) == 1);
+    std.debug.assert(vk.constants.versionMinor(version_1_0) == 0);
+    std.debug.assert(vk.constants.versionMajor(version_1_3) == 1);
+    std.debug.assert(vk.constants.versionMinor(version_1_3) == 3);
+
+    // Test version extraction
+    const major = vk.constants.versionMajor(version_1_3);
+    const minor = vk.constants.versionMinor(version_1_3);
+    const patch = vk.constants.versionPatch(version_1_3);
+    _ = major;
+    _ = minor;
+    _ = patch;
+
+    // Test queue family constants
+    const queue_family_ignored = vk.constants.QUEUE_FAMILY_IGNORED;
+    _ = queue_family_ignored;
+
+    // Test null handle constant
+    const null_handle = vk.constants.NULL_HANDLE;
+    _ = null_handle;
+
+    std.debug.print("  ✓ Constants verified successfully\n", .{});
+}
+
+fn testDescriptorStructures() void {
+    // Test DescriptorSetLayoutCreateInfo
+    const layout_info = vk.core_1_0.DescriptorSetLayoutCreateInfo{
+        .flags = 0,
+        .binding_count = 0,
+        .p_bindings = null,
+    };
+    _ = layout_info;
+
+    // Test DescriptorPoolCreateInfo
+    const pool_info = vk.core_1_0.DescriptorPoolCreateInfo{
+        .flags = 0,
+        .max_sets = 10,
+        .pool_size_count = 0,
+        .p_pool_sizes = null,
+    };
+    _ = pool_info;
+
+    // Test DescriptorSetAllocateInfo
+    const alloc_info = vk.core_1_0.DescriptorSetAllocateInfo{
+        .descriptor_pool = 0, // Dummy handle
+        .descriptor_set_count = 1,
+        .p_set_layouts = undefined,
+    };
+    _ = alloc_info;
+
+    // Test WriteDescriptorSet
+    const write_info = vk.core_1_0.WriteDescriptorSet{
+        .dst_set = 0, // Dummy handle
+        .dst_binding = 0,
+        .dst_array_element = 0,
+        .descriptor_count = 1,
+        .descriptor_type = .uniform_buffer,
+        .p_image_info = null,
+        .p_buffer_info = null,
+        .p_texel_buffer_view = null,
+    };
+    _ = write_info;
+
+    // Test DescriptorBufferInfo
+    const desc_buffer_info = vk.core_1_0.DescriptorBufferInfo{
+        .buffer = 0, // Dummy handle
+        .offset = 0,
+        .range = 256,
+    };
+    _ = desc_buffer_info;
+
+    // Test DescriptorImageInfo
+    const desc_image_info = vk.core_1_0.DescriptorImageInfo{
+        .sampler = 0, // Dummy handle
+        .image_view = 0, // Dummy handle
+        .image_layout = .shader_read_only_optimal,
+    };
+    _ = desc_image_info;
+
+    std.debug.print("  ✓ Descriptor structures initialized successfully\n", .{});
+}
+
+fn testSamplerStructures() void {
+    // Test SamplerCreateInfo
+    const sampler_info = vk.core_1_0.SamplerCreateInfo{
+        .mag_filter = .linear,
+        .min_filter = .linear,
+        .mipmap_mode = .linear,
+        .address_mode_u = .repeat,
+        .address_mode_v = .repeat,
+        .address_mode_w = .repeat,
+        .mip_lod_bias = 0.0,
+        .anisotropy_enable = 0,
+        .max_anisotropy = 1.0,
+        .compare_enable = 0,
+        .compare_op = .never,
+        .min_lod = 0.0,
+        .max_lod = 0.0,
+        .border_color = .float_transparent_black,
+        .unnormalized_coordinates = 0,
+    };
+    _ = sampler_info;
+
+    std.debug.print("  ✓ Sampler structures initialized successfully\n", .{});
+}
+
+fn testQueryPoolStructures() void {
+    // Test QueryPoolCreateInfo
+    const query_pool_info = vk.core_1_0.QueryPoolCreateInfo{
+        .flags = 0,
+        .query_type = .occlusion,
+        .query_count = 100,
+        .pipeline_statistics = 0,
+    };
+    _ = query_pool_info;
+
+    std.debug.print("  ✓ Query pool structures initialized successfully\n", .{});
+}
+
+fn testRenderPassStructures() void {
+    // Test RenderPassCreateInfo
+    const empty_subpasses: [0]vk.core_1_0.SubpassDescription = undefined;
+    const render_pass_info = vk.core_1_0.RenderPassCreateInfo{
+        .flags = 0,
+        .attachment_count = 0,
+        .p_attachments = null,
+        .subpass_count = 0,
+        .p_subpasses = &empty_subpasses,
+        .dependency_count = 0,
+        .p_dependencies = null,
+    };
+    _ = render_pass_info;
+
+    // Test AttachmentDescription
+    const attachment_desc = vk.core_1_0.AttachmentDescription{
+        .flags = 0,
+        .format = .r8g8b8a8_unorm,
+        .samples = .{ .@"1" = true },
+        .load_op = .clear,
+        .store_op = .store,
+        .stencil_load_op = .dont_care,
+        .stencil_store_op = .dont_care,
+        .initial_layout = .undefined,
+        .final_layout = .present_src_khr,
+    };
+    _ = attachment_desc;
+
+    // Test SubpassDescription
+    const subpass_desc = vk.core_1_0.SubpassDescription{
+        .flags = 0,
+        .pipeline_bind_point = .graphics,
+        .input_attachment_count = 0,
+        .p_input_attachments = null,
+        .color_attachment_count = 0,
+        .p_color_attachments = null,
+        .p_resolve_attachments = null,
+        .p_depth_stencil_attachment = null,
+        .preserve_attachment_count = 0,
+        .p_preserve_attachments = null,
+    };
+    _ = subpass_desc;
+
+    // Test SubpassDependency
+    const subpass_dep = vk.core_1_0.SubpassDependency{
+        .src_subpass = vk.constants.SUBPASS_EXTERNAL,
+        .dst_subpass = 0,
+        .src_stage_mask = .{ .color_attachment_output = true },
+        .dst_stage_mask = .{ .fragment_shader = true },
+        .src_access_mask = .{ .color_attachment_write = true },
+        .dst_access_mask = .{ .shader_read = true },
+        .dependency_flags = .{},
+    };
+    _ = subpass_dep;
+
+    std.debug.print("  ✓ Render pass structures initialized successfully\n", .{});
 }
