@@ -34,7 +34,7 @@ pub const RenderingInfoFlagsKHR = packed struct(u32) {
 // ============================================================================
 
 pub const RenderingInfo = extern struct {
-    s_type: types.StructureType = .rendering_info_khr,
+    s_type: types.StructureType = .rendering_info,
     p_next: ?*const anyopaque = null,
     flags: RenderingInfoFlagsKHR = .{},
     render_area: types.Rect2D,
@@ -47,12 +47,12 @@ pub const RenderingInfo = extern struct {
 };
 
 pub const RenderingAttachmentInfo = extern struct {
-    s_type: types.StructureType = .rendering_attachment_info_khr,
+    s_type: types.StructureType = .rendering_attachment_info,
     p_next: ?*const anyopaque = null,
-    image_view: types.ImageView = .null_handle,
+    image_view: types.ImageView = 0,
     image_layout: types.ImageLayout,
     resolve_mode: types.ResolveModeFlags,
-    resolve_image_view: types.ImageView = .null_handle,
+    resolve_image_view: types.ImageView = 0,
     resolve_image_layout: types.ImageLayout,
     load_op: types.AttachmentLoadOp,
     store_op: types.AttachmentStoreOp,
@@ -62,14 +62,14 @@ pub const RenderingAttachmentInfo = extern struct {
 pub const RenderingFragmentDensityMapAttachmentInfoEXT = extern struct {
     s_type: types.StructureType = .rendering_fragment_density_map_attachment_info_ext,
     p_next: ?*const anyopaque = null,
-    image_view: types.ImageView = .null_handle,
+    image_view: types.ImageView = 0,
     image_layout: types.ImageLayout,
 };
 
 pub const RenderingFragmentShadingRateAttachmentInfoKHR = extern struct {
     s_type: types.StructureType = .rendering_fragment_shading_rate_attachment_info_khr,
     p_next: ?*const anyopaque = null,
-    image_view: types.ImageView = .null_handle,
+    image_view: types.ImageView = 0,
     image_layout: types.ImageLayout,
     shading_rate: types.FragmentShadingRateKHR,
 };

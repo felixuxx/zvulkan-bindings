@@ -465,7 +465,7 @@ pub const Loader = struct {
         self: *const Loader,
         allocator: std.mem.Allocator,
         p_layer_name: ?[:0]const u8,
-    ) LoaderError![]ExtensionProperties {
+    ) ![]ExtensionProperties {
         const enumerate_fn = self.vkEnumerateInstanceExtensionProperties orelse
             return LoaderError.FunctionNotAvailable;
 
@@ -479,7 +479,10 @@ pub const Loader = struct {
         }
 
         if (extension_count == 0) {
-            return try allocator.alloc(ExtensionProperties, 0);
+            const empty_list = allocator.alloc(ExtensionProperties, 0) catch |err| switch (err) {
+                error.OutOfMemory => return LoaderError.EnumerationFailed,
+            };
+            return empty_list;
         }
 
         // Second call: get the actual data

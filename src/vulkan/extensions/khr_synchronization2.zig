@@ -20,14 +20,14 @@ pub const StageMask2 = types.PipelineStageFlags2;
 
 pub const AccessMask2 = types.AccessFlags2;
 
-pub const DependencyFlagsKHR = types.DependencyFlagsKHR;
+pub const DependencyFlagsKHR = types.DependencyFlags;
 
 // ============================================================================
 // Structures
 // ============================================================================
 
 pub const MemoryBarrier2 = extern struct {
-    s_type: types.StructureType = .memory_barrier_2_khr,
+    s_type: types.StructureType = .memory_barrier_2,
     p_next: ?*const anyopaque = null,
     src_stage_mask: StageMask2,
     src_access_mask: AccessMask2,
@@ -36,7 +36,7 @@ pub const MemoryBarrier2 = extern struct {
 };
 
 pub const BufferMemoryBarrier2 = extern struct {
-    s_type: types.StructureType = .buffer_memory_barrier_2_khr,
+    s_type: types.StructureType = .buffer_memory_barrier_2,
     p_next: ?*const anyopaque = null,
     src_stage_mask: StageMask2,
     src_access_mask: AccessMask2,
@@ -50,7 +50,7 @@ pub const BufferMemoryBarrier2 = extern struct {
 };
 
 pub const ImageMemoryBarrier2 = extern struct {
-    s_type: types.StructureType = .image_memory_barrier_2_khr,
+    s_type: types.StructureType = .image_memory_barrier_2,
     p_next: ?*const anyopaque = null,
     src_stage_mask: StageMask2,
     src_access_mask: AccessMask2,

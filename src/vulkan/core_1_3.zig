@@ -325,13 +325,13 @@ pub const BlitImageInfo2 = extern struct {
 pub const SubmitInfo2 = extern struct {
     s_type: types.StructureType = .submit_info_2,
     p_next: ?*const anyopaque = null,
-    flags: types.SubmitFlags = .{},
+    flags: u32 = 0,
     wait_semaphore_info_count: u32 = 0,
-    p_wait_semaphore_infos: ?[*]const types.SemaphoreSubmitInfo = null,
+    p_wait_semaphore_infos: ?[*]const SemaphoreSubmitInfo = null,
     command_buffer_info_count: u32 = 0,
     p_command_buffer_infos: ?[*]const CommandBufferSubmitInfo = null,
     signal_semaphore_info_count: u32 = 0,
-    p_signal_semaphore_infos: ?[*]const types.SemaphoreSubmitInfo = null,
+    p_signal_semaphore_infos: ?[*]const SemaphoreSubmitInfo = null,
 };
 
 pub const CommandBufferSubmitInfo = extern struct {
