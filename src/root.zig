@@ -21,6 +21,7 @@ pub const core_1_0 = vk.core_1_0;
 pub const core_1_1 = vk.core_1_1;
 pub const core_1_2 = vk.core_1_2;
 pub const core_1_3 = vk.core_1_3;
+pub const core_1_4 = vk.core_1_4;
 pub const extensions = vk.extensions;
 
 // Re-export commonly used modules (Legacy/Direct Access)

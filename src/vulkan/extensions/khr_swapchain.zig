@@ -32,7 +32,7 @@ pub const SwapchainCreateInfoKHR = extern struct {
     composite_alpha: khr_surface.CompositeAlphaFlagBitsKHR,
     present_mode: khr_surface.PresentModeKHR,
     clipped: types.Bool32,
-    old_swapchain: types.SwapchainKHR = .null_handle,
+    old_swapchain: types.SwapchainKHR = 0,
 };
 
 pub const PresentInfoKHR = extern struct {

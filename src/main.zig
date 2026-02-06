@@ -334,6 +334,34 @@ pub fn main() !void {
     std.debug.print("\nTesting more extension structures...\n", .{});
     testMoreExtensionStructures();
 
+    // Test memory barrier structures
+    std.debug.print("\nTesting memory barrier structures...\n", .{});
+    testMemoryBarrierStructures();
+
+    // Test copy structures
+    std.debug.print("\nTesting copy structures...\n", .{});
+    testCopyStructures();
+
+    // Test framebuffer structures
+    std.debug.print("\nTesting framebuffer structures...\n", .{});
+    testFramebufferStructures();
+
+    // Test swapchain structures
+    std.debug.print("\nTesting swapchain structures...\n", .{});
+    testSwapchainStructures();
+
+    // Test surface structures
+    std.debug.print("\nTesting surface structures...\n", .{});
+    testSurfaceStructures();
+
+    // Test advanced command buffer structures
+    std.debug.print("\nTesting advanced command buffer structures...\n", .{});
+    testCommandBufferStructuresAdvanced();
+
+    // Test physical device structures
+    std.debug.print("\nTesting physical device structures...\n", .{});
+    testPhysicalDeviceStructures();
+
     std.debug.print("\n✓ All tests completed successfully!\n", .{});
 }
 
@@ -911,14 +939,106 @@ fn testVulkan12Structures() void {
 
 fn testVulkan14Structures() void {
     // Test PhysicalDeviceVulkan14Features
-    // Note: core_1_4 is not exported in root, skip this test for now
-    // const features14 = vk.core_1_4.PhysicalDeviceVulkan14Features{
-    //     .global_priority_query = 0,
-    //     ...
-    // };
-    // _ = features14;
-    
-    std.debug.print("  ⚠ Vulkan 1.4 structures test skipped (core_1_4 not exported)\n", .{});
+    const features14 = vk.core_1_4.PhysicalDeviceVulkan14Features{
+        .global_priority_query = 0,
+        .shader_subgroup_rotate = 0,
+        .shader_subgroup_rotate_clustered = 0,
+        .shader_float_controls2 = 0,
+        .shader_expect_assume = 0,
+        .rectangular_lines = 0,
+        .bresenham_lines = 0,
+        .smooth_lines = 0,
+        .stippled_rectangular_lines = 0,
+        .stippled_bresenham_lines = 0,
+        .stippled_smooth_lines = 0,
+        .vertex_attribute_instance_rate_divisor = 0,
+        .vertex_attribute_instance_rate_zero_divisor = 0,
+        .index_type_uint8 = 0,
+        .dynamic_rendering_local_read = 0,
+        .maintenance5 = 0,
+        .maintenance6 = 0,
+        .pipeline_protected_access = 0,
+        .pipeline_robustness = 0,
+        .host_image_copy = 0,
+        .push_descriptor = 0,
+    };
+    _ = features14;
+
+    // Test PhysicalDeviceVulkan14Properties
+    const props14 = vk.core_1_4.PhysicalDeviceVulkan14Properties{
+        .line_sub_pixel_precision_bits = 0,
+        .max_vertex_attrib_divisor = 0,
+        .supports_non_zero_first_instance = 0,
+        .max_push_descriptors = 0,
+        .dynamic_rendering_local_read_depth_stencil_attachments = 0,
+        .dynamic_rendering_local_read_multisampled_attachments = 0,
+        .early_fragment_multisample_coverage_after_sample_counting = 0,
+        .early_fragment_sample_mask_test_before_sample_counting = 0,
+        .depth_stencil_swizzle_one_support = 0,
+        .polygon_mode_point_size = 0,
+        .non_strict_single_pixel_wide_lines_use_parallelogram = 0,
+        .non_strict_wide_lines_use_parallelogram = 0,
+        .block_texel_view_compatible_multiple_layers = 0,
+        .max_combined_image_sampler_descriptor_count = 0,
+        .fragment_shading_rate_clamp_combiner_inputs = 0,
+        .default_robustness_storage_buffers = 0,
+        .default_robustness_uniform_buffers = 0,
+        .default_robustness_vertex_inputs = 0,
+        .default_robustness_images = 0,
+        .copy_src_layout_count = 0,
+        .p_copy_src_layouts = null,
+        .copy_dst_layout_count = 0,
+        .p_copy_dst_layouts = null,
+    };
+    _ = props14;
+
+    // Test DeviceImageSubresourceInfoKHR
+    const device_image_info = vk.core_1_4.DeviceImageSubresourceInfoKHR{
+        .p_create_info = null,
+        .p_subresource = null,
+    };
+    _ = device_image_info;
+
+    // Test ImageSubresource2KHR
+    const subresource2 = vk.core_1_4.ImageSubresource2KHR{
+        .image_subresource = .{
+            .aspect_mask = .{ .color = true },
+            .mip_level = 0,
+            .array_layer = 0,
+        },
+    };
+    _ = subresource2;
+
+    // Test RenderingAreaInfoKHR
+    const rendering_area_info = vk.core_1_4.RenderingAreaInfoKHR{
+        .view_mask = 0,
+        .color_attachment_count = 0,
+        .p_color_attachment_formats = null,
+        .depth_attachment_format = .undefined,
+        .stencil_attachment_format = .undefined,
+    };
+    _ = rendering_area_info;
+
+    // Test SubresourceLayout2KHR
+    const subresource_layout2 = vk.core_1_4.SubresourceLayout2KHR{
+        .subresource_layout = .{
+            .offset = 0,
+            .size = 0,
+            .row_pitch = 0,
+            .array_pitch = 0,
+            .depth_pitch = 0,
+        },
+    };
+    _ = subresource_layout2;
+
+    // Test BindMemoryStatusKHR
+    var result: vk.types.Result = .success;
+    const bind_memory_status = vk.core_1_4.BindMemoryStatusKHR{
+        .p_result = &result,
+    };
+    _ = bind_memory_status;
+
+    std.debug.print("  ✓ Vulkan 1.4 structures initialized successfully\n", .{});
 }
 
 fn testAdditionalExtensionStructures() void {
@@ -1697,4 +1817,247 @@ fn testMoreExtensionStructures() void {
     _ = update_template_info;
 
     std.debug.print("  ✓ More extension structures initialized successfully\n", .{});
+}
+
+fn testMemoryBarrierStructures() void {
+    // Test MemoryBarrier
+    const memory_barrier = vk.core_1_0.MemoryBarrier{
+        .src_access_mask = .{ .shader_write = true },
+        .dst_access_mask = .{ .shader_read = true },
+    };
+    _ = memory_barrier;
+
+    // Test BufferMemoryBarrier
+    const buffer_barrier = vk.core_1_0.BufferMemoryBarrier{
+        .src_access_mask = .{ .transfer_write = true },
+        .dst_access_mask = .{ .shader_read = true },
+        .src_queue_family_index = vk.constants.QUEUE_FAMILY_IGNORED,
+        .dst_queue_family_index = vk.constants.QUEUE_FAMILY_IGNORED,
+        .buffer = 0, // Dummy handle
+        .offset = 0,
+        .size = vk.constants.WHOLE_SIZE,
+    };
+    _ = buffer_barrier;
+
+    // Test ImageMemoryBarrier
+    const image_barrier = vk.core_1_0.ImageMemoryBarrier{
+        .src_access_mask = .{ .transfer_write = true },
+        .dst_access_mask = .{ .shader_read = true },
+        .old_layout = .transfer_dst_optimal,
+        .new_layout = .shader_read_only_optimal,
+        .src_queue_family_index = vk.constants.QUEUE_FAMILY_IGNORED,
+        .dst_queue_family_index = vk.constants.QUEUE_FAMILY_IGNORED,
+        .image = 0, // Dummy handle
+        .subresource_range = .{
+            .aspect_mask = .{ .color = true },
+            .base_mip_level = 0,
+            .level_count = 1,
+            .base_array_layer = 0,
+            .layer_count = 1,
+        },
+    };
+    _ = image_barrier;
+
+    std.debug.print("  ✓ Memory barrier structures initialized successfully\n", .{});
+}
+
+fn testCopyStructures() void {
+    // Test BufferCopy
+    const buffer_copy = vk.core_1_0.BufferCopy{
+        .src_offset = 0,
+        .dst_offset = 0,
+        .size = 1024,
+    };
+    _ = buffer_copy;
+
+    // Test ImageCopy
+    const image_copy = vk.core_1_0.ImageCopy{
+        .src_subresource = .{
+            .aspect_mask = .{ .color = true },
+            .mip_level = 0,
+            .base_array_layer = 0,
+            .layer_count = 1,
+        },
+        .src_offset = .{ .x = 0, .y = 0, .z = 0 },
+        .dst_subresource = .{
+            .aspect_mask = .{ .color = true },
+            .mip_level = 0,
+            .base_array_layer = 0,
+            .layer_count = 1,
+        },
+        .dst_offset = .{ .x = 0, .y = 0, .z = 0 },
+        .extent = .{ .width = 256, .height = 256, .depth = 1 },
+    };
+    _ = image_copy;
+
+    // Test BufferImageCopy
+    const buffer_image_copy = vk.core_1_0.BufferImageCopy{
+        .buffer_offset = 0,
+        .buffer_row_length = 0,
+        .buffer_image_height = 0,
+        .image_subresource = .{
+            .aspect_mask = .{ .color = true },
+            .mip_level = 0,
+            .base_array_layer = 0,
+            .layer_count = 1,
+        },
+        .image_offset = .{ .x = 0, .y = 0, .z = 0 },
+        .image_extent = .{ .width = 256, .height = 256, .depth = 1 },
+    };
+    _ = buffer_image_copy;
+
+    std.debug.print("  ✓ Copy structures initialized successfully\n", .{});
+}
+
+fn testFramebufferStructures() void {
+    // Test FramebufferCreateInfo
+    const framebuffer_info = vk.core_1_0.FramebufferCreateInfo{
+        .flags = 0,
+        .render_pass = 0, // Dummy handle
+        .attachment_count = 0,
+        .p_attachments = null,
+        .width = 1920,
+        .height = 1080,
+        .layers = 1,
+    };
+    _ = framebuffer_info;
+
+    std.debug.print("  ✓ Framebuffer structures initialized successfully\n", .{});
+}
+
+fn testSwapchainStructures() void {
+    // Test SwapchainCreateInfoKHR
+    const swapchain_info = vk.khr_swapchain.SwapchainCreateInfoKHR{
+        .flags = .{},
+        .surface = 0, // Dummy handle
+        .min_image_count = 2,
+        .image_format = .r8g8b8a8_unorm,
+        .image_color_space = .srgb_nonlinear_khr,
+        .image_extent = .{ .width = 1920, .height = 1080 },
+        .image_array_layers = 1,
+        .image_usage = .{ .color_attachment = true },
+        .image_sharing_mode = .exclusive,
+        .queue_family_index_count = 0,
+        .p_queue_family_indices = null,
+        .pre_transform = .{ .identity_khr = true },
+        .composite_alpha = .{ .opaque_khr = true },
+        .present_mode = .fifo_khr,
+        .clipped = 1,
+        .old_swapchain = 0, // Dummy handle or null
+    };
+    _ = swapchain_info;
+
+    // Test PresentInfoKHR
+    const empty_swapchains: [0]vk.types.SwapchainKHR = undefined;
+    const empty_indices: [0]u32 = undefined;
+    const present_info = vk.khr_swapchain.PresentInfoKHR{
+        .wait_semaphore_count = 0,
+        .p_wait_semaphores = null,
+        .swapchain_count = 0,
+        .p_swapchains = &empty_swapchains,
+        .p_image_indices = &empty_indices,
+        .p_results = null,
+    };
+    _ = present_info;
+
+    std.debug.print("  ✓ Swapchain structures initialized successfully\n", .{});
+}
+
+fn testSurfaceStructures() void {
+    // Test SurfaceCapabilitiesKHR
+    const surface_caps = vk.khr_surface.SurfaceCapabilitiesKHR{
+        .min_image_count = 2,
+        .max_image_count = 0,
+        .current_extent = .{ .width = 1920, .height = 1080 },
+        .min_image_extent = .{ .width = 1, .height = 1 },
+        .max_image_extent = .{ .width = 8192, .height = 8192 },
+        .max_image_array_layers = 1,
+        .supported_transforms = .{ .identity_khr = true },
+        .current_transform = .{ .identity_khr = true },
+        .supported_composite_alpha = .{ .opaque_khr = true },
+        .supported_usage_flags = .{ .color_attachment = true },
+    };
+    _ = surface_caps;
+
+    // Test SurfaceFormatKHR
+    const surface_format = vk.khr_surface.SurfaceFormatKHR{
+        .format = .r8g8b8a8_unorm,
+        .color_space = .srgb_nonlinear_khr,
+    };
+    _ = surface_format;
+
+    std.debug.print("  ✓ Surface structures initialized successfully\n", .{});
+}
+
+fn testCommandBufferStructuresAdvanced() void {
+    // Test CommandBufferBeginInfo
+    const begin_info = vk.core_1_0.CommandBufferBeginInfo{
+        .flags = .{},
+        .p_inheritance_info = null,
+    };
+    _ = begin_info;
+
+    // Test CommandBufferInheritanceInfo
+    const inheritance_info = vk.core_1_0.CommandBufferInheritanceInfo{
+        .render_pass = 0, // Dummy handle
+        .subpass = 0,
+        .framebuffer = 0, // Dummy handle
+        .occlusion_query_enable = 0,
+        .query_flags = 0,
+        .pipeline_statistics = 0,
+    };
+    _ = inheritance_info;
+
+    // Test CommandPoolCreateInfo
+    const command_pool_info = vk.core_1_0.CommandPoolCreateInfo{
+        .flags = .{},
+        .queue_family_index = 0,
+    };
+    _ = command_pool_info;
+
+    // Test CommandBufferAllocateInfo
+    const allocate_info = vk.core_1_0.CommandBufferAllocateInfo{
+        .command_pool = 0, // Dummy handle
+        .level = .primary,
+        .command_buffer_count = 1,
+    };
+    _ = allocate_info;
+
+    std.debug.print("  ✓ Advanced command buffer structures initialized successfully\n", .{});
+}
+
+fn testPhysicalDeviceStructures() void {
+    // Test PhysicalDeviceProperties
+    const props = vk.core_1_0.PhysicalDeviceProperties{
+        .api_version = vk.constants.API_VERSION_1_3,
+        .driver_version = 0,
+        .vendor_id = 0,
+        .device_id = 0,
+        .device_type = .other,
+        .device_name = undefined,
+        .pipeline_cache_uuid = undefined,
+        .limits = undefined,
+        .sparse_properties = undefined,
+    };
+    _ = props;
+
+    // Test PhysicalDeviceMemoryProperties
+    const mem_props = vk.core_1_0.PhysicalDeviceMemoryProperties{
+        .memory_type_count = 0,
+        .memory_types = undefined,
+        .memory_heap_count = 0,
+        .memory_heaps = undefined,
+    };
+    _ = mem_props;
+
+    // Test QueueFamilyProperties
+    const queue_props = vk.core_1_0.QueueFamilyProperties{
+        .queue_flags = .{ .graphics = true },
+        .queue_count = 1,
+        .timestamp_valid_bits = 64,
+        .min_image_transfer_granularity = .{ .width = 1, .height = 1, .depth = 1 },
+    };
+    _ = queue_props;
+
+    std.debug.print("  ✓ Physical device structures initialized successfully\n", .{});
 }
