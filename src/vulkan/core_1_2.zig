@@ -325,7 +325,6 @@ pub const BindBufferMemoryInfo = extern struct {
     buffer: types.Buffer,
     memory: types.DeviceMemory,
     memory_offset: types.DeviceSize,
-    memory_size: types.DeviceSize,
 };
 
 pub const BindImageMemoryInfo = extern struct {
@@ -334,21 +333,22 @@ pub const BindImageMemoryInfo = extern struct {
     image: types.Image,
     memory: types.DeviceMemory,
     memory_offset: types.DeviceSize,
-    memory_size: types.DeviceSize,
-    memory_offset_index: u32,
 };
 
 pub const BindBufferMemoryDeviceGroupInfo = extern struct {
     s_type: types.StructureType = .bind_buffer_memory_device_group_info,
     p_next: ?*const anyopaque = null,
-    device_index: u32,
+    device_index_count: u32 = 0,
+    p_device_indices: ?[*]const u32 = null,
 };
 
 pub const BindImageMemoryDeviceGroupInfo = extern struct {
     s_type: types.StructureType = .bind_image_memory_device_group_info,
     p_next: ?*const anyopaque = null,
-    device_index: u32,
-    split_instance_bind: types.Bool32,
+    device_index_count: u32 = 0,
+    p_device_indices: ?[*]const u32 = null,
+    split_instance_bind_region_count: u32 = 0,
+    p_split_instance_bind_regions: ?[*]const types.Rect2D = null,
 };
 
 pub const MemoryDedicatedRequirements = extern struct {
@@ -356,7 +356,6 @@ pub const MemoryDedicatedRequirements = extern struct {
     p_next: ?*const anyopaque = null,
     prefers_dedicated_allocation: types.Bool32,
     requires_dedicated_allocation: types.Bool32,
-    dedicated_allocation: types.Bool32,
 };
 
 pub const MemoryDedicatedAllocateInfo = extern struct {
@@ -370,6 +369,7 @@ pub const MemoryAllocateFlagsInfo = extern struct {
     s_type: types.StructureType = .memory_allocate_flags_info,
     p_next: ?*const anyopaque = null,
     flags: types.MemoryAllocateFlags,
+    device_mask: u32,
 };
 
 pub const MemoryAllocateFlagBits = enum(u32) {
@@ -390,16 +390,15 @@ pub const MemoryAllocateFlags = types.Flags(MemoryAllocateFlagBits);
 pub const PhysicalDeviceExternalBufferInfo = extern struct {
     s_type: types.StructureType = .physical_device_external_buffer_info,
     p_next: ?*const anyopaque = null,
+    flags: types.BufferCreateFlags = .{},
+    usage: types.BufferUsageFlags = .{},
     handle_type: types.ExternalMemoryHandleTypeFlags,
 };
 
 pub const ExternalBufferProperties = extern struct {
     s_type: types.StructureType = .external_buffer_properties,
-    p_next: ?*const anyopaque = null,
-    external_memory_features: types.ExternalMemoryFeatureFlags,
-    export_from_imported_handle_types: types.ExternalMemoryHandleTypeFlags,
-    compatible_handle_types: types.ExternalMemoryHandleTypeFlags,
-    buffer_size_alignment: u64,
+    p_next: ?*anyopaque = null,
+    external_memory_properties: types.ExternalMemoryProperties,
 };
 
 pub const PhysicalDeviceExternalFenceInfo = extern struct {
@@ -410,10 +409,10 @@ pub const PhysicalDeviceExternalFenceInfo = extern struct {
 
 pub const ExternalFenceProperties = extern struct {
     s_type: types.StructureType = .external_fence_properties,
-    p_next: ?*const anyopaque = null,
+    p_next: ?*anyopaque = null,
     export_from_imported_handle_types: types.ExternalFenceHandleTypeFlags,
     compatible_handle_types: types.ExternalFenceHandleTypeFlags,
-    external_fence_features: types.ExternalFenceFeatureFlags,
+    external_fence_features: types.ExternalFenceFeatureFlags = .{},
 };
 
 pub const PhysicalDeviceExternalSemaphoreInfo = extern struct {
@@ -424,10 +423,10 @@ pub const PhysicalDeviceExternalSemaphoreInfo = extern struct {
 
 pub const ExternalSemaphoreProperties = extern struct {
     s_type: types.StructureType = .external_semaphore_properties,
-    p_next: ?*const anyopaque = null,
+    p_next: ?*anyopaque = null,
     export_from_imported_handle_types: types.ExternalSemaphoreHandleTypeFlags,
     compatible_handle_types: types.ExternalSemaphoreHandleTypeFlags,
-    external_semaphore_features: types.ExternalSemaphoreFeatureFlags,
+    external_semaphore_features: types.ExternalSemaphoreFeatureFlags = .{},
 };
 
 // ============================================================================
@@ -537,16 +536,13 @@ pub const ImageSparseMemoryRequirementsInfo2 = extern struct {
 pub const ImageSubresource2 = extern struct {
     s_type: types.StructureType = .image_subresource_2,
     p_next: ?*anyopaque = null,
-    aspect_mask: types.ImageAspectFlags,
-    mip_level: u32,
-    base_array_layer: u32,
-    layer_count: u32,
+    image_subresource: types.ImageSubresource,
 };
 
 pub const ImageSubresourceLayout2 = extern struct {
     s_type: types.StructureType = .image_subresource_layout_2,
     p_next: ?*anyopaque = null,
-    subresource: types.ImageSubresource2,
+    subresource: ImageSubresource2,
     offset: types.Offset3D,
     extent: types.Extent3D,
     row_pitch: types.DeviceSize,

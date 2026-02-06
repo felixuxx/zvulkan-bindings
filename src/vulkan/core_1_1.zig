@@ -374,9 +374,9 @@ pub const PhysicalDeviceSparseImageFormatInfo2 = extern struct {
 pub const PhysicalDeviceExternalBufferInfo = extern struct {
     s_type: types.StructureType = .physical_device_external_buffer_info,
     p_next: ?*const anyopaque = null,
-    flags: types.BufferCreateFlags,
-    usage: types.BufferUsageFlags,
-    handle_type: types.ExternalMemoryHandleTypeFlagBits,
+    flags: types.BufferCreateFlags = .{},
+    usage: types.BufferUsageFlags = .{},
+    handle_type: types.ExternalMemoryHandleTypeFlags,
 };
 
 pub const ExternalBufferProperties = extern struct {
@@ -388,7 +388,7 @@ pub const ExternalBufferProperties = extern struct {
 pub const PhysicalDeviceExternalFenceInfo = extern struct {
     s_type: types.StructureType = .physical_device_external_fence_info,
     p_next: ?*const anyopaque = null,
-    handle_type: types.ExternalFenceHandleTypeFlagBits,
+    handle_type: types.ExternalFenceHandleTypeFlags,
 };
 
 pub const ExternalFenceProperties = extern struct {
@@ -396,13 +396,13 @@ pub const ExternalFenceProperties = extern struct {
     p_next: ?*anyopaque = null,
     export_from_imported_handle_types: types.ExternalFenceHandleTypeFlags,
     compatible_handle_types: types.ExternalFenceHandleTypeFlags,
-    external_fence_features: types.ExternalFenceFeatureFlags,
+    external_fence_features: types.ExternalFenceFeatureFlags = .{},
 };
 
 pub const PhysicalDeviceExternalSemaphoreInfo = extern struct {
     s_type: types.StructureType = .physical_device_external_semaphore_info,
     p_next: ?*const anyopaque = null,
-    handle_type: types.ExternalSemaphoreHandleTypeFlagBits,
+    handle_type: types.ExternalSemaphoreHandleTypeFlags,
 };
 
 pub const ExternalSemaphoreProperties = extern struct {
@@ -410,5 +410,5 @@ pub const ExternalSemaphoreProperties = extern struct {
     p_next: ?*anyopaque = null,
     export_from_imported_handle_types: types.ExternalSemaphoreHandleTypeFlags,
     compatible_handle_types: types.ExternalSemaphoreHandleTypeFlags,
-    external_semaphore_features: types.ExternalSemaphoreFeatureFlags,
+    external_semaphore_features: types.ExternalSemaphoreFeatureFlags = .{},
 };

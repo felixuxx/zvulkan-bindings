@@ -81,8 +81,8 @@ pub const PipelineRenderingCreateInfo = extern struct {
     s_type: types.StructureType = .pipeline_rendering_create_info,
     p_next: ?*const anyopaque = null,
     view_mask: u32,
-    color_attachment_count: u32,
-    p_color_attachment_formats: ?[*]const types.Format,
+    color_attachment_count: u32 = 0,
+    p_color_attachment_formats: ?[*]const types.Format = null,
     depth_attachment_format: types.Format,
     stencil_attachment_format: types.Format,
 };
@@ -90,14 +90,14 @@ pub const PipelineRenderingCreateInfo = extern struct {
 pub const RenderingInfo = extern struct {
     s_type: types.StructureType = .rendering_info,
     p_next: ?*const anyopaque = null,
-    flags: types.RenderingFlags,
+    flags: types.RenderingFlags = .{},
     render_area: types.Rect2D,
     layer_count: u32,
     view_mask: u32,
-    color_attachment_count: u32,
-    p_color_attachments: ?[*]const RenderingAttachmentInfo,
-    p_depth_attachment: ?*const RenderingAttachmentInfo,
-    p_stencil_attachment: ?*const RenderingAttachmentInfo,
+    color_attachment_count: u32 = 0,
+    p_color_attachments: ?[*]const RenderingAttachmentInfo = null,
+    p_depth_attachment: ?*const RenderingAttachmentInfo = null,
+    p_stencil_attachment: ?*const RenderingAttachmentInfo = null,
 };
 
 pub const RenderingAttachmentInfo = extern struct {
@@ -105,7 +105,7 @@ pub const RenderingAttachmentInfo = extern struct {
     p_next: ?*const anyopaque = null,
     image_view: types.ImageView,
     image_layout: types.ImageLayout,
-    resolve_mode: types.ResolveModeFlags,
+    resolve_mode: types.ResolveModeFlags = .{},
     resolve_image_view: types.ImageView,
     resolve_image_layout: types.ImageLayout,
     load_op: types.AttachmentLoadOp,
@@ -116,10 +116,10 @@ pub const RenderingAttachmentInfo = extern struct {
 pub const MemoryBarrier2 = extern struct {
     s_type: types.StructureType = .memory_barrier_2,
     p_next: ?*const anyopaque = null,
-    src_stage_mask: types.PipelineStageFlags2,
-    src_access_mask: types.AccessFlags2,
-    dst_stage_mask: types.PipelineStageFlags2,
-    dst_access_mask: types.AccessFlags2,
+    src_stage_mask: types.PipelineStageFlags2 = .{},
+    src_access_mask: types.AccessFlags2 = .{},
+    dst_stage_mask: types.PipelineStageFlags2 = .{},
+    dst_access_mask: types.AccessFlags2 = .{},
 };
 
 pub const BufferMemoryBarrier2 = extern struct {
@@ -154,13 +154,13 @@ pub const ImageMemoryBarrier2 = extern struct {
 pub const DependencyInfo = extern struct {
     s_type: types.StructureType = .dependency_info,
     p_next: ?*const anyopaque = null,
-    dependency_flags: types.DependencyFlags,
-    memory_barrier_count: u32,
-    p_memory_barriers: ?[*]const MemoryBarrier2,
-    buffer_memory_barrier_count: u32,
-    p_buffer_memory_barriers: ?[*]const BufferMemoryBarrier2,
-    image_memory_barrier_count: u32,
-    p_image_memory_barriers: ?[*]const ImageMemoryBarrier2,
+    dependency_flags: types.DependencyFlags = .{},
+    memory_barrier_count: u32 = 0,
+    p_memory_barriers: ?[*]const MemoryBarrier2 = null,
+    buffer_memory_barrier_count: u32 = 0,
+    p_buffer_memory_barriers: ?[*]const BufferMemoryBarrier2 = null,
+    image_memory_barrier_count: u32 = 0,
+    p_image_memory_barriers: ?[*]const ImageMemoryBarrier2 = null,
 };
 
 pub const PhysicalDeviceToolProperties = extern struct {
@@ -243,7 +243,7 @@ pub const PhysicalDeviceMaintenance4Features = extern struct {
 pub const PhysicalDeviceMaintenance4Properties = extern struct {
     s_type: types.StructureType = .physical_device_maintenance4_properties,
     p_next: ?*anyopaque = null,
-    max_acquired_buffer_device_address_range: u64,
+    max_buffer_size: types.DeviceSize,
 };
 
 // ============================================================================
@@ -253,14 +253,12 @@ pub const PhysicalDeviceMaintenance4Properties = extern struct {
 pub const CommandBufferInheritanceRenderingInfo = extern struct {
     s_type: types.StructureType = .command_buffer_inheritance_rendering_info,
     p_next: ?*const anyopaque = null,
-    flags: types.RenderingFlags,
+    flags: types.RenderingFlags = .{},
     view_mask: u32,
-    color_attachment_count: u32,
-    p_color_attachment_formats: ?[*]const types.Format,
+    color_attachment_count: u32 = 0,
+    p_color_attachment_formats: ?[*]const types.Format = null,
     depth_attachment_format: types.Format,
     stencil_attachment_format: types.Format,
-    depth_stencil_resolve_mode: types.ResolveModeFlags,
-    p_depth_stencil_resolve_attachment: ?*const RenderingAttachmentInfo,
     rasterization_samples: types.SampleCountFlags,
 };
 
@@ -274,16 +272,18 @@ pub const CopyBufferInfo2 = extern struct {
     src_buffer: types.Buffer,
     dst_buffer: types.Buffer,
     region_count: u32,
-    p_regions: ?[*]const types.BufferCopy2,
+    p_regions: [*]const types.BufferCopy2,
 };
 
 pub const CopyImageInfo2 = extern struct {
     s_type: types.StructureType = .copy_image_info_2,
     p_next: ?*const anyopaque = null,
     src_image: types.Image,
+    src_image_layout: types.ImageLayout,
     dst_image: types.Image,
+    dst_image_layout: types.ImageLayout,
     region_count: u32,
-    p_regions: ?[*]const types.ImageCopy2,
+    p_regions: [*]const types.ImageCopy2,
 };
 
 pub const CopyBufferToImageInfo2 = extern struct {
@@ -291,26 +291,30 @@ pub const CopyBufferToImageInfo2 = extern struct {
     p_next: ?*const anyopaque = null,
     src_buffer: types.Buffer,
     dst_image: types.Image,
+    dst_image_layout: types.ImageLayout,
     region_count: u32,
-    p_regions: ?[*]const types.BufferImageCopy2,
+    p_regions: [*]const types.BufferImageCopy2,
 };
 
 pub const CopyImageToBufferInfo2 = extern struct {
     s_type: types.StructureType = .copy_image_to_buffer_info_2,
     p_next: ?*const anyopaque = null,
     src_image: types.Image,
+    src_image_layout: types.ImageLayout,
     dst_buffer: types.Buffer,
     region_count: u32,
-    p_regions: ?[*]const types.BufferImageCopy2,
+    p_regions: [*]const types.BufferImageCopy2,
 };
 
 pub const BlitImageInfo2 = extern struct {
     s_type: types.StructureType = .blit_image_info_2,
     p_next: ?*const anyopaque = null,
     src_image: types.Image,
+    src_image_layout: types.ImageLayout,
     dst_image: types.Image,
+    dst_image_layout: types.ImageLayout,
     region_count: u32,
-    p_regions: ?[*]const types.ImageBlit2,
+    p_regions: [*]const types.ImageBlit2,
     filter: types.Filter,
 };
 
@@ -321,13 +325,13 @@ pub const BlitImageInfo2 = extern struct {
 pub const SubmitInfo2 = extern struct {
     s_type: types.StructureType = .submit_info_2,
     p_next: ?*const anyopaque = null,
-    flags: types.SubmitFlags,
-    wait_semaphore_info_count: u32,
-    p_wait_semaphore_infos: ?[*]const types.SemaphoreSubmitInfo,
-    command_buffer_info_count: u32,
-    p_command_buffer_infos: ?[*]const CommandBufferSubmitInfo,
-    signal_semaphore_info_count: u32,
-    p_signal_semaphore_infos: ?[*]const types.SemaphoreSubmitInfo,
+    flags: types.SubmitFlags = .{},
+    wait_semaphore_info_count: u32 = 0,
+    p_wait_semaphore_infos: ?[*]const types.SemaphoreSubmitInfo = null,
+    command_buffer_info_count: u32 = 0,
+    p_command_buffer_infos: ?[*]const CommandBufferSubmitInfo = null,
+    signal_semaphore_info_count: u32 = 0,
+    p_signal_semaphore_infos: ?[*]const types.SemaphoreSubmitInfo = null,
 };
 
 pub const CommandBufferSubmitInfo = extern struct {
