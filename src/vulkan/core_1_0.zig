@@ -366,7 +366,7 @@ pub const SparseMemoryBind = extern struct {
     size: types.DeviceSize,
     memory: types.DeviceMemory,
     memory_offset: types.DeviceSize,
-    flags: types.SparseMemoryBindFlags = 0,
+    flags: u32 = 0,
 };
 
 pub const SparseImageMemoryBind = extern struct {
@@ -375,7 +375,7 @@ pub const SparseImageMemoryBind = extern struct {
     extent: types.Extent3D,
     memory: types.DeviceMemory,
     memory_offset: types.DeviceSize,
-    flags: types.SparseMemoryBindFlags = 0,
+    flags: u32 = 0,
 };
 
 pub const SparseBufferMemoryBindInfo = extern struct {

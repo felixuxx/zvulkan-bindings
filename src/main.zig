@@ -362,6 +362,38 @@ pub fn main() !void {
     std.debug.print("\nTesting physical device structures...\n", .{});
     testPhysicalDeviceStructures();
 
+    // Test image and buffer creation structures
+    std.debug.print("\nTesting image and buffer creation structures...\n", .{});
+    testImageAndBufferCreationStructures();
+
+    // Test clear structures
+    std.debug.print("\nTesting clear structures...\n", .{});
+    testClearStructures();
+
+    // Test viewport and scissor structures
+    std.debug.print("\nTesting viewport and scissor structures...\n", .{});
+    testViewportAndScissorStructures();
+
+    // Test pipeline state structures
+    std.debug.print("\nTesting pipeline state structures...\n", .{});
+    testPipelineStateStructures();
+
+    // Test specialization and push constants
+    std.debug.print("\nTesting specialization and push constants...\n", .{});
+    testSpecializationAndPushConstants();
+
+    // Test sparse memory structures
+    std.debug.print("\nTesting sparse memory structures...\n", .{});
+    testSparseMemoryStructures();
+
+    // Test image subresource structures
+    std.debug.print("\nTesting image subresource structures...\n", .{});
+    testImageSubresourceStructures();
+
+    // Test Intel performance query structures
+    std.debug.print("\nTesting Intel performance query structures...\n", .{});
+    testIntelPerformanceQueryStructures();
+
     std.debug.print("\n✓ All tests completed successfully!\n", .{});
 }
 
@@ -2060,4 +2092,362 @@ fn testPhysicalDeviceStructures() void {
     _ = queue_props;
 
     std.debug.print("  ✓ Physical device structures initialized successfully\n", .{});
+}
+
+fn testImageAndBufferCreationStructures() void {
+    // Test BufferCreateInfo
+    const buffer_info = vk.core_1_0.BufferCreateInfo{
+        .flags = .{},
+        .size = 1024 * 1024, // 1MB
+        .usage = .{ .vertex_buffer = true, .transfer_dst = true },
+        .sharing_mode = .exclusive,
+        .queue_family_index_count = 0,
+        .p_queue_family_indices = null,
+    };
+    _ = buffer_info;
+
+    // Test ImageCreateInfo
+    const image_info = vk.core_1_0.ImageCreateInfo{
+        .flags = .{},
+        .image_type = .@"2d",
+        .format = .r8g8b8a8_unorm,
+        .extent = .{ .width = 1920, .height = 1080, .depth = 1 },
+        .mip_levels = 1,
+        .array_layers = 1,
+        .samples = .{ .@"1" = true },
+        .tiling = .optimal,
+        .usage = .{ .color_attachment = true, .sampled = true },
+        .sharing_mode = .exclusive,
+        .queue_family_index_count = 0,
+        .p_queue_family_indices = null,
+        .initial_layout = .undefined,
+    };
+    _ = image_info;
+
+    std.debug.print("  ✓ Image and buffer creation structures initialized successfully\n", .{});
+}
+
+fn testClearStructures() void {
+    // Test ClearValue
+    const clear_color = vk.types.ClearValue{
+        .color = .{ .@"float32" = .{ 0.0, 0.0, 0.0, 1.0 } },
+    };
+
+    const clear_depth_stencil = vk.types.ClearValue{
+        .depth_stencil = .{ .depth = 1.0, .stencil = 0 },
+    };
+    _ = clear_depth_stencil;
+
+    // Test ClearAttachment
+    const clear_attachment = vk.core_1_0.ClearAttachment{
+        .aspect_mask = .{ .color = true },
+        .color_attachment = 0,
+        .clear_value = clear_color,
+    };
+    _ = clear_attachment;
+
+    // Test ClearRect
+    const clear_rect = vk.core_1_0.ClearRect{
+        .rect = .{
+            .offset = .{ .x = 0, .y = 0 },
+            .extent = .{ .width = 1920, .height = 1080 },
+        },
+        .base_array_layer = 0,
+        .layer_count = 1,
+    };
+    _ = clear_rect;
+
+    std.debug.print("  ✓ Clear structures initialized successfully\n", .{});
+}
+
+fn testViewportAndScissorStructures() void {
+    // Test Viewport
+    const viewport = vk.types.Viewport{
+        .x = 0.0,
+        .y = 0.0,
+        .width = 1920.0,
+        .height = 1080.0,
+        .min_depth = 0.0,
+        .max_depth = 1.0,
+    };
+
+    // Test Rect2D
+    const scissor_rect = vk.types.Rect2D{
+        .offset = .{ .x = 0, .y = 0 },
+        .extent = .{ .width = 1920, .height = 1080 },
+    };
+
+    // Test PipelineViewportStateCreateInfo
+    const viewport_state = vk.core_1_0.PipelineViewportStateCreateInfo{
+        .viewport_count = 1,
+        .p_viewports = &[_]vk.types.Viewport{viewport},
+        .scissor_count = 1,
+        .p_scissors = &[_]vk.types.Rect2D{scissor_rect},
+    };
+    _ = viewport_state;
+
+    std.debug.print("  ✓ Viewport and scissor structures initialized successfully\n", .{});
+}
+
+fn testPipelineStateStructures() void {
+    // Test PipelineVertexInputStateCreateInfo
+    const vertex_input_state = vk.core_1_0.PipelineVertexInputStateCreateInfo{
+        .vertex_binding_description_count = 0,
+        .p_vertex_binding_descriptions = null,
+        .vertex_attribute_description_count = 0,
+        .p_vertex_attribute_descriptions = null,
+    };
+    _ = vertex_input_state;
+
+    // Test PipelineInputAssemblyStateCreateInfo
+    const input_assembly_state = vk.core_1_0.PipelineInputAssemblyStateCreateInfo{
+        .topology = .triangle_list,
+        .primitive_restart_enable = 0,
+    };
+    _ = input_assembly_state;
+
+    // Test PipelineTessellationStateCreateInfo
+    const tessellation_state = vk.core_1_0.PipelineTessellationStateCreateInfo{
+        .patch_control_points = 3,
+    };
+    _ = tessellation_state;
+
+    // Test PipelineDepthStencilStateCreateInfo
+    const depth_stencil_state = vk.core_1_0.PipelineDepthStencilStateCreateInfo{
+        .depth_test_enable = 1,
+        .depth_write_enable = 1,
+        .depth_compare_op = .less,
+        .depth_bounds_test_enable = 0,
+        .min_depth_bounds = 0.0,
+        .max_depth_bounds = 1.0,
+        .stencil_test_enable = 0,
+        .front = .{
+            .fail_op = .keep,
+            .pass_op = .keep,
+            .depth_fail_op = .keep,
+            .compare_op = .always,
+            .compare_mask = 0xFF,
+            .write_mask = 0xFF,
+            .reference = 0,
+        },
+        .back = .{
+            .fail_op = .keep,
+            .pass_op = .keep,
+            .depth_fail_op = .keep,
+            .compare_op = .always,
+            .compare_mask = 0xFF,
+            .write_mask = 0xFF,
+            .reference = 0,
+        },
+    };
+    _ = depth_stencil_state;
+
+    // Test PipelineColorBlendAttachmentState
+    const blend_attachment = vk.core_1_0.PipelineColorBlendAttachmentState{
+        .blend_enable = 0,
+        .src_color_blend_factor = .one,
+        .dst_color_blend_factor = .zero,
+        .color_blend_op = .add,
+        .src_alpha_blend_factor = .one,
+        .dst_alpha_blend_factor = .zero,
+        .alpha_blend_op = .add,
+        .color_write_mask = .{ .r = true, .g = true, .b = true, .a = true },
+    };
+
+    // Test PipelineColorBlendStateCreateInfo
+    const color_blend_state = vk.core_1_0.PipelineColorBlendStateCreateInfo{
+        .logic_op_enable = 0,
+        .logic_op = .copy,
+        .attachment_count = 1,
+        .p_attachments = &[_]vk.core_1_0.PipelineColorBlendAttachmentState{blend_attachment},
+        .blend_constants = [_]f32{ 0.0, 0.0, 0.0, 0.0 },
+    };
+    _ = color_blend_state;
+
+    // Test PipelineDynamicStateCreateInfo
+    const dynamic_states = [_]vk.core_1_0.DynamicState{ .viewport, .scissor };
+    const dynamic_state = vk.core_1_0.PipelineDynamicStateCreateInfo{
+        .dynamic_state_count = dynamic_states.len,
+        .p_dynamic_states = &dynamic_states,
+    };
+    _ = dynamic_state;
+
+    std.debug.print("  ✓ Pipeline state structures initialized successfully\n", .{});
+}
+
+fn testSpecializationAndPushConstants() void {
+    // Test SpecializationMapEntry
+    const spec_entry = vk.core_1_0.SpecializationMapEntry{
+        .constant_id = 0,
+        .offset = 0,
+        .size = @sizeOf(u32),
+    };
+
+    // Test SpecializationInfo
+    const spec_value: u32 = 42;
+    const spec_info = vk.core_1_0.SpecializationInfo{
+        .map_entry_count = 1,
+        .p_map_entries = &[_]vk.core_1_0.SpecializationMapEntry{spec_entry},
+        .data_size = @sizeOf(@TypeOf(spec_value)),
+        .p_data = &spec_value,
+    };
+    _ = spec_info;
+
+    // Test PushConstantRange
+    const push_constant_range = vk.core_1_0.PushConstantRange{
+        .stage_flags = .{ .vertex = true, .fragment = true },
+        .offset = 0,
+        .size = 128,
+    };
+    _ = push_constant_range;
+
+    std.debug.print("  ✓ Specialization and push constants initialized successfully\n", .{});
+}
+
+fn testSparseMemoryStructures() void {
+    // Test SparseMemoryBind
+    const sparse_bind = vk.core_1_0.SparseMemoryBind{
+        .resource_offset = 0,
+        .size = 1024,
+        .memory = 0, // Dummy handle
+        .memory_offset = 0,
+        .flags = 0,
+    };
+
+    // Test SparseImageMemoryBind
+    const image_bind = vk.core_1_0.SparseImageMemoryBind{
+        .subresource = .{
+            .aspect_mask = .{ .color = true },
+            .mip_level = 0,
+            .array_layer = 0,
+        },
+        .offset = .{ .x = 0, .y = 0, .z = 0 },
+        .extent = .{ .width = 256, .height = 256, .depth = 1 },
+        .memory = 0, // Dummy handle
+        .memory_offset = 0,
+        .flags = 0,
+    };
+
+    // Test SparseBufferMemoryBindInfo
+    const buffer_bind_info = vk.core_1_0.SparseBufferMemoryBindInfo{
+        .buffer = 0, // Dummy handle
+        .bind_count = 1,
+        .p_binds = &[_]vk.core_1_0.SparseMemoryBind{sparse_bind},
+    };
+
+    // Test SparseImageOpaqueMemoryBindInfo
+    const image_opaque_bind_info = vk.core_1_0.SparseImageOpaqueMemoryBindInfo{
+        .image = 0, // Dummy handle
+        .bind_count = 1,
+        .p_binds = &[_]vk.core_1_0.SparseMemoryBind{sparse_bind},
+    };
+
+    // Test SparseImageMemoryBindInfo
+    const image_memory_bind_info = vk.core_1_0.SparseImageMemoryBindInfo{
+        .image = 0, // Dummy handle
+        .bind_count = 1,
+        .p_binds = &[_]vk.core_1_0.SparseImageMemoryBind{image_bind},
+    };
+
+    // Test BindSparseInfo
+    const bind_sparse_info = vk.core_1_0.BindSparseInfo{
+        .wait_semaphore_count = 0,
+        .p_wait_semaphores = null,
+        .buffer_bind_count = 1,
+        .p_buffer_binds = &[_]vk.core_1_0.SparseBufferMemoryBindInfo{buffer_bind_info},
+        .image_opaque_bind_count = 1,
+        .p_image_opaque_binds = &[_]vk.core_1_0.SparseImageOpaqueMemoryBindInfo{image_opaque_bind_info},
+        .image_bind_count = 1,
+        .p_image_binds = &[_]vk.core_1_0.SparseImageMemoryBindInfo{image_memory_bind_info},
+        .signal_semaphore_count = 0,
+        .p_signal_semaphores = null,
+    };
+    _ = bind_sparse_info;
+
+    std.debug.print("  ✓ Sparse memory structures initialized successfully\n", .{});
+}
+
+fn testImageSubresourceStructures() void {
+    // Test ImageSubresource
+    const image_subresource = vk.core_1_0.ImageSubresource{
+        .aspect_mask = .{ .color = true },
+        .mip_level = 0,
+        .array_layer = 0,
+    };
+    _ = image_subresource;
+
+    // Test ImageSubresourceLayers
+    const image_subresource_layers = vk.core_1_0.ImageSubresourceLayers{
+        .aspect_mask = .{ .color = true },
+        .mip_level = 0,
+        .base_array_layer = 0,
+        .layer_count = 1,
+    };
+    _ = image_subresource_layers;
+
+    // Test ImageSubresourceRange
+    const image_subresource_range = vk.core_1_0.ImageSubresourceRange{
+        .aspect_mask = .{ .color = true },
+        .base_mip_level = 0,
+        .level_count = 1,
+        .base_array_layer = 0,
+        .layer_count = 1,
+    };
+    _ = image_subresource_range;
+
+    std.debug.print("  ✓ Image subresource structures initialized successfully\n", .{});
+}
+
+fn testIntelPerformanceQueryStructures() void {
+    // Test InitializePerformanceApiInfoINTEL
+    const init_info = vk.intel_performance_query.InitializePerformanceApiInfoINTEL{};
+    _ = init_info;
+
+    // Test PerformanceConfigurationAcquireInfoINTEL
+    const acquire_info = vk.intel_performance_query.PerformanceConfigurationAcquireInfoINTEL{
+        .type = .global_settings_queue_families,
+    };
+    _ = acquire_info;
+
+    // Test QueryPoolPerformanceCreateInfoINTEL
+    const query_pool_perf_info = vk.intel_performance_query.QueryPoolPerformanceCreateInfoINTEL{
+        .performance_query_type = .hw_counters_supported,
+        .queue_families = 0,
+        .p_queue_family_indices = null,
+    };
+    _ = query_pool_perf_info;
+
+    // Test PerformanceQueryInfoINTEL
+    const query_info = vk.intel_performance_query.PerformanceQueryInfoINTEL{
+        .performance_counter_sampling = .continuous,
+    };
+    _ = query_info;
+
+    // Test PerformanceMarkerInfoINTEL
+    const marker_info = vk.intel_performance_query.PerformanceMarkerInfoINTEL{
+        .marker = 0,
+    };
+    _ = marker_info;
+
+    // Test PerformanceOverrideInfoINTEL
+    const override_info = vk.intel_performance_query.PerformanceOverrideInfoINTEL{
+        .type = .null_hardware_intel,
+        .enable = 0,
+        .parameter = 0,
+    };
+    _ = override_info;
+
+    // Test PerformanceStreamMarkerInfoINTEL
+    const stream_marker_info = vk.intel_performance_query.PerformanceStreamMarkerInfoINTEL{
+        .marker = 0,
+    };
+    _ = stream_marker_info;
+
+    // Test PerformanceConfigurationAcquireInfoINTEL (second instance)
+    const config_info = vk.intel_performance_query.PerformanceConfigurationAcquireInfoINTEL{
+        .type = .global_settings_command_buffers,
+    };
+    _ = config_info;
+
+    std.debug.print("  ✓ Intel performance query structures initialized successfully\n", .{});
 }
