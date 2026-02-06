@@ -51,7 +51,9 @@ pub const RenderingAttachmentInfo = extern struct {
     p_next: ?*const anyopaque = null,
     image_view: types.ImageView = .null_handle,
     image_layout: types.ImageLayout,
-    resolve_mode: types.ResolveModeKHR = .zero,
+    resolve_mode: types.ResolveModeFlags,
+    resolve_image_view: types.ImageView = .null_handle,
+    resolve_image_layout: types.ImageLayout,
     load_op: types.AttachmentLoadOp,
     store_op: types.AttachmentStoreOp,
     clear_value: types.ClearValue,
@@ -81,13 +83,11 @@ pub const PhysicalDeviceDynamicRenderingFeatures = extern struct {
 pub const PipelineRenderingCreateInfo = extern struct {
     s_type: types.StructureType = .pipeline_rendering_create_info,
     p_next: ?*const anyopaque = null,
+    view_mask: u32 = 0,
     color_attachment_count: u32 = 0,
-    p_color_attachment_formats: [*]const types.Format,
-    color_attachment_samples: types.SampleCountFlagBits = .@"1",
+    p_color_attachment_formats: ?[*]const types.Format = null,
     depth_attachment_format: types.Format = .undefined,
-    depth_attachment_samples: types.SampleCountFlagBits = .@"1",
     stencil_attachment_format: types.Format = .undefined,
-    stencil_attachment_samples: types.SampleCountFlagBits = .@"1",
 };
 
 pub const PhysicalDeviceDynamicRenderingFeaturesKHR = PhysicalDeviceDynamicRenderingFeatures;

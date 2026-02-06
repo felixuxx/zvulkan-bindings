@@ -23,7 +23,6 @@ pub const MemoryOverallocationBehaviorAMD = enum(i32) {
 pub const DeviceMemoryOverallocationCreateInfoAMD = extern struct {
     s_type: types.StructureType = .device_memory_overallocation_create_info_amd,
     p_next: ?*const anyopaque = null,
-    allocation_size: types.DeviceSize,
     overallocation_behavior: MemoryOverallocationBehaviorAMD = .default_amd,
 };
 

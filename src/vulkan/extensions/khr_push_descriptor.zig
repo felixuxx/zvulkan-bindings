@@ -12,13 +12,8 @@ pub const KHR_PUSH_DESCRIPTOR_EXTENSION_NAME = "VK_KHR_push_descriptor";
 
 pub const PhysicalDevicePushDescriptorPropertiesKHR = extern struct {
     s_type: types.StructureType = .physical_device_push_descriptor_properties_khr,
-    p_next: ?*const anyopaque = null,
+    p_next: ?*anyopaque = null,
     max_push_descriptors: u32,
-    max_push_descriptors_update_after_bind: u32,
-    max_push_descriptors_update_after_bind_with_template: u32,
-    max_inline_uniform_block_update_after_bind: u32,
-    max_inline_uniform_block_update_after_bind_with_template: u32,
-    inline_uniform_block_update_after_bind_descriptor_type: [types.DescriptorType]u32,
 };
 
 pub const WriteDescriptorSetInlineUniformBlock = extern struct {
@@ -34,9 +29,11 @@ pub const WriteDescriptorSetInlineUniformBlockKHR = WriteDescriptorSetInlineUnif
 pub const PushDescriptorSetInfoKHR = extern struct {
     s_type: types.StructureType = .push_descriptor_set_info_khr,
     p_next: ?*const anyopaque = null,
-    descriptor_set: types.DescriptorSet,
-    buffer_offset: u32,
-    range: u32,
+    stage_flags: types.ShaderStageFlags,
+    layout: types.PipelineLayout = .null_handle,
+    set: u32 = 0,
+    descriptor_write_count: u32,
+    p_descriptor_writes: [*]const types.WriteDescriptorSet,
 };
 
 pub const PushDescriptorUpdateInfoKHR = extern struct {

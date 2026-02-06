@@ -46,6 +46,7 @@ pub const BufferMemoryBarrier2 = extern struct {
     dst_queue_family_index: u32,
     buffer: types.Buffer,
     offset: types.DeviceSize,
+    size: types.DeviceSize,
 };
 
 pub const ImageMemoryBarrier2 = extern struct {
@@ -91,7 +92,7 @@ pub const SemaphoreSubmitInfo = extern struct {
     p_next: ?*const anyopaque = null,
     semaphore: types.Semaphore,
     value: u64 = 0,
-    stage: StageMask2 = .{},
+    stage_mask: StageMask2 = .{},
     device_index: u32 = 0,
 };
 

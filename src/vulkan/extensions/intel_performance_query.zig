@@ -20,6 +20,12 @@ pub const PerformanceParameterTypeINTEL = enum(i32) {
     stream_marker_supported = 1,
 };
 
+pub const PerformanceOverrideTypeINTEL = enum(i32) {
+    null_hardware_intel = 0,
+    flush_gpu_caches_intel = 1,
+    _,
+};
+
 pub const QueryPoolSamplingModeINTEL = enum(i32) {
     immediate = 0,
     continuous = 1,
@@ -64,30 +70,26 @@ pub const PerformanceQueryInfoINTEL = extern struct {
 pub const PerformanceMarkerInfoINTEL = extern struct {
     s_type: types.StructureType = .performance_marker_info_intel,
     p_next: ?*const anyopaque = null,
-    marker: u64 = 0,
+    marker: u64,
 };
 
 pub const PerformanceOverrideInfoINTEL = extern struct {
     s_type: types.StructureType = .performance_override_info_intel,
     p_next: ?*const anyopaque = null,
-    type: PerformanceConfigurationTypeINTEL = .global_settings_command_buffers,
-    enable: u32 = 0,
-    data: u64 = 0,
+    type: PerformanceOverrideTypeINTEL,
+    enable: types.Bool32,
+    parameter: u64,
 };
 
 pub const PerformanceStreamMarkerInfoINTEL = extern struct {
     s_type: types.StructureType = .performance_stream_marker_info_intel,
     p_next: ?*const anyopaque = null,
-    marker: u64 = 0,
-    data: u64 = 0,
+    marker: u32,
 };
 
-pub const PerformanceConfigurationINTEL = extern struct {
-    s_type: types.StructureType = .performance_configuration_intel,
-    p_next: ?*const anyopaque = null,
-    type: PerformanceConfigurationTypeINTEL,
-    data: u64 = 0,
-    enable: u32 = 0,
+pub const PerformanceConfigurationINTEL = enum(u64) {
+    null_handle = 0,
+    _,
 };
 
 pub const QueryPoolPerformanceQueryCreateInfoINTEL = extern struct {
@@ -102,15 +104,15 @@ pub const PerformanceConfigurationAcquireInfoINTEL = extern struct {
     type: PerformanceConfigurationTypeINTEL,
 };
 
+pub const PerformanceValueDataINTEL = extern union {
+    value_32: u32,
+    value_64: u64,
+    value_float: f32,
+    value_bool: types.Bool32,
+    value_string: [*:0]const u8,
+};
+
 pub const PerformanceValueINTEL = extern struct {
     type: PerformanceValueTypeINTEL,
-    value: extern union {
-        value32: u32,
-        value64: u64,
-        value_float: f32,
-        value_float64: f64,
-        value_bool: types.Bool32,
-        value_bool64: u64,
-        value_string: [*:0]const u8,
-    },
+    data: PerformanceValueDataINTEL,
 };

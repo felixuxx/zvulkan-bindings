@@ -36,16 +36,15 @@ pub const ValidationFeaturesEXT = extern struct {
     s_type: types.StructureType = .validation_features_ext,
     p_next: ?*const anyopaque = null,
     enabled_validation_feature_count: u32 = 0,
-    p_enabled_validation_features: [*]const ValidationFeatureEnableEXT = null,
+    p_enabled_validation_features: ?[*]const ValidationFeatureEnableEXT = null,
     disabled_validation_feature_count: u32 = 0,
-    p_disabled_validation_features: [*]const ValidationFeatureDisableEXT = null,
+    p_disabled_validation_features: ?[*]const ValidationFeatureDisableEXT = null,
 };
 
 pub const PhysicalDeviceShaderObjectFeaturesEXT = extern struct {
     s_type: types.StructureType = .physical_device_shader_object_features_ext,
-    p_next: ?*const anyopaque = null,
-    shader_object_invoke: types.Bool32 = 0,
-    shader_object_info: types.Bool32 = 0,
+    p_next: ?*anyopaque = null,
+    shader_object: types.Bool32 = 0,
 };
 
 pub const ShaderObjectCreateInfoEXT = extern struct {

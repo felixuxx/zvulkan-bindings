@@ -32,16 +32,16 @@ pub const SwapchainCreateInfoKHR = extern struct {
     composite_alpha: khr_surface.CompositeAlphaFlagBitsKHR,
     present_mode: khr_surface.PresentModeKHR,
     clipped: types.Bool32,
-    old_swapchain: types.SwapchainKHR,
+    old_swapchain: types.SwapchainKHR = .null_handle,
 };
 
 pub const PresentInfoKHR = extern struct {
     s_type: types.StructureType = .present_info_khr,
     p_next: ?*const anyopaque = null,
-    wait_semaphore_count: u32,
-    p_wait_semaphores: ?[*]const types.Semaphore,
+    wait_semaphore_count: u32 = 0,
+    p_wait_semaphores: ?[*]const types.Semaphore = null,
     swapchain_count: u32,
     p_swapchains: [*]const types.SwapchainKHR,
     p_image_indices: [*]const u32,
-    p_results: ?[*]types.Result,
+    p_results: ?[*]types.Result = null,
 };

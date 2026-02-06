@@ -23,32 +23,25 @@ pub const DescriptorUpdateTemplateCreateInfoKHR = extern struct {
     s_type: types.StructureType = .descriptor_update_template_create_info_khr,
     p_next: ?*const anyopaque = null,
     flags: types.DescriptorUpdateTemplateCreateFlagsKHR = 0,
-    descriptor_update_entry_count: u32 = 0,
+    descriptor_update_entry_count: u32,
     p_descriptor_update_entries: [*]const DescriptorUpdateTemplateEntryKHR,
     template_type: DescriptorUpdateTemplateTypeKHR,
     descriptor_set_layout: types.DescriptorSetLayout,
     pipeline_bind_point: types.PipelineBindPoint,
     pipeline_layout: types.PipelineLayout,
-    set: u32 = 0,
+    set: u32,
 };
 
 pub const DescriptorUpdateTemplateEntryKHR = extern struct {
+    dst_binding: u32,
+    dst_array_element: u32,
+    descriptor_count: u32,
     descriptor_type: types.DescriptorType,
-    count: u32 = 0,
-    offset: usize = 0,
-    stride: usize = 0,
+    offset: usize,
+    stride: usize,
 };
 
-pub const DescriptorUpdateTemplateKHR = extern struct {
-    s_type: types.StructureType = .descriptor_update_template_khr,
-    p_next: ?*const anyopaque = null,
-    descriptor_update_template_type: DescriptorUpdateTemplateTypeKHR,
-    flags: types.DescriptorUpdateTemplateCreateFlagsKHR = 0,
-    descriptor_set_layout: types.DescriptorSetLayout,
-    pipeline_bind_point: types.PipelineBindPoint,
-    pipeline_layout: types.PipelineLayout,
-    set: u32 = 0,
-};
+pub const DescriptorUpdateTemplateKHR = types.DescriptorUpdateTemplate;
 
 pub const DescriptorDataInlineUniformBlock = extern struct {
     type: types.DescriptorType,
