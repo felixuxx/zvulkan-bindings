@@ -89,7 +89,7 @@ pub const PFN_vkDestroyDevice = *const fn (Device, ?*const types.AllocationCallb
 pub const PFN_vkGetDeviceQueue = *const fn (Device, u32, u32, *Queue) callconv(.c) void;
 pub const PFN_vkDeviceWaitIdle = *const fn (Device) callconv(.c) Result;
 pub const PFN_vkQueueWaitIdle = *const fn (Queue) callconv(.c) Result;
-pub const PFN_vkQueueSubmit = *const fn (Queue, u32, [*]const core_1_0.SubmitInfo, types.Fence) callconv(.c) Result;
+pub const PFN_vkQueueSubmit = *const fn (Queue, u32, ?[*]const core_1_0.SubmitInfo, types.Fence) callconv(.c) Result;
 
 // Memory functions
 pub const PFN_vkAllocateMemory = *const fn (Device, *const core_1_0.MemoryAllocateInfo, ?*const types.AllocationCallbacks, *types.DeviceMemory) callconv(.c) Result;
@@ -170,14 +170,14 @@ pub const PFN_vkFreeDescriptorSets = *const fn (Device, types.DescriptorPool, u3
 
 pub const PFN_vkUpdateDescriptorSets = *const fn (Device, u32, [*]const core_1_0.WriteDescriptorSet, u32, [*]const core_1_0.CopyDescriptorSet) callconv(.c) void;
 
-pub const PFN_vkCreateSampler = *const fn (Device, [*]const core_1_0.SamplerCreateInfo, ?*const types.AllocationCallbacks, *types.Sampler) callconv(.c) Result;
+pub const PFN_vkCreateSampler = *const fn (Device, *const core_1_0.SamplerCreateInfo, ?*const types.AllocationCallbacks, *types.Sampler) callconv(.c) Result;
 pub const PFN_vkDestroySampler = *const fn (Device, types.Sampler, ?*const types.AllocationCallbacks) callconv(.c) void;
 
 // Command buffer functions
-pub const PFN_vkCreateQueryPool = *const fn (Device, [*]const core_1_0.QueryPoolCreateInfo, ?*const types.AllocationCallbacks, *types.QueryPool) callconv(.c) Result;
+pub const PFN_vkCreateQueryPool = *const fn (Device, *const core_1_0.QueryPoolCreateInfo, ?*const types.AllocationCallbacks, *types.QueryPool) callconv(.c) Result;
 pub const PFN_vkDestroyQueryPool = *const fn (Device, types.QueryPool, ?*const types.AllocationCallbacks) callconv(.c) void;
 
-pub const PFN_vkCreateEvent = *const fn (Device, [*]const core_1_0.EventCreateInfo, ?*const types.AllocationCallbacks, *types.Event) callconv(.c) Result;
+pub const PFN_vkCreateEvent = *const fn (Device, *const core_1_0.EventCreateInfo, ?*const types.AllocationCallbacks, *types.Event) callconv(.c) Result;
 pub const PFN_vkDestroyEvent = *const fn (Device, types.Event, ?*const types.AllocationCallbacks) callconv(.c) void;
 pub const PFN_vkGetEventStatus = *const fn (Device, types.Event) callconv(.c) Result;
 pub const PFN_vkSetEvent = *const fn (Device, types.Event) callconv(.c) Result;
@@ -189,7 +189,7 @@ pub const PFN_vkCmdPipelineBarrier = *const fn (types.CommandBuffer, types.Pipel
 pub const PFN_vkCmdCopyBuffer = *const fn (types.CommandBuffer, types.Buffer, types.Buffer, [*]const core_1_0.BufferCopy) callconv(.c) void;
 pub const PFN_vkCmdCopyImage = *const fn (types.CommandBuffer, types.Image, types.Image, [*]const core_1_0.ImageCopy) callconv(.c) void;
 pub const PFN_vkCmdBlitImage = *const fn (types.CommandBuffer, types.Image, types.Image, [*]const core_1_0.ImageBlit) callconv(.c) void;
-pub const PFN_vkCmdClearAttachments = *const fn (types.CommandBuffer, u32, [*]const core_1_0.ClearAttachment, types.Rect2D, u32) callconv(.c) void;
+pub const PFN_vkCmdClearAttachments = *const fn (CommandBuffer, u32, [*]const core_1_0.ClearAttachment, u32, [*]const core_1_0.ClearRect) callconv(.c) void;
 
 // Render pass functions
 pub const PFN_vkCreateRenderPass = *const fn (Device, *const core_1_0.RenderPassCreateInfo, ?*const types.AllocationCallbacks, *types.RenderPass) callconv(.c) Result;
@@ -268,7 +268,7 @@ pub const PFN_vkCmdSetStencilReference = *const fn (CommandBuffer, types.Stencil
 pub const PFN_vkCmdBindPipeline = *const fn (CommandBuffer, types.PipelineBindPoint, types.Pipeline) callconv(.c) void;
 pub const PFN_vkCmdBindDescriptorSets = *const fn (CommandBuffer, types.PipelineBindPoint, types.PipelineLayout, u32, u32, ?[*]const types.DescriptorSet, u32, ?[*]const u32) callconv(.c) void;
 pub const PFN_vkCmdBindIndexBuffer = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, types.IndexType) callconv(.c) void;
-pub const PFN_vkCmdBindVertexBuffers = *const fn (CommandBuffer, u32, u32, ?[*]const types.Buffer, ?[*]const types.DeviceSize) callconv(.c) void;
+pub const PFN_vkCmdBindVertexBuffers = *const fn (CommandBuffer, u32, u32, [*]const types.Buffer, [*]const types.DeviceSize) callconv(.c) void;
 pub const PFN_vkCmdBindVertexBuffers2EXT = *const fn (CommandBuffer, u32, u32, ?[*]const types.Buffer, [*]const types.DeviceSize, ?[*]const types.DeviceSize, ?[*]const types.DeviceSize) callconv(.c) void;
 pub const PFN_vkCmdBindShadingRateImageNV = *const fn (CommandBuffer, types.ImageView, types.ImageLayout) callconv(.c) void;
 pub const PFN_vkCmdBindTransformFeedbackBuffersEXT = *const fn (CommandBuffer, u32, u32, ?[*]const types.Buffer, ?[*]const types.DeviceSize, ?[*]const types.DeviceSize) callconv(.c) void;
@@ -281,8 +281,8 @@ pub const PFN_vkCmdUpdateBuffer = *const fn (CommandBuffer, types.Buffer, types.
 pub const PFN_vkCmdResolveImage = *const fn (CommandBuffer, types.Image, types.ImageLayout, types.Image, types.ImageLayout, u32, [*]const core_1_0.ImageResolve) callconv(.c) void;
 
 // Clear functions
-pub const PFN_vkCmdClearColorImage = *const fn (CommandBuffer, types.Image, types.ImageLayout, [*]const types.ClearColorValue, u32, [*]const core_1_0.ImageSubresourceRange) callconv(.c) void;
-pub const PFN_vkCmdClearDepthStencilImage = *const fn (CommandBuffer, types.Image, types.ImageLayout, [*]const types.ClearDepthStencilValue, u32, [*]const core_1_0.ImageSubresourceRange) callconv(.c) void;
+pub const PFN_vkCmdClearColorImage = *const fn (CommandBuffer, types.Image, types.ImageLayout, *const types.ClearColorValue, u32, [*]const core_1_0.ImageSubresourceRange) callconv(.c) void;
+pub const PFN_vkCmdClearDepthStencilImage = *const fn (CommandBuffer, types.Image, types.ImageLayout, *const types.ClearDepthStencilValue, u32, [*]const core_1_0.ImageSubresourceRange) callconv(.c) void;
 
 // Query functions
 pub const PFN_vkCmdBeginQuery = *const fn (CommandBuffer, types.QueryPool, u32, types.QueryControlFlags) callconv(.c) void;
