@@ -902,6 +902,8 @@ test "descriptor structures compilation" {
     const pool_info = DescriptorPoolCreateInfo{};
     const alloc_info = DescriptorSetAllocateInfo{
         .descriptor_pool = undefined,
+        .descriptor_set_count = 0,
+        .p_set_layouts = undefined,
     };
     const write_info = WriteDescriptorSet{
         .dst_set = undefined,
