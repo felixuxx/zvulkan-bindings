@@ -858,8 +858,8 @@ pub const DescriptorSetAllocateInfo = extern struct {
     s_type: types.StructureType = .descriptor_set_allocate_info,
     p_next: ?*const anyopaque = null,
     descriptor_pool: types.DescriptorPool,
-    descriptor_set_count: u32 = 0,
-    p_set_layouts: ?[*]const types.DescriptorSetLayout = null,
+    descriptor_set_count: u32,
+    p_set_layouts: [*]const types.DescriptorSetLayout,
 };
 
 pub const WriteDescriptorSet = extern struct {

@@ -141,6 +141,8 @@ pub const StructureType = enum(i32) {
     buffer_memory_barrier = 44,
     image_memory_barrier = 45,
     memory_barrier = 46,
+    loader_instance_create_info = 47,
+    loader_device_create_info = 48,
 
     // Vulkan 1.1
     physical_device_subgroup_properties = 1000094000,
