@@ -1052,25 +1052,27 @@ pub const ClearRect = extern struct {
     layer_count: u32 = 1,
 };
 
+// Field order must match VkSamplerCreateInfo C layout exactly to avoid
+// anisotropyEnable and unnormalizedCoordinates reading garbage (ABI alignment).
 pub const SamplerCreateInfo = extern struct {
     s_type: types.StructureType = .sampler_create_info,
     p_next: ?*const anyopaque = null,
     flags: u32 = 0,
-    min_filter: types.Filter,
     mag_filter: types.Filter,
+    min_filter: types.Filter,
+    mipmap_mode: types.SamplerMipmapMode,
     address_mode_u: types.SamplerAddressMode,
     address_mode_v: types.SamplerAddressMode,
     address_mode_w: types.SamplerAddressMode,
+    mip_lod_bias: f32 = 0.0,
     anisotropy_enable: types.Bool32 = 0,
     max_anisotropy: f32 = 0.0,
-    border_color: types.BorderColor = .float_transparent_black,
-    unnormalized_coordinates: types.Bool32 = 0,
     compare_enable: types.Bool32 = 0,
     compare_op: types.CompareOp,
-    mipmap_mode: types.SamplerMipmapMode,
-    mip_lod_bias: f32 = 0.0,
     min_lod: f32 = 0.0,
     max_lod: f32 = 0.0,
+    border_color: types.BorderColor = .float_transparent_black,
+    unnormalized_coordinates: types.Bool32 = 0,
 };
 
 // ============================================================================
