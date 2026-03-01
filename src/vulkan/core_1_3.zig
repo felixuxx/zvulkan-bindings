@@ -196,7 +196,7 @@ pub const PhysicalDeviceShaderIntegerDotProductFeatures = extern struct {
 };
 
 pub const PhysicalDeviceSynchronization2Features = extern struct {
-    s_type: types.StructureType = .physical_device_synchronization2_features,
+    s_type: types.StructureType = .physical_device_synchronization_2_features,
     p_next: ?*const anyopaque = null,
     synchronization2: types.Bool32,
 };
@@ -213,20 +213,23 @@ pub const PhysicalDeviceDynamicRenderingFeatures = extern struct {
     dynamic_rendering: types.Bool32,
 };
 
-pub const PhysicalDeviceShaderZeroInitializeWorkgroupMemoryFeatures = extern struct {
-    s_type: types.StructureType = .physical_device_shader_zero_initialize_workgroup_memory_features,
+pub const PhysicalDeviceZeroInitializeWorkgroupMemoryFeatures = extern struct {
+    s_type: types.StructureType = .physical_device_zero_initialize_workgroup_memory_features,
     p_next: ?*const anyopaque = null,
     shader_zero_initialize_workgroup_memory: types.Bool32,
 };
+
+pub const PhysicalDeviceShaderZeroInitializeWorkgroupMemoryFeatures = PhysicalDeviceZeroInitializeWorkgroupMemoryFeatures;
 
 pub const PhysicalDeviceSubgroupSizeControlFeatures = extern struct {
     s_type: types.StructureType = .physical_device_subgroup_size_control_features,
     p_next: ?*const anyopaque = null,
     subgroup_size_control: types.Bool32,
+    compute_full_subgroups: types.Bool32,
 };
 
 pub const PhysicalDeviceSubgroupSizeControlProperties = extern struct {
-    s_type: types.StructureType = .physical_device_subgroup_size_control_properties,
+    s_type: types.StructureType = .pipeline_shader_stage_required_subgroup_size_create_info,
     p_next: ?*anyopaque = null,
     min_subgroup_size: u32,
     max_subgroup_size: u32,
@@ -235,13 +238,13 @@ pub const PhysicalDeviceSubgroupSizeControlProperties = extern struct {
 };
 
 pub const PhysicalDeviceMaintenance4Features = extern struct {
-    s_type: types.StructureType = .physical_device_maintenance4_features,
+    s_type: types.StructureType = .physical_device_maintenance_4_features,
     p_next: ?*const anyopaque = null,
     maintenance4: types.Bool32,
 };
 
 pub const PhysicalDeviceMaintenance4Properties = extern struct {
-    s_type: types.StructureType = .physical_device_maintenance4_properties,
+    s_type: types.StructureType = .physical_device_maintenance_4_properties,
     p_next: ?*anyopaque = null,
     max_buffer_size: types.DeviceSize,
 };
@@ -259,7 +262,7 @@ pub const CommandBufferInheritanceRenderingInfo = extern struct {
     p_color_attachment_formats: ?[*]const types.Format = null,
     depth_attachment_format: types.Format,
     stencil_attachment_format: types.Format,
-    rasterization_samples: types.SampleCountFlags,
+    rasterization_samples: types.SampleCountFlagBits,
 };
 
 // ============================================================================

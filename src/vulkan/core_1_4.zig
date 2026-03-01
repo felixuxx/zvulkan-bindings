@@ -52,14 +52,16 @@ pub const PhysicalDeviceVulkan14Properties = extern struct {
     block_texel_view_compatible_multiple_layers: types.Bool32,
     max_combined_image_sampler_descriptor_count: u32,
     fragment_shading_rate_clamp_combiner_inputs: types.Bool32,
-    default_robustness_storage_buffers: types.Bool32,
-    default_robustness_uniform_buffers: types.Bool32,
-    default_robustness_vertex_inputs: types.Bool32,
-    default_robustness_images: types.Bool32,
+    default_robustness_storage_buffers: u32,
+    default_robustness_uniform_buffers: u32,
+    default_robustness_vertex_inputs: u32,
+    default_robustness_images: u32,
     copy_src_layout_count: u32,
-    p_copy_src_layouts: ?[*]const types.ImageLayout,
+    p_copy_src_layouts: ?[*]types.ImageLayout,
     copy_dst_layout_count: u32,
-    p_copy_dst_layouts: ?[*]const types.ImageLayout,
+    p_copy_dst_layouts: ?[*]types.ImageLayout,
+    optimal_tiling_layout_uuid: [constants.UUID_SIZE]u8,
+    identical_memory_type_requirements: types.Bool32,
 };
 
 // Add promoted extension structs here, e.g., from maintenance5

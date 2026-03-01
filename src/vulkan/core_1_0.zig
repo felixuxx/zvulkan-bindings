@@ -880,8 +880,10 @@ pub const CopyDescriptorSet = extern struct {
     p_next: ?*const anyopaque = null,
     src_set: types.DescriptorSet,
     src_binding: u32 = 0,
+    src_array_element: u32 = 0,
     dst_set: types.DescriptorSet,
     dst_binding: u32 = 0,
+    dst_array_element: u32 = 0,
     descriptor_count: u32 = 0,
 };
 

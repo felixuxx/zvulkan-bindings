@@ -209,7 +209,9 @@ pub const StructureType = enum(i32) {
     subpass_dependency_2 = 1000109004,
     render_pass_input_attachment_aspect_create_info = 1000117000,
     input_attachment_aspect_reference = 1000117001,
+    surface_format_2_khr = 1000119002,
     image_format_list_create_info = 1000147000,
+    image_sparse_memory_requirements_info_2 = 1000146002,
 
     // Vulkan 1.3
     physical_device_vulkan_1_3_features = 53,
@@ -222,12 +224,29 @@ pub const StructureType = enum(i32) {
     pipeline_rendering_create_info = 1000044000,
     rendering_info = 1000044001,
     rendering_attachment_info = 1000044002,
+    physical_device_dynamic_rendering_features = 1000044003,
+    command_buffer_inheritance_rendering_info = 1000044004,
+    rendering_fragment_density_map_attachment_info_ext = 1000044007,
     pipeline_shader_stage_required_subgroup_size_create_info = 1000225000,
+    physical_device_subgroup_size_control_features = 1000225002,
     physical_device_tool_properties = 1000245000,
     dependency_info = 1000314000,
     memory_barrier_2 = 1000314001,
     buffer_memory_barrier_2 = 1000314002,
     image_memory_barrier_2 = 1000314003,
+    copy_buffer_info_2 = 1000337000,
+    copy_image_info_2 = 1000337001,
+    copy_buffer_to_image_info_2 = 1000337002,
+    copy_image_to_buffer_info_2 = 1000337003,
+    blit_image_info_2 = 1000337004,
+    physical_device_synchronization_2_features = 1000314007,
+    physical_device_zero_initialize_workgroup_memory_features = 1000325000,
+    physical_device_shader_demote_to_helper_invocation_features = 1000276000,
+    physical_device_shader_terminate_invocation_features = 1000215000,
+    physical_device_private_data_features = 1000295000,
+    physical_device_shader_integer_dot_product_features = 1000280000,
+    physical_device_maintenance_4_features = 1000413000,
+    physical_device_maintenance_4_properties = 1000413001,
     rendering_fragment_shading_rate_attachment_info_khr = 1000044006, // Alias needed for Checking
 
     swapchain_create_info_khr = 1000001000,
@@ -1862,32 +1881,39 @@ pub const ToolPurposeFlagBits = enum(u32) {
 // ============================================================================
 
 pub const BufferCopy2 = extern struct {
+    s_type: StructureType,
+    p_next: ?*const anyopaque,
     src_offset: DeviceSize,
     dst_offset: DeviceSize,
     size: DeviceSize,
 };
 
 pub const ImageCopy2 = extern struct {
+    s_type: StructureType,
+    p_next: ?*const anyopaque,
     src_subresource: ImageSubresourceLayers,
-    dst_subresource: ImageSubresourceLayers,
     src_offset: Offset3D,
+    dst_subresource: ImageSubresourceLayers,
     dst_offset: Offset3D,
     extent: Extent3D,
 };
 
 pub const BufferImageCopy2 = extern struct {
+    s_type: StructureType,
+    p_next: ?*const anyopaque,
     buffer_offset: DeviceSize,
     buffer_row_length: u32,
     buffer_image_height: u32,
     image_subresource: ImageSubresourceLayers,
     image_offset: Offset3D,
+    image_extent: Extent3D,
 };
 
 pub const ImageBlit2 = extern struct {
+    s_type: StructureType,
+    p_next: ?*const anyopaque,
     src_subresource: ImageSubresourceLayers,
     src_offsets: [2]Offset3D,
-    src_extent: Extent3D,
     dst_subresource: ImageSubresourceLayers,
     dst_offsets: [2]Offset3D,
-    dst_extent: Extent3D,
 };

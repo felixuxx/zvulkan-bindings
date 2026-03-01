@@ -134,6 +134,7 @@ pub const PhysicalDeviceVulkan12Properties = extern struct {
     max_per_stage_descriptor_update_after_bind_sampled_images: u32,
     max_per_stage_descriptor_update_after_bind_storage_images: u32,
     max_per_stage_descriptor_update_after_bind_input_attachments: u32,
+    max_per_stage_update_after_bind_resources: u32,
     max_descriptor_set_update_after_bind_samplers: u32,
     max_descriptor_set_update_after_bind_uniform_buffers: u32,
     max_descriptor_set_update_after_bind_uniform_buffers_dynamic: u32,
@@ -441,14 +442,7 @@ pub const PhysicalDeviceGroupProperties = extern struct {
     subset_allocation: types.Bool32,
 };
 
-pub const PhysicalDeviceGroupProperties2 = extern struct {
-    s_type: types.StructureType = .physical_device_group_properties_2,
-    p_next: ?*anyopaque = null,
-    physical_device_count: u32,
-    physical_devices: [constants.MAX_DEVICE_GROUP_SIZE]types.PhysicalDevice,
-    subset_allocation: types.Bool32,
-    physical_device_group_count: u32,
-};
+pub const PhysicalDeviceGroupProperties2 = PhysicalDeviceGroupProperties;
 
 // ============================================================================
 // Extended Format and Image Properties
@@ -502,7 +496,6 @@ pub const PhysicalDeviceSparseImageFormatInfo2 = extern struct {
     samples: types.SampleCountFlagBits,
     usage: types.ImageUsageFlags,
     tiling: types.ImageTiling,
-    flags: types.ImageCreateFlags,
 };
 
 // ============================================================================
@@ -539,14 +532,10 @@ pub const ImageSubresource2 = extern struct {
     image_subresource: types.ImageSubresource,
 };
 
-pub const ImageSubresourceLayout2 = extern struct {
-    s_type: types.StructureType = .image_subresource_layout_2,
+pub const SubresourceLayout2 = extern struct {
+    s_type: types.StructureType = .subresource_layout_2_khr,
     p_next: ?*anyopaque = null,
-    subresource: ImageSubresource2,
-    offset: types.Offset3D,
-    extent: types.Extent3D,
-    row_pitch: types.DeviceSize,
-    array_pitch: types.DeviceSize,
-    depth_pitch: types.DeviceSize,
-    size: types.DeviceSize,
+    subresource_layout: types.SubresourceLayout,
 };
+
+pub const ImageSubresourceLayout2 = SubresourceLayout2;
