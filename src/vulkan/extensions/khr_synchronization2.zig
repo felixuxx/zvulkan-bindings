@@ -2,19 +2,9 @@
 //! Modern synchronization patterns for improved performance
 
 const types = @import("../types.zig");
-const constants = @import("../constants.zig");
 const core_1_0 = @import("../core_1_0.zig");
 
 pub const KHR_SYNCHRONIZATION_2_EXTENSION_NAME = "VK_KHR_synchronization2";
-
-// ============================================================================
-// Enums
-// ============================================================================
-
-pub const Synchronization2TypeKHR = enum(i32) {
-    legacy_khr = 0,
-    legacy_ext = 1,
-};
 
 pub const StageMask2 = types.PipelineStageFlags2;
 
@@ -77,8 +67,9 @@ pub const DependencyInfo = extern struct {
 };
 
 pub const SubmitInfo2 = extern struct {
-    s_type: types.StructureType = .submit_info_2_khr,
+    s_type: types.StructureType = .submit_info_2,
     p_next: ?*const anyopaque = null,
+    flags: u32 = 0,
     wait_semaphore_info_count: u32 = 0,
     p_wait_semaphore_infos: ?[*]const SemaphoreSubmitInfo = null,
     command_buffer_info_count: u32 = 0,
@@ -107,10 +98,6 @@ pub const PhysicalDeviceSynchronization2Features = extern struct {
     s_type: types.StructureType = .physical_device_synchronization_2_features,
     p_next: ?*const anyopaque = null,
     synchronization2: types.Bool32 = 0,
-    vulkan_memory_model: types.Bool32 = 0,
-    vulkan_memory_model_device_scope: types.Bool32 = 0,
-    vulkan_memory_model_access_scope: types.Bool32 = 0,
-    public: types.Bool32 = 0,
 };
 
 pub const PhysicalDeviceSynchronization2FeaturesKHR = PhysicalDeviceSynchronization2Features;

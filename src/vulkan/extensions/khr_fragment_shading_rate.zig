@@ -102,7 +102,7 @@ pub const PhysicalDeviceFragmentShadingRateKHR = extern struct {
 pub const RenderingFragmentShadingRateAttachmentInfoKHR = extern struct {
     s_type: types.StructureType = .rendering_fragment_shading_rate_attachment_info_khr,
     p_next: ?*const anyopaque = null,
-    image_view: types.ImageView = .null_handle,
+    image_view: types.ImageView = 0,
     image_layout: types.ImageLayout,
     shading_rate_attachment_texel_size: types.Extent2D,
 };

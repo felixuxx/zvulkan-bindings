@@ -2,7 +2,6 @@
 //! Simplifies render pass creation for modern engines
 
 const types = @import("../types.zig");
-const constants = @import("../constants.zig");
 
 pub const KHR_DYNAMIC_RENDERING_EXTENSION_NAME = "VK_KHR_dynamic_rendering";
 
@@ -13,21 +12,11 @@ pub const KHR_DYNAMIC_RENDERING_EXTENSION_NAME = "VK_KHR_dynamic_rendering";
 pub const RenderingFlagBitsKHR = packed struct(u32) {
     contents_secondary_command_buffers_khr: bool = false,
     suspending_khr: bool = false,
-    king_khr: bool = false,
+    resuming_khr: bool = false,
     _padding: u29 = 0,
 };
 
-pub const RenderingInfoFlagsKHR = packed struct(u32) {
-    _reserved_bits: types.Flags = 0,
-    pub const toInt = types.FlagsMixin(RenderingInfoFlagsKHR).toInt;
-    pub const fromInt = types.FlagsMixin(RenderingInfoFlagsKHR).fromInt;
-    pub const merge = types.FlagsMixin(RenderingInfoFlagsKHR).merge;
-    pub const intersect = types.FlagsMixin(RenderingInfoFlagsKHR).intersect;
-    pub const complement = types.FlagsMixin(RenderingInfoFlagsKHR).complement;
-    pub const subtract = types.FlagsMixin(RenderingInfoFlagsKHR).subtract;
-    pub const contains = types.FlagsMixin(RenderingInfoFlagsKHR).contains;
-    pub const format = types.FlagFormatMixin(RenderingInfoFlagsKHR).format;
-};
+pub const RenderingInfoFlagsKHR = types.RenderingFlags;
 
 // ============================================================================
 // Structures
@@ -71,7 +60,7 @@ pub const RenderingFragmentShadingRateAttachmentInfoKHR = extern struct {
     p_next: ?*const anyopaque = null,
     image_view: types.ImageView = 0,
     image_layout: types.ImageLayout,
-    shading_rate: types.FragmentShadingRateKHR,
+    shading_rate_attachment_texel_size: types.Extent2D,
 };
 
 pub const PhysicalDeviceDynamicRenderingFeatures = extern struct {
@@ -91,13 +80,3 @@ pub const PipelineRenderingCreateInfo = extern struct {
 };
 
 pub const PhysicalDeviceDynamicRenderingFeaturesKHR = PhysicalDeviceDynamicRenderingFeatures;
-
-pub const PhysicalDeviceDynamicRenderingProperties = extern struct {
-    s_type: types.StructureType = .physical_device_dynamic_rendering_properties,
-    p_next: ?*const anyopaque = null,
-    max_dynamic_color_attachments: u32 = 0,
-    max_dynamic_depth_stencil_attachments: u32 = 0,
-    max_dynamic_rendering_samples: types.SampleCountFlagBits = .@"1",
-};
-
-pub const PhysicalDeviceDynamicRenderingPropertiesKHR = PhysicalDeviceDynamicRenderingProperties;

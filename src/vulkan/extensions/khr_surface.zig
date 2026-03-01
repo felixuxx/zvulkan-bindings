@@ -2,7 +2,6 @@
 //! Common surface types and function signatures
 
 const types = @import("../types.zig");
-const constants = @import("../constants.zig");
 
 pub const KHR_SURFACE_EXTENSION_NAME = "VK_KHR_surface";
 
@@ -105,15 +104,12 @@ pub const DisplayPropertiesKHR = extern struct {
 
 pub const DisplayModePropertiesKHR = extern struct {
     display_mode: types.DisplayModeKHR,
-    parameters: types.DisplayModeParametersKHR,
-    visible_region: types.Extent2D,
-    refresh_rate: u32,
+    parameters: DisplayModeParametersKHR,
 };
 
 pub const DisplayModeParametersKHR = extern struct {
     visible_region: types.Extent2D,
     refresh_rate: u32,
-    preferred_refresh_rate: u32,
 };
 
 pub const DisplayPlanePropertiesKHR = extern struct {

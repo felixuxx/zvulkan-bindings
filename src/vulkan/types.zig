@@ -239,11 +239,11 @@ pub const StructureType = enum(i32) {
 
     // VK_KHR_push_descriptor
     physical_device_push_descriptor_properties_khr = 1000080003,
-    push_descriptor_set_info_khr = 1000080004,
-    push_descriptor_update_info_khr = 1000080005,
+    push_descriptor_set_info_khr = 1000545005,
+    push_descriptor_set_with_template_info_khr = 1000545006,
 
     // Inline uniform block (shared by both extensions)
-    write_descriptor_set_inline_uniform_block = 1000281000,
+    write_descriptor_set_inline_uniform_block = 1000138002,
 
     // VK_KHR_fragment_shading_rate
     fragment_shading_rate_attachment_info_khr = 1000226000,
@@ -253,15 +253,12 @@ pub const StructureType = enum(i32) {
     physical_device_fragment_shading_rate_khr = 1000226004,
 
     // VK_INTEL_performance_query
-    initialize_performance_api_info_intel = 1000210000,
-    performance_configuration_acquire_info_intel = 1000210001,
-    query_pool_performance_create_info_intel = 1000210002,
-    performance_query_info_intel = 1000210003,
-    performance_marker_info_intel = 1000210004,
-    performance_override_info_intel = 1000210005,
-    performance_stream_marker_info_intel = 1000210006,
-    performance_configuration_intel = 1000210007,
-    query_pool_performance_query_create_info_intel = 1000210008,
+    query_pool_performance_query_create_info_intel = 1000210000,
+    initialize_performance_api_info_intel = 1000210001,
+    performance_marker_info_intel = 1000210002,
+    performance_stream_marker_info_intel = 1000210003,
+    performance_override_info_intel = 1000210004,
+    performance_configuration_acquire_info_intel = 1000210005,
 
     wayland_surface_create_info_khr = 1000006000,
     win32_surface_create_info_khr = 1000009000,

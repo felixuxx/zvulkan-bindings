@@ -183,9 +183,9 @@ pub const PFN_vkResetEvent = *const fn (Device, types.Event) callconv(.c) Result
 pub const PFN_vkCmdPipelineBarrier = *const fn (types.CommandBuffer, types.PipelineStageFlags, types.PipelineStageFlags, types.DependencyFlags, u32, [*]const core_1_0.MemoryBarrier, u32, [*]const core_1_0.BufferMemoryBarrier, u32, [*]const core_1_0.ImageMemoryBarrier) callconv(.c) void;
 
 // Copy functions
-pub const PFN_vkCmdCopyBuffer = *const fn (types.CommandBuffer, types.Buffer, types.Buffer, [*]const core_1_0.BufferCopy) callconv(.c) void;
-pub const PFN_vkCmdCopyImage = *const fn (types.CommandBuffer, types.Image, types.Image, [*]const core_1_0.ImageCopy) callconv(.c) void;
-pub const PFN_vkCmdBlitImage = *const fn (types.CommandBuffer, types.Image, types.Image, [*]const core_1_0.ImageBlit) callconv(.c) void;
+pub const PFN_vkCmdCopyBuffer = *const fn (types.CommandBuffer, types.Buffer, types.Buffer, u32, [*]const core_1_0.BufferCopy) callconv(.c) void;
+pub const PFN_vkCmdCopyImage = *const fn (types.CommandBuffer, types.Image, types.ImageLayout, types.Image, types.ImageLayout, u32, [*]const core_1_0.ImageCopy) callconv(.c) void;
+pub const PFN_vkCmdBlitImage = *const fn (types.CommandBuffer, types.Image, types.ImageLayout, types.Image, types.ImageLayout, u32, [*]const core_1_0.ImageBlit, types.Filter) callconv(.c) void;
 pub const PFN_vkCmdClearAttachments = *const fn (CommandBuffer, u32, [*]const core_1_0.ClearAttachment, u32, [*]const core_1_0.ClearRect) callconv(.c) void;
 
 // Render pass functions
@@ -255,7 +255,7 @@ pub const PFN_vkCmdSetViewport = *const fn (CommandBuffer, u32, u32, [*]const ty
 pub const PFN_vkCmdSetScissor = *const fn (CommandBuffer, u32, u32, [*]const types.Rect2D) callconv(.c) void;
 pub const PFN_vkCmdSetLineWidth = *const fn (CommandBuffer, f32) callconv(.c) void;
 pub const PFN_vkCmdSetDepthBias = *const fn (CommandBuffer, f32, f32, f32) callconv(.c) void;
-pub const PFN_vkCmdSetBlendConstants = *const fn (CommandBuffer, f32, f32, f32, f32) callconv(.c) void;
+pub const PFN_vkCmdSetBlendConstants = *const fn (CommandBuffer, *const [4]f32) callconv(.c) void;
 pub const PFN_vkCmdSetDepthBounds = *const fn (CommandBuffer, f32, f32) callconv(.c) void;
 pub const PFN_vkCmdSetStencilCompareMask = *const fn (CommandBuffer, types.StencilFaceFlags, u32) callconv(.c) void;
 pub const PFN_vkCmdSetStencilWriteMask = *const fn (CommandBuffer, types.StencilFaceFlags, u32) callconv(.c) void;
@@ -377,11 +377,11 @@ pub const PFN_vkGetPhysicalDeviceWaylandPresentationSupportKHR = *const fn (Phys
 
 // VK_KHR_xcb_surface
 pub const PFN_vkCreateXcbSurfaceKHR = *const fn (Instance, *const khr_xcb_surface.XcbSurfaceCreateInfoKHR, ?*const types.AllocationCallbacks, *types.SurfaceKHR) callconv(.c) Result;
-pub const PFN_vkGetPhysicalDeviceXcbPresentationSupportKHR = *const fn (PhysicalDevice, u32, *khr_xcb_surface.xcb_connection_t, khr_xcb_surface.xcb_window_t) callconv(.c) types.Bool32;
+pub const PFN_vkGetPhysicalDeviceXcbPresentationSupportKHR = *const fn (PhysicalDevice, u32, *khr_xcb_surface.xcb_connection_t, khr_xcb_surface.xcb_visualid_t) callconv(.c) types.Bool32;
 
 // VK_KHR_xlib_surface
 pub const PFN_vkCreateXlibSurfaceKHR = *const fn (Instance, *const khr_xlib_surface.XlibSurfaceCreateInfoKHR, ?*const types.AllocationCallbacks, *types.SurfaceKHR) callconv(.c) Result;
-pub const PFN_vkGetPhysicalDeviceXlibPresentationSupportKHR = *const fn (PhysicalDevice, u32, *khr_xlib_surface.Display, khr_xlib_surface.Window) callconv(.c) types.Bool32;
+pub const PFN_vkGetPhysicalDeviceXlibPresentationSupportKHR = *const fn (PhysicalDevice, u32, *khr_xlib_surface.Display, khr_xlib_surface.VisualID) callconv(.c) types.Bool32;
 
 // VK_KHR_win32_surface
 pub const PFN_vkCreateWin32SurfaceKHR = *const fn (Instance, *const khr_win32_surface.Win32SurfaceCreateInfoKHR, ?*const types.AllocationCallbacks, *types.SurfaceKHR) callconv(.c) Result;

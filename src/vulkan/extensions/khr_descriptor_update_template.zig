@@ -1,7 +1,6 @@
 //! VK_KHR_descriptor_update_template extension
 //! Efficient descriptor set updates using templates
 
-const constants = @import("../constants.zig");
 const types = @import("../types.zig");
 
 pub const KHR_DESCRIPTOR_UPDATE_TEMPLATE_EXTENSION_NAME = "VK_KHR_descriptor_update_template";
@@ -41,17 +40,4 @@ pub const DescriptorUpdateTemplateEntryKHR = extern struct {
     stride: usize,
 };
 
-pub const DescriptorUpdateTemplateKHR = types.DescriptorUpdateTemplate;
-
-pub const DescriptorDataInlineUniformBlock = extern struct {
-    type: types.DescriptorType,
-    size: u32,
-    data: ?*const anyopaque,
-};
-
-pub const WriteDescriptorSetInlineUniformBlock = extern struct {
-    s_type: types.StructureType = .write_descriptor_set_inline_uniform_block,
-    p_next: ?*const anyopaque = null,
-    descriptor_set: types.DescriptorSet,
-    data: DescriptorDataInlineUniformBlock,
-};
+pub const DescriptorUpdateTemplateKHR = types.DescriptorUpdateTemplateKHR;

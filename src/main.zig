@@ -672,7 +672,7 @@ fn testExtensionStructures() void {
         .resolve_image_layout = .undefined,
         .load_op = .clear,
         .store_op = .store,
-        .clear_value = .{ .color = .{ .@"float32" = .{ 0.0, 0.0, 0.0, 1.0 } } },
+        .clear_value = .{ .color = .{ .float32 = .{ 0.0, 0.0, 0.0, 1.0 } } },
     };
     _ = rendering_attachment_info;
 
@@ -929,7 +929,7 @@ fn testVulkan13PlusStructures() void {
         .resolve_image_layout = .undefined,
         .load_op = .clear,
         .store_op = .store,
-        .clear_value = .{ .color = .{ .@"float32" = .{ 0.0, 0.0, 0.0, 1.0 } } },
+        .clear_value = .{ .color = .{ .float32 = .{ 0.0, 0.0, 0.0, 1.0 } } },
     };
     _ = rendering_attachment;
 
@@ -2144,7 +2144,7 @@ fn testImageAndBufferCreationStructures() void {
 fn testClearStructures() void {
     // Test ClearValue
     const clear_color = vk.types.ClearValue{
-        .color = .{ .@"float32" = .{ 0.0, 0.0, 0.0, 1.0 } },
+        .color = .{ .float32 = .{ 0.0, 0.0, 0.0, 1.0 } },
     };
 
     const clear_depth_stencil = vk.types.ClearValue{
@@ -2419,23 +2419,15 @@ fn testIntelPerformanceQueryStructures() void {
 
     // Test PerformanceConfigurationAcquireInfoINTEL
     const acquire_info = vk.intel_performance_query.PerformanceConfigurationAcquireInfoINTEL{
-        .type = .global_settings_queue_families,
+        .type = .command_queue_metrics_discovery_activated_intel,
     };
     _ = acquire_info;
 
-    // Test QueryPoolPerformanceCreateInfoINTEL
-    const query_pool_perf_info = vk.intel_performance_query.QueryPoolPerformanceCreateInfoINTEL{
-        .performance_query_type = .hw_counters_supported,
-        .queue_families = 0,
-        .p_queue_family_indices = null,
+    // Test QueryPoolPerformanceQueryCreateInfoINTEL
+    const query_pool_perf_info = vk.intel_performance_query.QueryPoolPerformanceQueryCreateInfoINTEL{
+        .performance_counters_sampling = .continuous,
     };
     _ = query_pool_perf_info;
-
-    // Test PerformanceQueryInfoINTEL
-    const query_info = vk.intel_performance_query.PerformanceQueryInfoINTEL{
-        .performance_counter_sampling = .continuous,
-    };
-    _ = query_info;
 
     // Test PerformanceMarkerInfoINTEL
     const marker_info = vk.intel_performance_query.PerformanceMarkerInfoINTEL{
@@ -2459,7 +2451,7 @@ fn testIntelPerformanceQueryStructures() void {
 
     // Test PerformanceConfigurationAcquireInfoINTEL (second instance)
     const config_info = vk.intel_performance_query.PerformanceConfigurationAcquireInfoINTEL{
-        .type = .global_settings_command_buffers,
+        .type = .command_queue_metrics_discovery_activated_intel,
     };
     _ = config_info;
 
@@ -2496,7 +2488,7 @@ fn testInstanceCreationStructures() void {
     _ = instance_info_minimal;
 
     // Test InstanceCreateInfo with extensions
-    const extension_names = [_][*:0]const u8{ vk.khr_surface.KHR_SURFACE_EXTENSION_NAME };
+    const extension_names = [_][*:0]const u8{vk.khr_surface.KHR_SURFACE_EXTENSION_NAME};
     const instance_info_with_extensions = vk.core_1_0.InstanceCreateInfo{
         .flags = 0,
         .p_application_info = &app_info_full,
