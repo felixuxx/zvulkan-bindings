@@ -28,12 +28,71 @@ fn testFunctionLoading(loader: *const vk.Loader) void {
     std.debug.print("  Loaded {}/{} functions\n", .{ loaded_count, total_count });
 }
 
-fn testInstanceFunctionLoading(instance_dispatch: anytype) void {
+fn isExtensionEnabled(enabled_extensions: []const [*:0]const u8, extension_name: [*:0]const u8) bool {
+    const wanted = std.mem.span(extension_name);
+    for (enabled_extensions) |enabled| {
+        if (std.mem.eql(u8, std.mem.span(enabled), wanted)) return true;
+    }
+    return false;
+}
+
+fn hasAvailableInstanceExtension(available_extensions: []const vk.vk.ExtensionProperties, extension_name: [*:0]const u8) bool {
+    const wanted = std.mem.span(extension_name);
+    for (available_extensions) |extension| {
+        const available = std.mem.sliceTo(&extension.extension_name, 0);
+        if (std.mem.eql(u8, available, wanted)) return true;
+    }
+    return false;
+}
+
+fn requiredInstanceExtensionForField(comptime field_name: []const u8) ?[*:0]const u8 {
+    if (std.mem.eql(u8, field_name, "vkDestroySurfaceKHR") or
+        std.mem.eql(u8, field_name, "vkGetPhysicalDeviceSurfaceSupportKHR") or
+        std.mem.eql(u8, field_name, "vkGetPhysicalDeviceSurfaceCapabilitiesKHR") or
+        std.mem.eql(u8, field_name, "vkGetPhysicalDeviceSurfaceFormatsKHR") or
+        std.mem.eql(u8, field_name, "vkGetPhysicalDeviceSurfacePresentModesKHR"))
+    {
+        return vk.khr_surface.KHR_SURFACE_EXTENSION_NAME;
+    }
+
+    if (std.mem.eql(u8, field_name, "vkCreateWaylandSurfaceKHR") or
+        std.mem.eql(u8, field_name, "vkGetPhysicalDeviceWaylandPresentationSupportKHR"))
+    {
+        return vk.khr_wayland_surface.KHR_WAYLAND_SURFACE_EXTENSION_NAME;
+    }
+
+    if (std.mem.eql(u8, field_name, "vkCreateXcbSurfaceKHR") or
+        std.mem.eql(u8, field_name, "vkGetPhysicalDeviceXcbPresentationSupportKHR"))
+    {
+        return vk.khr_xcb_surface.KHR_XCB_SURFACE_EXTENSION_NAME;
+    }
+
+    if (std.mem.eql(u8, field_name, "vkCreateXlibSurfaceKHR") or
+        std.mem.eql(u8, field_name, "vkGetPhysicalDeviceXlibPresentationSupportKHR"))
+    {
+        return vk.khr_xlib_surface.KHR_XLIB_SURFACE_EXTENSION_NAME;
+    }
+
+    if (std.mem.eql(u8, field_name, "vkCreateWin32SurfaceKHR") or
+        std.mem.eql(u8, field_name, "vkGetPhysicalDeviceWin32PresentationSupportKHR"))
+    {
+        return vk.khr_win32_surface.KHR_WIN32_SURFACE_EXTENSION_NAME;
+    }
+
+    if (std.mem.eql(u8, field_name, "vkGetPhysicalDeviceFragmentShadingRatesKHR")) {
+        return vk.extensions.khr_fragment_shading_rate.KHR_FRAGMENT_SHADING_RATE_EXTENSION_NAME;
+    }
+
+    return null;
+}
+
+fn testInstanceFunctionLoading(instance_dispatch: anytype, enabled_extensions: []const [*:0]const u8) void {
     const dispatch_type = @TypeOf(instance_dispatch.*);
     const fields = @typeInfo(dispatch_type).@"struct".fields;
 
     var loaded_count: usize = 0;
     var total_count: usize = 0;
+    var skipped_count: usize = 0;
 
     inline for (fields) |field| {
         total_count += 1;
@@ -42,14 +101,26 @@ fn testInstanceFunctionLoading(instance_dispatch: anytype) void {
             if (value != null) {
                 loaded_count += 1;
             } else {
-                std.debug.print("  Warning: {f} is null\n", .{std.zig.fmtId(field.name)});
+                if (requiredInstanceExtensionForField(field.name)) |required_extension| {
+                    if (isExtensionEnabled(enabled_extensions, required_extension)) {
+                        std.debug.print("  Warning: {f} is null\n", .{std.zig.fmtId(field.name)});
+                    } else {
+                        skipped_count += 1;
+                    }
+                } else {
+                    std.debug.print("  Warning: {f} is null\n", .{std.zig.fmtId(field.name)});
+                }
             }
         } else {
             loaded_count += 1;
         }
     }
 
-    std.debug.print("  Loaded {}/{} functions\n", .{ loaded_count, total_count });
+    if (skipped_count > 0) {
+        std.debug.print("  Loaded {}/{} functions ({} skipped: extension not enabled)\n", .{ loaded_count, total_count, skipped_count });
+    } else {
+        std.debug.print("  Loaded {}/{} functions\n", .{ loaded_count, total_count });
+    }
 }
 
 pub fn main() !void {
@@ -68,6 +139,10 @@ pub fn main() !void {
     };
     defer loader.deinit();
     std.debug.print("✓ Vulkan library loaded successfully\n\n", .{});
+
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    defer _ = gpa.deinit();
+    const allocator = gpa.allocator();
 
     // Test that all Vulkan functions are loaded
     std.debug.print("Testing function loading...\n", .{});
@@ -90,7 +165,31 @@ pub fn main() !void {
     std.debug.print("Querying available instance extensions...\n", .{});
     var extension_count: u32 = 0;
     _ = loader.vkEnumerateInstanceExtensionProperties.?(null, &extension_count, null);
-    std.debug.print("Found {} instance extensions\n\n", .{extension_count});
+    const extension_properties = try allocator.alloc(vk.vk.ExtensionProperties, extension_count);
+    defer allocator.free(extension_properties);
+    _ = loader.vkEnumerateInstanceExtensionProperties.?(null, &extension_count, extension_properties.ptr);
+    std.debug.print("Found {} instance extensions\n", .{extension_count});
+
+    const desired_instance_extensions = [_][*:0]const u8{
+        vk.khr_surface.KHR_SURFACE_EXTENSION_NAME,
+        vk.khr_wayland_surface.KHR_WAYLAND_SURFACE_EXTENSION_NAME,
+        vk.khr_xcb_surface.KHR_XCB_SURFACE_EXTENSION_NAME,
+        vk.khr_xlib_surface.KHR_XLIB_SURFACE_EXTENSION_NAME,
+        vk.khr_win32_surface.KHR_WIN32_SURFACE_EXTENSION_NAME,
+        vk.extensions.khr_fragment_shading_rate.KHR_FRAGMENT_SHADING_RATE_EXTENSION_NAME,
+    };
+
+    var enabled_instance_extensions: [desired_instance_extensions.len][*:0]const u8 = undefined;
+    var enabled_instance_extension_count: usize = 0;
+
+    for (desired_instance_extensions) |extension_name| {
+        if (hasAvailableInstanceExtension(extension_properties, extension_name)) {
+            enabled_instance_extensions[enabled_instance_extension_count] = extension_name;
+            enabled_instance_extension_count += 1;
+            std.debug.print("  Enabling instance extension: {s}\n", .{std.mem.span(extension_name)});
+        }
+    }
+    std.debug.print("\n", .{});
 
     // Query available layers
     std.debug.print("Querying available layers...\n", .{});
@@ -110,6 +209,8 @@ pub fn main() !void {
 
     const instance_create_info = vk.core_1_0.InstanceCreateInfo{
         .p_application_info = &app_info,
+        .enabled_extension_count = @intCast(enabled_instance_extension_count),
+        .pp_enabled_extension_names = if (enabled_instance_extension_count > 0) enabled_instance_extensions[0..enabled_instance_extension_count].ptr else null,
     };
 
     var instance: vk.Instance = undefined;
@@ -127,7 +228,7 @@ pub fn main() !void {
 
     // Test instance function loading
     std.debug.print("Testing instance function loading...\n", .{});
-    testInstanceFunctionLoading(&instance_dispatch);
+    testInstanceFunctionLoading(&instance_dispatch, enabled_instance_extensions[0..enabled_instance_extension_count]);
     std.debug.print("✓ All instance functions loaded successfully\n\n", .{});
 
     // Enumerate physical devices
@@ -143,10 +244,6 @@ pub fn main() !void {
     std.debug.print("Found {} physical device(s)\n\n", .{device_count});
 
     // Allocate array for physical devices
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer _ = gpa.deinit();
-    const allocator = gpa.allocator();
-
     const physical_devices = try allocator.alloc(vk.PhysicalDevice, device_count);
     defer allocator.free(physical_devices);
 
@@ -1035,6 +1132,8 @@ fn testVulkan14Structures() void {
         .p_copy_src_layouts = null,
         .copy_dst_layout_count = 0,
         .p_copy_dst_layouts = null,
+        .optimal_tiling_layout_uuid = undefined,
+        .identical_memory_type_requirements = 0,
     };
     _ = props14;
 
@@ -1623,6 +1722,7 @@ fn testVulkan12FeaturesAndProperties() void {
         .max_per_stage_descriptor_update_after_bind_sampled_images = 0,
         .max_per_stage_descriptor_update_after_bind_storage_images = 0,
         .max_per_stage_descriptor_update_after_bind_input_attachments = 0,
+        .max_per_stage_update_after_bind_resources = 0,
         .max_descriptor_set_update_after_bind_samplers = 0,
         .max_descriptor_set_update_after_bind_uniform_buffers = 0,
         .max_descriptor_set_update_after_bind_uniform_buffers_dynamic = 0,
