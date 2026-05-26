@@ -140,9 +140,12 @@ pub fn main() !void {
     defer loader.deinit();
     std.debug.print("✓ Vulkan library loaded successfully\n\n", .{});
 
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer _ = gpa.deinit();
-    const allocator = gpa.allocator();
+    var debug_allocator = std.heap.DebugAllocator(.{}).init;
+    defer {
+        const leaked = debug_allocator.deinit();
+        if (leaked != .ok) @panic("memory leak detected");
+    }
+    const allocator = debug_allocator.allocator();
 
     // Test that all Vulkan functions are loaded
     std.debug.print("Testing function loading...\n", .{});
