@@ -6,7 +6,7 @@ pub const API_VERSION_1_1 = makeApiVersion(0, 1, 1, 0);
 pub const API_VERSION_1_2 = makeApiVersion(0, 1, 2, 0);
 pub const API_VERSION_1_3 = makeApiVersion(0, 1, 3, 0);
 
-pub const HEADER_VERSION = 296;
+pub const HEADER_VERSION = 352;
 pub const HEADER_VERSION_COMPLETE = makeApiVersion(0, 1, 3, HEADER_VERSION);
 
 pub inline fn makeApiVersion(variant: u32, major: u32, minor: u32, patch: u32) u32 {
