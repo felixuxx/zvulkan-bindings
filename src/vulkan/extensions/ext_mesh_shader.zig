@@ -2,19 +2,14 @@
 //! Next-generation geometry processing
 
 const types = @import("../types.zig");
-const constants = @import("../constants.zig");
 
 pub const EXT_MESH_SHADER_EXTENSION_NAME = "VK_EXT_mesh_shader";
 
-// ============================================================================
-// Enums
-// ============================================================================
+// == Enums ==
 
 pub const ShaderStageFlagsEXT = types.ShaderStageFlagsEXT;
 
-// ============================================================================
-// Structures
-// ============================================================================
+// == Structures ==
 
 pub const PhysicalDeviceMeshShaderFeaturesEXT = extern struct {
     s_type: types.StructureType = .physical_device_mesh_shader_features_ext,

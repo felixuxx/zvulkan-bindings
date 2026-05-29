@@ -39,9 +39,7 @@ pub const Result = types.Result;
 // For now, aliasing them to the new extensions module is cleaner.
 // Re-export commonly used types
 // Re-export new extension types
-// ============================================================================
-// Function Pointer Types
-// ============================================================================
+// == Function Pointer Types ==
 
 pub const PFN_vkVoidFunction = ?*const fn () callconv(.c) void;
 pub const PFN_vkGetInstanceProcAddr = *const fn (Instance, [*:0]const u8) callconv(.c) PFN_vkVoidFunction;
@@ -203,8 +201,8 @@ pub const PFN_vkBindImageMemory2 = *const fn (Device, u32, [*]const core_1_1.Bin
 pub const PFN_vkGetDeviceGroupPeerMemoryFeatures = *const fn (Device, u32, u32, u32, *types.PeerMemoryFeatureFlags) callconv(.c) void;
 pub const PFN_vkCmdSetDeviceMask = *const fn (CommandBuffer, u32) callconv(.c) void;
 pub const PFN_vkCmdDispatchBase = *const fn (CommandBuffer, u32, u32, u32, u32, u32, u32) callconv(.c) void;
-pub const PFN_vkGetImageMemoryRequirements2 = *const fn (Device, *const types.ImageMemoryRequirementsInfo2, *types.MemoryRequirements2) callconv(.c) void;
-pub const PFN_vkGetBufferMemoryRequirements2 = *const fn (Device, *const types.BufferMemoryRequirementsInfo2, *types.MemoryRequirements2) callconv(.c) void;
+pub const PFN_vkGetImageMemoryRequirements2 = *const fn (Device, *const core_1_2.ImageMemoryRequirementsInfo2, *core_1_2.MemoryRequirements2) callconv(.c) void;
+pub const PFN_vkGetBufferMemoryRequirements2 = *const fn (Device, *const core_1_2.BufferMemoryRequirementsInfo2, *core_1_2.MemoryRequirements2) callconv(.c) void;
 pub const PFN_vkGetDeviceQueue2 = *const fn (Device, *const types.DeviceQueueInfo2, *Queue) callconv(.c) void;
 pub const PFN_vkTrimCommandPool = *const fn (Device, types.CommandPool, types.CommandPoolTrimFlags) callconv(.c) void;
 pub const PFN_vkResetCommandPool = *const fn (Device, types.CommandPool, types.CommandPoolResetFlags) callconv(.c) Result;
@@ -212,8 +210,8 @@ pub const PFN_vkResetCommandPool = *const fn (Device, types.CommandPool, types.C
 // Vulkan 1.2 Device
 pub const PFN_vkCmdDrawIndirectCount = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, types.Buffer, types.DeviceSize, u32, u32) callconv(.c) void;
 pub const PFN_vkCmdDrawIndexedIndirectCount = *const fn (CommandBuffer, types.Buffer, types.DeviceSize, types.Buffer, types.DeviceSize, u32, u32) callconv(.c) void;
-pub const PFN_vkCreateRenderPass2 = *const fn (Device, *const types.RenderPassCreateInfo2, ?*const types.AllocationCallbacks, *types.RenderPass) callconv(.c) Result;
-pub const PFN_vkCmdBeginRenderPass2 = *const fn (CommandBuffer, *const types.RenderPassBeginInfo, *const types.SubpassBeginInfo) callconv(.c) void;
+pub const PFN_vkCreateRenderPass2 = *const fn (Device, *const core_1_2.RenderPassCreateInfo2, ?*const types.AllocationCallbacks, *types.RenderPass) callconv(.c) Result;
+pub const PFN_vkCmdBeginRenderPass2 = *const fn (CommandBuffer, *const core_1_0.RenderPassBeginInfo, *const types.SubpassBeginInfo) callconv(.c) void;
 pub const PFN_vkCmdNextSubpass2 = *const fn (CommandBuffer, *const types.SubpassBeginInfo, *const types.SubpassEndInfo) callconv(.c) void;
 pub const PFN_vkCmdEndRenderPass2 = *const fn (CommandBuffer, *const types.SubpassEndInfo) callconv(.c) void;
 pub const PFN_vkResetQueryPool = *const fn (Device, types.QueryPool, u32, u32) callconv(.c) void;
@@ -233,14 +231,14 @@ pub const PFN_vkCmdSetEvent2 = *const fn (CommandBuffer, types.Event, *const cor
 pub const PFN_vkCmdResetEvent2 = *const fn (CommandBuffer, types.Event, types.PipelineStageFlags2) callconv(.c) void;
 pub const PFN_vkCmdWaitEvents2 = *const fn (CommandBuffer, u32, [*]const types.Event, *const core_1_3.DependencyInfo) callconv(.c) void;
 pub const PFN_vkCmdPipelineBarrier2 = *const fn (CommandBuffer, *const core_1_3.DependencyInfo) callconv(.c) void;
-pub const PFN_vkQueueSubmit2 = *const fn (Queue, u32, [*]const types.SubmitInfo2, types.Fence) callconv(.c) Result;
+pub const PFN_vkQueueSubmit2 = *const fn (Queue, u32, [*]const core_1_3.SubmitInfo2, types.Fence) callconv(.c) Result;
 pub const PFN_vkCmdWriteTimestamp2 = *const fn (CommandBuffer, types.PipelineStageFlags2, types.QueryPool, u32) callconv(.c) void;
-pub const PFN_vkCmdCopyBuffer2 = *const fn (CommandBuffer, *const types.CopyBufferInfo2) callconv(.c) void;
-pub const PFN_vkCmdCopyImage2 = *const fn (CommandBuffer, *const types.CopyImageInfo2) callconv(.c) void;
-pub const PFN_vkCmdCopyBufferToImage2 = *const fn (CommandBuffer, *const types.CopyBufferToImageInfo2) callconv(.c) void;
-pub const PFN_vkCmdCopyImageToBuffer2 = *const fn (CommandBuffer, *const types.CopyImageToBufferInfo2) callconv(.c) void;
-pub const PFN_vkCmdBlitImage2 = *const fn (CommandBuffer, *const types.BlitImageInfo2) callconv(.c) void;
-pub const PFN_vkCmdResolveImage2 = *const fn (CommandBuffer, *const types.ResolveImageInfo2) callconv(.c) void;
+pub const PFN_vkCmdCopyBuffer2 = *const fn (CommandBuffer, *const core_1_3.CopyBufferInfo2) callconv(.c) void;
+pub const PFN_vkCmdCopyImage2 = *const fn (CommandBuffer, *const core_1_3.CopyImageInfo2) callconv(.c) void;
+pub const PFN_vkCmdCopyBufferToImage2 = *const fn (CommandBuffer, *const core_1_3.CopyBufferToImageInfo2) callconv(.c) void;
+pub const PFN_vkCmdCopyImageToBuffer2 = *const fn (CommandBuffer, *const core_1_3.CopyImageToBufferInfo2) callconv(.c) void;
+pub const PFN_vkCmdBlitImage2 = *const fn (CommandBuffer, *const core_1_3.BlitImageInfo2) callconv(.c) void;
+pub const PFN_vkCmdResolveImage2 = *const fn (CommandBuffer, *const core_1_3.ResolveImageInfo2) callconv(.c) void;
 pub const PFN_vkCmdBeginRendering = *const fn (CommandBuffer, *const core_1_3.RenderingInfo) callconv(.c) void;
 pub const PFN_vkCmdEndRendering = *const fn (CommandBuffer) callconv(.c) void;
 pub const PFN_vkCmdSetCullMode = *const fn (CommandBuffer, types.CullModeFlags) callconv(.c) void;
@@ -353,9 +351,7 @@ pub const PFN_vkGetDeviceImageSubresourceLayoutKHR = *const fn (Device, *const c
 pub const PFN_vkGetImageSubresourceLayout2KHR = *const fn (Device, types.Image, *const core_1_4.ImageSubresource2KHR, *core_1_4.SubresourceLayout2KHR) callconv(.c) void;
 pub const PFN_vkGetRenderingAreaGranularityKHR = *const fn (Device, *const core_1_4.RenderingAreaInfoKHR, *types.Extent2D) callconv(.c) void;
 
-// ============================================================================
-// Extension Function Types
-// ============================================================================
+// == Extension Function Types ==
 
 // VK_KHR_surface
 pub const PFN_vkDestroySurfaceKHR = *const fn (Instance, types.SurfaceKHR, ?*const types.AllocationCallbacks) callconv(.c) void;
@@ -387,9 +383,7 @@ pub const PFN_vkGetPhysicalDeviceXlibPresentationSupportKHR = *const fn (Physica
 pub const PFN_vkCreateWin32SurfaceKHR = *const fn (Instance, *const khr_win32_surface.Win32SurfaceCreateInfoKHR, ?*const types.AllocationCallbacks, *types.SurfaceKHR) callconv(.c) Result;
 pub const PFN_vkGetPhysicalDeviceWin32PresentationSupportKHR = *const fn (PhysicalDevice, u32) callconv(.c) types.Bool32;
 
-// ============================================================================
-// Extension and Layer Structures
-// ============================================================================
+// == Extension and Layer Structures ==
 
 pub const ExtensionProperties = extern struct {
     extension_name: [constants.MAX_EXTENSION_NAME_SIZE]u8,
@@ -403,9 +397,7 @@ pub const LayerProperties = extern struct {
     description: [constants.MAX_DESCRIPTION_SIZE]u8,
 };
 
-// ============================================================================
-// Vulkan Loader
-// ============================================================================
+// == Vulkan Loader ==
 
 pub const LoaderError = error{
     FunctionNotAvailable,
@@ -514,9 +506,7 @@ pub const Loader = struct {
     }
 };
 
-// ============================================================================
-// Instance Dispatch Table
-// ============================================================================
+// == Instance Dispatch Table ==
 
 pub const InstanceDispatch = struct {
     vkDestroyInstance: PFN_vkDestroyInstance,
@@ -664,9 +654,7 @@ fn loadInstanceFunction(
     return @ptrCast(@alignCast(func));
 }
 
-// ============================================================================
-// Device Dispatch Table
-// ============================================================================
+// == Device Dispatch Table ==
 
 pub const DeviceDispatch = struct {
     vkDestroyDevice: PFN_vkDestroyDevice,

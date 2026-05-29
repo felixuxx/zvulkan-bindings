@@ -5,9 +5,7 @@ const types = @import("../types.zig");
 
 pub const AMD_MEMORY_OVERALLOCATION_BEHAVIOR_EXTENSION_NAME = "VK_AMD_memory_overallocation_behavior";
 
-// ============================================================================
-// Enums
-// ============================================================================
+// == Enums ==
 
 pub const MemoryOverallocationBehaviorAMD = enum(i32) {
     default_amd = 0,
@@ -15,9 +13,7 @@ pub const MemoryOverallocationBehaviorAMD = enum(i32) {
     disallowed_amd = 2,
 };
 
-// ============================================================================
-// Structures
-// ============================================================================
+// == Structures ==
 
 pub const DeviceMemoryOverallocationCreateInfoAMD = extern struct {
     s_type: types.StructureType = .device_memory_overallocation_create_info_amd,

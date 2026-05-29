@@ -5,9 +5,7 @@ const types = @import("../types.zig");
 
 pub const EXT_VALIDATION_FEATURES_EXTENSION_NAME = "VK_EXT_validation_features";
 
-// ============================================================================
-// Enums
-// ============================================================================
+// == Enums ==
 
 pub const ValidationFeatureEnableEXT = enum(i32) {
     gpu_assisted = 0,
@@ -27,9 +25,7 @@ pub const ValidationFeatureDisableEXT = enum(i32) {
     shader_validation_cache = 6,
 };
 
-// ============================================================================
-// Structures
-// ============================================================================
+// == Structures ==
 
 pub const ValidationFeaturesEXT = extern struct {
     s_type: types.StructureType = .validation_features_ext,

@@ -2,12 +2,12 @@
 //! Simplifies render pass creation for modern engines
 
 const types = @import("../types.zig");
+const core_1_3 = @import("../core_1_3.zig");
+const khr_fragment_shading_rate = @import("khr_fragment_shading_rate.zig");
 
 pub const KHR_DYNAMIC_RENDERING_EXTENSION_NAME = "VK_KHR_dynamic_rendering";
 
-// ============================================================================
-// Enums
-// ============================================================================
+// == Enums ==
 
 pub const RenderingFlagBitsKHR = packed struct(u32) {
     contents_secondary_command_buffers_khr: bool = false,
@@ -18,35 +18,14 @@ pub const RenderingFlagBitsKHR = packed struct(u32) {
 
 pub const RenderingInfoFlagsKHR = types.RenderingFlags;
 
-// ============================================================================
-// Structures
-// ============================================================================
+// == Structures (re-exported from core_1_3) ==
 
-pub const RenderingInfo = extern struct {
-    s_type: types.StructureType = .rendering_info,
-    p_next: ?*const anyopaque = null,
-    flags: RenderingInfoFlagsKHR = .{},
-    render_area: types.Rect2D,
-    layer_count: u32 = 0,
-    view_mask: u32 = 0,
-    color_attachment_count: u32 = 0,
-    p_color_attachments: ?[*]const RenderingAttachmentInfo = null,
-    depth_attachment: ?*const RenderingAttachmentInfo = null,
-    stencil_attachment: ?*const RenderingAttachmentInfo = null,
-};
+pub const RenderingInfo = core_1_3.RenderingInfo;
+pub const RenderingAttachmentInfo = core_1_3.RenderingAttachmentInfo;
+pub const PipelineRenderingCreateInfo = core_1_3.PipelineRenderingCreateInfo;
+pub const PhysicalDeviceDynamicRenderingFeatures = core_1_3.PhysicalDeviceDynamicRenderingFeatures;
 
-pub const RenderingAttachmentInfo = extern struct {
-    s_type: types.StructureType = .rendering_attachment_info,
-    p_next: ?*const anyopaque = null,
-    image_view: types.ImageView = 0,
-    image_layout: types.ImageLayout,
-    resolve_mode: types.ResolveModeFlags,
-    resolve_image_view: types.ImageView = 0,
-    resolve_image_layout: types.ImageLayout,
-    load_op: types.AttachmentLoadOp,
-    store_op: types.AttachmentStoreOp,
-    clear_value: types.ClearValue,
-};
+// == Extension-specific structures ==
 
 pub const RenderingFragmentDensityMapAttachmentInfoEXT = extern struct {
     s_type: types.StructureType = .rendering_fragment_density_map_attachment_info_ext,
@@ -55,28 +34,6 @@ pub const RenderingFragmentDensityMapAttachmentInfoEXT = extern struct {
     image_layout: types.ImageLayout,
 };
 
-pub const RenderingFragmentShadingRateAttachmentInfoKHR = extern struct {
-    s_type: types.StructureType = .rendering_fragment_shading_rate_attachment_info_khr,
-    p_next: ?*const anyopaque = null,
-    image_view: types.ImageView = 0,
-    image_layout: types.ImageLayout,
-    shading_rate_attachment_texel_size: types.Extent2D,
-};
-
-pub const PhysicalDeviceDynamicRenderingFeatures = extern struct {
-    s_type: types.StructureType = .physical_device_dynamic_rendering_features,
-    p_next: ?*const anyopaque = null,
-    dynamic_rendering: types.Bool32 = 0,
-};
-
-pub const PipelineRenderingCreateInfo = extern struct {
-    s_type: types.StructureType = .pipeline_rendering_create_info,
-    p_next: ?*const anyopaque = null,
-    view_mask: u32 = 0,
-    color_attachment_count: u32 = 0,
-    p_color_attachment_formats: ?[*]const types.Format = null,
-    depth_attachment_format: types.Format = .undefined,
-    stencil_attachment_format: types.Format = .undefined,
-};
+pub const RenderingFragmentShadingRateAttachmentInfoKHR = khr_fragment_shading_rate.RenderingFragmentShadingRateAttachmentInfoKHR;
 
 pub const PhysicalDeviceDynamicRenderingFeaturesKHR = PhysicalDeviceDynamicRenderingFeatures;
