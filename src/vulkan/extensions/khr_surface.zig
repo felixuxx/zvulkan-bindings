@@ -5,9 +5,7 @@ const types = @import("../types.zig");
 
 pub const KHR_SURFACE_EXTENSION_NAME = "VK_KHR_surface";
 
-// ============================================================================
-// Enums
-// ============================================================================
+// == Enums ==
 
 pub const ColorSpaceKHR = enum(i32) {
     srgb_nonlinear_khr = 0,
@@ -60,9 +58,7 @@ pub const SurfaceTransformFlagBitsKHR = packed struct(u32) {
     _padding: u23 = 0,
 };
 
-// ============================================================================
-// Structures
-// ============================================================================
+// == Structures ==
 
 pub const SurfaceCapabilitiesKHR = extern struct {
     min_image_count: u32,
@@ -88,9 +84,7 @@ pub const SurfaceFormat2KHR = extern struct {
     surface_format: SurfaceFormatKHR,
 };
 
-// ============================================================================
-// Display Structures (for KHR_display extension)
-// ============================================================================
+// == Display Structures (for KHR_display extension) ==
 
 pub const DisplayPropertiesKHR = extern struct {
     display: types.DisplayKHR,

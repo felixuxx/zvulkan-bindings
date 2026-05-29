@@ -5,9 +5,7 @@ const types = @import("../types.zig");
 
 pub const INTEL_PERFORMANCE_QUERY_EXTENSION_NAME = "VK_INTEL_performance_query";
 
-// ============================================================================
-// Enums
-// ============================================================================
+// == Enums ==
 
 pub const PerformanceConfigurationTypeINTEL = enum(i32) {
     command_queue_metrics_discovery_activated_intel = 0,
@@ -37,9 +35,7 @@ pub const PerformanceValueTypeINTEL = enum(i32) {
     string = 4,
 };
 
-// ============================================================================
-// Structures
-// ============================================================================
+// == Structures ==
 
 pub const InitializePerformanceApiInfoINTEL = extern struct {
     s_type: types.StructureType = .initialize_performance_api_info_intel,

@@ -2,7 +2,6 @@
 //! Presentation engine support
 
 const types = @import("../types.zig");
-const constants = @import("../constants.zig");
 const khr_surface = @import("khr_surface.zig");
 
 pub const KHR_SWAPCHAIN_EXTENSION_NAME = "VK_KHR_swapchain";

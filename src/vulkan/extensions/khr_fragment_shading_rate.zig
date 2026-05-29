@@ -1,15 +1,12 @@
 //! VK_KHR_fragment_shading_rate extension
 //! Variable rate shading for performance optimization
 
-const constants = @import("../constants.zig");
 const core_1_2 = @import("../core_1_2.zig");
 const types = @import("../types.zig");
 
 pub const KHR_FRAGMENT_SHADING_RATE_EXTENSION_NAME = "VK_KHR_fragment_shading_rate";
 
-// ============================================================================
-// Enums
-// ============================================================================
+// == Enums ==
 
 pub const FragmentShadingRateNV = enum(i32) {
     @"1_invocation_per_pixel_nv" = 0,
@@ -44,9 +41,7 @@ pub const FragmentShadingRateCombinerOpKHR = enum(i32) {
 
 pub const FragmentShadingRateTypeKHR = FragmentShadingRateTypeNV;
 
-// ============================================================================
-// Structures
-// ============================================================================
+// == Structures ==
 
 pub const PhysicalDeviceFragmentShadingRateFeaturesKHR = extern struct {
     s_type: types.StructureType = .physical_device_fragment_shading_rate_features_khr,

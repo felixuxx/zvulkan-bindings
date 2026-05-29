@@ -6,9 +6,7 @@ const core_1_0 = @import("../core_1_0.zig");
 
 pub const KHR_PUSH_DESCRIPTOR_EXTENSION_NAME = "VK_KHR_push_descriptor";
 
-// ============================================================================
-// Structures
-// ============================================================================
+// == Structures ==
 
 pub const PhysicalDevicePushDescriptorPropertiesKHR = extern struct {
     s_type: types.StructureType = .physical_device_push_descriptor_properties_khr,
@@ -16,6 +14,7 @@ pub const PhysicalDevicePushDescriptorPropertiesKHR = extern struct {
     max_push_descriptors: u32,
 };
 
+// Originally from VK_EXT_inline_uniform_block, commonly used with push descriptors
 pub const WriteDescriptorSetInlineUniformBlock = extern struct {
     s_type: types.StructureType = .write_descriptor_set_inline_uniform_block,
     p_next: ?*const anyopaque = null,

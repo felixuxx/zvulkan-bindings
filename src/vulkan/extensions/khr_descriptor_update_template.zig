@@ -5,21 +5,17 @@ const types = @import("../types.zig");
 
 pub const KHR_DESCRIPTOR_UPDATE_TEMPLATE_EXTENSION_NAME = "VK_KHR_descriptor_update_template";
 
-// ============================================================================
-// Enums
-// ============================================================================
+// == Enums ==
 
 pub const DescriptorUpdateTemplateTypeKHR = enum(i32) {
     descriptor_set_khr = 0,
     push_descriptors_khr = 1,
 };
 
-// ============================================================================
-// Structures
-// ============================================================================
+// == Structures ==
 
 pub const DescriptorUpdateTemplateCreateInfoKHR = extern struct {
-    s_type: types.StructureType = .descriptor_update_template_create_info_khr,
+    s_type: types.StructureType = .descriptor_update_template_create_info,
     p_next: ?*const anyopaque = null,
     flags: types.DescriptorUpdateTemplateCreateFlagsKHR = 0,
     descriptor_update_entry_count: u32,
