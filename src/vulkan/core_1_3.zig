@@ -3,9 +3,7 @@
 const types = @import("types.zig");
 const constants = @import("constants.zig");
 
-// ============================================================================
-// Structures
-// ============================================================================
+// == Structures ==
 
 pub const PhysicalDeviceVulkan13Features = extern struct {
     s_type: types.StructureType = .physical_device_vulkan_1_3_features,
@@ -173,9 +171,7 @@ pub const PhysicalDeviceToolProperties = extern struct {
     layer: [constants.MAX_EXTENSION_NAME_SIZE]u8,
 };
 
-// ============================================================================
-// Individual Feature Structures (Vulkan 1.3)
-// ============================================================================
+// == Individual Feature Structures (Vulkan 1.3) ==
 
 pub const PhysicalDeviceShaderDemoteToHelperInvocationFeatures = extern struct {
     s_type: types.StructureType = .physical_device_shader_demote_to_helper_invocation_features,
@@ -229,7 +225,7 @@ pub const PhysicalDeviceSubgroupSizeControlFeatures = extern struct {
 };
 
 pub const PhysicalDeviceSubgroupSizeControlProperties = extern struct {
-    s_type: types.StructureType = .pipeline_shader_stage_required_subgroup_size_create_info,
+    s_type: types.StructureType = .physical_device_subgroup_size_control_properties,
     p_next: ?*anyopaque = null,
     min_subgroup_size: u32,
     max_subgroup_size: u32,
@@ -249,9 +245,7 @@ pub const PhysicalDeviceMaintenance4Properties = extern struct {
     max_buffer_size: types.DeviceSize,
 };
 
-// ============================================================================
-// Command Buffer Inheritance for Dynamic Rendering
-// ============================================================================
+// == Command Buffer Inheritance for Dynamic Rendering ==
 
 pub const CommandBufferInheritanceRenderingInfo = extern struct {
     s_type: types.StructureType = .command_buffer_inheritance_rendering_info,
@@ -265,9 +259,7 @@ pub const CommandBufferInheritanceRenderingInfo = extern struct {
     rasterization_samples: types.SampleCountFlagBits,
 };
 
-// ============================================================================
-// Copy Commands 2 Support
-// ============================================================================
+// == Copy Commands 2 Support ==
 
 pub const CopyBufferInfo2 = extern struct {
     s_type: types.StructureType = .copy_buffer_info_2,
@@ -321,9 +313,18 @@ pub const BlitImageInfo2 = extern struct {
     filter: types.Filter,
 };
 
-// ============================================================================
-// Submit Info 2 Support
-// ============================================================================
+pub const ResolveImageInfo2 = extern struct {
+    s_type: types.StructureType = .resolve_image_info_2,
+    p_next: ?*const anyopaque = null,
+    src_image: types.Image,
+    src_image_layout: types.ImageLayout,
+    dst_image: types.Image,
+    dst_image_layout: types.ImageLayout,
+    region_count: u32,
+    p_regions: [*]const types.ImageResolve2,
+};
+
+// == Submit Info 2 Support ==
 
 pub const SubmitInfo2 = extern struct {
     s_type: types.StructureType = .submit_info_2,
@@ -344,9 +345,7 @@ pub const CommandBufferSubmitInfo = extern struct {
     device_mask: u32,
 };
 
-// ============================================================================
-// Enhanced Command Buffer Support
-// ============================================================================
+// == Enhanced Command Buffer Support ==
 
 pub const SemaphoreSubmitInfo = extern struct {
     s_type: types.StructureType = .semaphore_submit_info,

@@ -6,9 +6,7 @@ const std = @import("std");
 const c = @import("constants.zig");
 const types = @import("types.zig");
 
-// ============================================================================
-// Application and Instance Structures
-// ============================================================================
+// == Application and Instance Structures ==
 
 pub const ApplicationInfo = extern struct {
     s_type: types.StructureType = .application_info,
@@ -43,14 +41,7 @@ pub const PhysicalDeviceProperties = extern struct {
     sparse_properties: PhysicalDeviceSparseProperties,
 };
 
-pub const PhysicalDeviceType = enum(i32) {
-    other = 0,
-    integrated_gpu = 1,
-    discrete_gpu = 2,
-    virtual_gpu = 3,
-    cpu = 4,
-    _,
-};
+pub const PhysicalDeviceType = types.PhysicalDeviceType;
 
 pub const PhysicalDeviceLimits = extern struct {
     max_image_dimension_1d: u32,
@@ -251,9 +242,7 @@ pub const QueueFamilyProperties = extern struct {
     min_image_transfer_granularity: types.Extent3D,
 };
 
-// ============================================================================
-// Device Structures
-// ============================================================================
+// == Device Structures ==
 
 pub const DeviceQueueCreateInfo = extern struct {
     s_type: types.StructureType = .device_queue_create_info,
@@ -277,9 +266,7 @@ pub const DeviceCreateInfo = extern struct {
     p_enabled_features: ?*const PhysicalDeviceFeatures = null,
 };
 
-// ============================================================================
-// Memory Structures
-// ============================================================================
+// == Memory Structures ==
 
 pub const MemoryAllocateInfo = extern struct {
     s_type: types.StructureType = .memory_allocate_info,
@@ -296,38 +283,10 @@ pub const MappedMemoryRange = extern struct {
     size: types.DeviceSize,
 };
 
-// ============================================================================
-// Image Subresource Structures
-// ============================================================================
-
-pub const ImageSubresource = extern struct {
-    aspect_mask: types.ImageAspectFlags,
-    mip_level: u32,
-    array_layer: u32,
-};
-
-pub const ImageSubresourceLayers = extern struct {
-    aspect_mask: types.ImageAspectFlags,
-    mip_level: u32,
-    base_array_layer: u32,
-    layer_count: u32,
-};
-
-pub const ImageSubresourceRange = extern struct {
-    aspect_mask: types.ImageAspectFlags,
-    base_mip_level: u32,
-    level_count: u32,
-    base_array_layer: u32,
-    layer_count: u32,
-};
-
-pub const SubresourceLayout = extern struct {
-    offset: types.DeviceSize,
-    size: types.DeviceSize,
-    row_pitch: types.DeviceSize,
-    array_pitch: types.DeviceSize,
-    depth_pitch: types.DeviceSize,
-};
+pub const ImageSubresource = types.ImageSubresource;
+pub const ImageSubresourceLayers = types.ImageSubresourceLayers;
+pub const ImageSubresourceRange = types.ImageSubresourceRange;
+pub const SubresourceLayout = types.SubresourceLayout;
 
 pub const FormatProperties = extern struct {
     linear_tiling_features: types.FormatFeatureFlags = .{},
@@ -343,9 +302,7 @@ pub const ImageFormatProperties = extern struct {
     max_resource_size: types.DeviceSize,
 };
 
-// ============================================================================
-// Sparse Memory Structures
-// ============================================================================
+// == Sparse Memory Structures ==
 
 pub const SparseImageFormatProperties = extern struct {
     aspect_mask: types.ImageAspectFlags,
@@ -411,9 +368,7 @@ pub const BindSparseInfo = extern struct {
     p_signal_semaphores: ?[*]const types.Semaphore = null,
 };
 
-// ============================================================================
-// Buffer Structures
-// ============================================================================
+// == Buffer Structures ==
 
 pub const BufferCreateInfo = extern struct {
     s_type: types.StructureType = .buffer_create_info,
@@ -436,9 +391,7 @@ pub const BufferViewCreateInfo = extern struct {
     range: types.DeviceSize,
 };
 
-// ============================================================================
-// Image Structures
-// ============================================================================
+// == Image Structures ==
 
 pub const ImageCreateInfo = extern struct {
     s_type: types.StructureType = .image_create_info,
@@ -449,7 +402,7 @@ pub const ImageCreateInfo = extern struct {
     extent: types.Extent3D,
     mip_levels: u32,
     array_layers: u32,
-    samples: types.SampleCountFlags,
+    samples: types.SampleCountFlagBits,
     tiling: types.ImageTiling,
     usage: types.ImageUsageFlags,
     sharing_mode: types.SharingMode = .exclusive,
@@ -474,9 +427,7 @@ pub const ImageViewCreateInfo = extern struct {
     subresource_range: types.ImageSubresourceRange,
 };
 
-// ============================================================================
-// Command Buffer Structures
-// ============================================================================
+// == Command Buffer Structures ==
 
 pub const CommandPoolCreateInfo = extern struct {
     s_type: types.StructureType = .command_pool_create_info,
@@ -511,9 +462,7 @@ pub const CommandBufferInheritanceInfo = extern struct {
     pipeline_statistics: u32, // QueryPipelineStatisticFlags - using u32 for ABI compatibility
 };
 
-// ============================================================================
-// Synchronization Structures
-// ============================================================================
+// == Synchronization Structures ==
 
 pub const FenceCreateInfo = extern struct {
     s_type: types.StructureType = .fence_create_info,
@@ -539,9 +488,7 @@ pub const SubmitInfo = extern struct {
     p_signal_semaphores: ?[*]const types.Semaphore = null,
 };
 
-// ============================================================================
-// Shader and Pipeline Structures
-// ============================================================================
+// == Shader and Pipeline Structures ==
 
 pub const ShaderModuleCreateInfo = extern struct {
     s_type: types.StructureType = .shader_module_create_info,
@@ -608,9 +555,7 @@ pub const PushConstantRange = extern struct {
     size: u32,
 };
 
-// ============================================================================
-// Render Pass Structures
-// ============================================================================
+// == Render Pass Structures ==
 
 pub const RenderPassCreateInfo = extern struct {
     s_type: types.StructureType = .render_pass_create_info,
@@ -627,7 +572,7 @@ pub const RenderPassCreateInfo = extern struct {
 pub const AttachmentDescription = extern struct {
     flags: u32 = 0,
     format: types.Format,
-    samples: types.SampleCountFlags,
+    samples: types.SampleCountFlagBits,
     load_op: types.AttachmentLoadOp,
     store_op: types.AttachmentStoreOp,
     stencil_load_op: types.AttachmentLoadOp,
@@ -786,7 +731,7 @@ pub const PipelineDepthStencilStateCreateInfo = extern struct {
     back: types.StencilOpState = std.mem.zeroes(types.StencilOpState),
 };
 
-pub const DynamicState = enum(u32) {
+pub const DynamicState = enum(i32) {
     viewport = 0,
     scissor = 1,
     line_width = 2,
@@ -828,9 +773,7 @@ pub const GraphicsPipelineCreateInfo = extern struct {
     base_pipeline_index: i32 = -1,
 };
 
-// ============================================================================
-// Descriptor Management Structures
-// ============================================================================
+// == Descriptor Management Structures ==
 
 pub const DescriptorSetLayoutCreateInfo = extern struct {
     s_type: types.StructureType = .descriptor_set_layout_create_info,
@@ -943,9 +886,7 @@ test "descriptor structures compilation" {
     _ = desc_buffer_info;
 }
 
-// ============================================================================
-// Indirect Command Structures
-// ============================================================================
+// == Indirect Command Structures ==
 
 pub const DrawIndirectCommand = extern struct {
     vertex_count: u32,
@@ -968,9 +909,7 @@ pub const DispatchIndirectCommand = extern struct {
     z: u32,
 };
 
-// ============================================================================
-// Command Buffer Recording Structures
-// ============================================================================
+// == Command Buffer Recording Structures ==
 
 pub const MemoryBarrier = extern struct {
     s_type: types.StructureType = .memory_barrier,
@@ -1077,9 +1016,7 @@ pub const SamplerCreateInfo = extern struct {
     unnormalized_coordinates: types.Bool32 = 0,
 };
 
-// ============================================================================
-// Query and Event Structures
-// ============================================================================
+// == Query and Event Structures ==
 
 pub const QueryPoolCreateInfo = extern struct {
     s_type: types.StructureType = .query_pool_create_info,
@@ -1096,6 +1033,4 @@ pub const EventCreateInfo = extern struct {
     flags: u32 = 0,
 };
 
-// ============================================================================
-// Additional Pipeline Structures
-// ============================================================================
+// == Additional Pipeline Structures ==

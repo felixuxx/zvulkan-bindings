@@ -4,9 +4,7 @@ const types = @import("types.zig");
 const core_1_0 = @import("core_1_0.zig");
 const constants = @import("constants.zig");
 
-// ============================================================================
-// Vulkan 1.4 Features and Properties
-// ============================================================================
+// == Vulkan 1.4 Features and Properties ==
 
 pub const PhysicalDeviceVulkan14Features = extern struct {
     s_type: types.StructureType = .physical_device_vulkan_1_4_features,
@@ -78,12 +76,10 @@ pub const ImageSubresource2KHR = extern struct {
     image_subresource: types.ImageSubresource,
 };
 
-// ============================================================================
-// VK_KHR_maintenance5 (promoted to 1.4)
-// ============================================================================
+// == VK_KHR_maintenance5 (promoted to 1.4) ==
 
 pub const RenderingAreaInfoKHR = extern struct {
-    s_type: types.StructureType = .rendering_area_info_khr,
+    s_type: types.StructureType = .rendering_area_info,
     p_next: ?*const anyopaque = null,
     view_mask: u32,
     color_attachment_count: u32,
@@ -93,23 +89,19 @@ pub const RenderingAreaInfoKHR = extern struct {
 };
 
 pub const SubresourceLayout2KHR = extern struct {
-    s_type: types.StructureType = .subresource_layout_2_khr,
+    s_type: types.StructureType = .subresource_layout_2,
     p_next: ?*anyopaque = null,
     subresource_layout: types.SubresourceLayout,
 };
 
-// ============================================================================
-// VK_KHR_maintenance6 (promoted to 1.4)
-// ============================================================================
+// == VK_KHR_maintenance6 (promoted to 1.4) ==
 
 pub const BindMemoryStatusKHR = extern struct {
-    s_type: types.StructureType = .bind_memory_status_khr,
+    s_type: types.StructureType = .bind_memory_status,
     p_next: ?*anyopaque = null,
     p_result: ?*types.Result,
 };
 
-// ============================================================================
-// VK_EXT_host_image_copy (promoted to 1.4)
-// ============================================================================
+// == VK_EXT_host_image_copy (promoted to 1.4) ==
 
 // Add more structs as needed for other extensions
