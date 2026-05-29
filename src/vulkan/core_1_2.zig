@@ -2,10 +2,33 @@
 
 const types = @import("types.zig");
 const constants = @import("constants.zig");
+const core_1_1 = @import("core_1_1.zig");
 
-// ============================================================================
-// Structures
-// ============================================================================
+pub const BindBufferMemoryInfo = core_1_1.BindBufferMemoryInfo;
+pub const BindImageMemoryInfo = core_1_1.BindImageMemoryInfo;
+pub const MemoryDedicatedRequirements = core_1_1.MemoryDedicatedRequirements;
+pub const MemoryDedicatedAllocateInfo = core_1_1.MemoryDedicatedAllocateInfo;
+pub const MemoryAllocateFlagsInfo = core_1_1.MemoryAllocateFlagsInfo;
+pub const DeviceGroupDeviceCreateInfo = core_1_1.DeviceGroupDeviceCreateInfo;
+pub const PhysicalDeviceGroupProperties = core_1_1.PhysicalDeviceGroupProperties;
+pub const PhysicalDeviceGroupProperties2 = core_1_1.PhysicalDeviceGroupProperties;
+pub const BindBufferMemoryDeviceGroupInfo = core_1_1.BindBufferMemoryDeviceGroupInfo;
+pub const BindImageMemoryDeviceGroupInfo = core_1_1.BindImageMemoryDeviceGroupInfo;
+pub const PhysicalDeviceExternalBufferInfo = core_1_1.PhysicalDeviceExternalBufferInfo;
+pub const ExternalBufferProperties = core_1_1.ExternalBufferProperties;
+pub const PhysicalDeviceExternalFenceInfo = core_1_1.PhysicalDeviceExternalFenceInfo;
+pub const ExternalFenceProperties = core_1_1.ExternalFenceProperties;
+pub const PhysicalDeviceExternalSemaphoreInfo = core_1_1.PhysicalDeviceExternalSemaphoreInfo;
+pub const ExternalSemaphoreProperties = core_1_1.ExternalSemaphoreProperties;
+pub const FormatProperties2 = core_1_1.FormatProperties2;
+pub const ImageFormatProperties2 = core_1_1.ImageFormatProperties2;
+pub const QueueFamilyProperties2 = core_1_1.QueueFamilyProperties2;
+pub const PhysicalDeviceMemoryProperties2 = core_1_1.PhysicalDeviceMemoryProperties2;
+pub const SparseImageFormatProperties2 = core_1_1.SparseImageFormatProperties2;
+pub const PhysicalDeviceImageFormatInfo2 = core_1_1.PhysicalDeviceImageFormatInfo2;
+pub const PhysicalDeviceSparseImageFormatInfo2 = core_1_1.PhysicalDeviceSparseImageFormatInfo2;
+
+// == Structures ==
 
 pub const PhysicalDeviceVulkan11Features = extern struct {
     s_type: types.StructureType = .physical_device_vulkan_1_1_features,
@@ -197,9 +220,7 @@ pub const DeviceMemoryOpaqueCaptureAddressInfo = extern struct {
     memory: types.DeviceMemory,
 };
 
-// ============================================================================
-// Extended Render Pass Structures (Vulkan 1.2)
-// ============================================================================
+// == Extended Render Pass Structures (Vulkan 1.2) ==
 
 pub const RenderPassCreateInfo2 = extern struct {
     s_type: types.StructureType = .render_pass_create_info_2,
@@ -266,9 +287,7 @@ pub const AttachmentReference2 = extern struct {
     aspect_mask: types.ImageAspectFlags,
 };
 
-// ============================================================================
-// Input Attachment Aspect Support
-// ============================================================================
+// == Input Attachment Aspect Support ==
 
 pub const InputAttachmentAspectReference = extern struct {
     subpass: u32,
@@ -283,9 +302,7 @@ pub const RenderPassInputAttachmentAspectCreateInfo = extern struct {
     p_aspect_references: ?[*]const InputAttachmentAspectReference,
 };
 
-// ============================================================================
-// Image Format List Support
-// ============================================================================
+// == Image Format List Support ==
 
 pub const ImageFormatListCreateInfo = extern struct {
     s_type: types.StructureType = .image_format_list_create_info,
@@ -294,16 +311,7 @@ pub const ImageFormatListCreateInfo = extern struct {
     p_view_formats: ?[*]const types.Format,
 };
 
-// ============================================================================
-// Device Group Support
-// ============================================================================
-
-pub const DeviceGroupDeviceCreateInfo = extern struct {
-    s_type: types.StructureType = .device_group_device_create_info,
-    p_next: ?*const anyopaque = null,
-    physical_device_count: u32,
-    p_physical_devices: ?[*]const types.PhysicalDevice,
-};
+// == Device Group Support ==
 
 pub const DeviceGroupSubmitInfo = extern struct {
     s_type: types.StructureType = .device_group_submit_info,
@@ -316,191 +324,7 @@ pub const DeviceGroupSubmitInfo = extern struct {
     p_signal_semaphore_device_indices: ?[*]const u32,
 };
 
-// ============================================================================
-// Bind Memory 2 Support
-// ============================================================================
-
-pub const BindBufferMemoryInfo = extern struct {
-    s_type: types.StructureType = .bind_buffer_memory_info,
-    p_next: ?*const anyopaque = null,
-    buffer: types.Buffer,
-    memory: types.DeviceMemory,
-    memory_offset: types.DeviceSize,
-};
-
-pub const BindImageMemoryInfo = extern struct {
-    s_type: types.StructureType = .bind_image_memory_info,
-    p_next: ?*const anyopaque = null,
-    image: types.Image,
-    memory: types.DeviceMemory,
-    memory_offset: types.DeviceSize,
-};
-
-pub const BindBufferMemoryDeviceGroupInfo = extern struct {
-    s_type: types.StructureType = .bind_buffer_memory_device_group_info,
-    p_next: ?*const anyopaque = null,
-    device_index_count: u32 = 0,
-    p_device_indices: ?[*]const u32 = null,
-};
-
-pub const BindImageMemoryDeviceGroupInfo = extern struct {
-    s_type: types.StructureType = .bind_image_memory_device_group_info,
-    p_next: ?*const anyopaque = null,
-    device_index_count: u32 = 0,
-    p_device_indices: ?[*]const u32 = null,
-    split_instance_bind_region_count: u32 = 0,
-    p_split_instance_bind_regions: ?[*]const types.Rect2D = null,
-};
-
-pub const MemoryDedicatedRequirements = extern struct {
-    s_type: types.StructureType = .memory_dedicated_requirements,
-    p_next: ?*const anyopaque = null,
-    prefers_dedicated_allocation: types.Bool32,
-    requires_dedicated_allocation: types.Bool32,
-};
-
-pub const MemoryDedicatedAllocateInfo = extern struct {
-    s_type: types.StructureType = .memory_dedicated_allocate_info,
-    p_next: ?*const anyopaque = null,
-    image: types.Image,
-    buffer: types.Buffer,
-};
-
-pub const MemoryAllocateFlagsInfo = extern struct {
-    s_type: types.StructureType = .memory_allocate_flags_info,
-    p_next: ?*const anyopaque = null,
-    flags: types.MemoryAllocateFlags,
-    device_mask: u32,
-};
-
-pub const MemoryAllocateFlagBits = enum(u32) {
-    device_mask = 0x00000001,
-    device_address = 0x00000002,
-    device_address_capture_replay = 0x00000004,
-    device_address_capture_replay_within_group = 0x00000008,
-    device_address_capture_replay_within_process = 0x00000010,
-    _,
-};
-
-pub const MemoryAllocateFlags = types.Flags(MemoryAllocateFlagBits);
-
-// ============================================================================
-// External Memory Support
-// ============================================================================
-
-pub const PhysicalDeviceExternalBufferInfo = extern struct {
-    s_type: types.StructureType = .physical_device_external_buffer_info,
-    p_next: ?*const anyopaque = null,
-    flags: types.BufferCreateFlags = .{},
-    usage: types.BufferUsageFlags = .{},
-    handle_type: types.ExternalMemoryHandleTypeFlags,
-};
-
-pub const ExternalBufferProperties = extern struct {
-    s_type: types.StructureType = .external_buffer_properties,
-    p_next: ?*anyopaque = null,
-    external_memory_properties: types.ExternalMemoryProperties,
-};
-
-pub const PhysicalDeviceExternalFenceInfo = extern struct {
-    s_type: types.StructureType = .physical_device_external_fence_info,
-    p_next: ?*const anyopaque = null,
-    handle_type: types.ExternalFenceHandleTypeFlags,
-};
-
-pub const ExternalFenceProperties = extern struct {
-    s_type: types.StructureType = .external_fence_properties,
-    p_next: ?*anyopaque = null,
-    export_from_imported_handle_types: types.ExternalFenceHandleTypeFlags,
-    compatible_handle_types: types.ExternalFenceHandleTypeFlags,
-    external_fence_features: types.ExternalFenceFeatureFlags = .{},
-};
-
-pub const PhysicalDeviceExternalSemaphoreInfo = extern struct {
-    s_type: types.StructureType = .physical_device_external_semaphore_info,
-    p_next: ?*const anyopaque = null,
-    handle_type: types.ExternalSemaphoreHandleTypeFlags,
-};
-
-pub const ExternalSemaphoreProperties = extern struct {
-    s_type: types.StructureType = .external_semaphore_properties,
-    p_next: ?*anyopaque = null,
-    export_from_imported_handle_types: types.ExternalSemaphoreHandleTypeFlags,
-    compatible_handle_types: types.ExternalSemaphoreHandleTypeFlags,
-    external_semaphore_features: types.ExternalSemaphoreFeatureFlags = .{},
-};
-
-// ============================================================================
-// Device Group Properties
-// ============================================================================
-
-pub const PhysicalDeviceGroupProperties = extern struct {
-    s_type: types.StructureType = .physical_device_group_properties,
-    p_next: ?*anyopaque = null,
-    physical_device_count: u32,
-    physical_devices: [constants.MAX_DEVICE_GROUP_SIZE]types.PhysicalDevice,
-    subset_allocation: types.Bool32,
-};
-
-pub const PhysicalDeviceGroupProperties2 = PhysicalDeviceGroupProperties;
-
-// ============================================================================
-// Extended Format and Image Properties
-// ============================================================================
-
-pub const FormatProperties2 = extern struct {
-    s_type: types.StructureType = .format_properties_2,
-    p_next: ?*anyopaque = null,
-    format_properties: types.FormatProperties,
-};
-
-pub const ImageFormatProperties2 = extern struct {
-    s_type: types.StructureType = .image_format_properties_2,
-    p_next: ?*anyopaque = null,
-    properties: types.ImageFormatProperties,
-};
-
-pub const QueueFamilyProperties2 = extern struct {
-    s_type: types.StructureType = .queue_family_properties_2,
-    p_next: ?*anyopaque = null,
-    queue_family_properties: types.QueueFamilyProperties,
-};
-
-pub const PhysicalDeviceMemoryProperties2 = extern struct {
-    s_type: types.StructureType = .physical_device_memory_properties_2,
-    p_next: ?*anyopaque = null,
-    memory_properties: types.PhysicalDeviceMemoryProperties,
-};
-
-pub const SparseImageFormatProperties2 = extern struct {
-    s_type: types.StructureType = .sparse_image_format_properties_2,
-    p_next: ?*anyopaque = null,
-    properties: types.SparseImageFormatProperties,
-};
-
-pub const PhysicalDeviceImageFormatInfo2 = extern struct {
-    s_type: types.StructureType = .physical_device_image_format_info_2,
-    p_next: ?*const anyopaque = null,
-    format: types.Format,
-    type: types.ImageType,
-    tiling: types.ImageTiling,
-    usage: types.ImageUsageFlags,
-    flags: types.ImageCreateFlags,
-};
-
-pub const PhysicalDeviceSparseImageFormatInfo2 = extern struct {
-    s_type: types.StructureType = .physical_device_sparse_image_format_info_2,
-    p_next: ?*const anyopaque = null,
-    format: types.Format,
-    type: types.ImageType,
-    samples: types.SampleCountFlagBits,
-    usage: types.ImageUsageFlags,
-    tiling: types.ImageTiling,
-};
-
-// ============================================================================
-// Device Memory Requirements 2 Support
-// ============================================================================
+// == Device Memory Requirements 2 Support ==
 
 pub const MemoryRequirements2 = extern struct {
     s_type: types.StructureType = .memory_requirements_2,
@@ -533,7 +357,7 @@ pub const ImageSubresource2 = extern struct {
 };
 
 pub const SubresourceLayout2 = extern struct {
-    s_type: types.StructureType = .subresource_layout_2_khr,
+    s_type: types.StructureType = .subresource_layout_2,
     p_next: ?*anyopaque = null,
     subresource_layout: types.SubresourceLayout,
 };
