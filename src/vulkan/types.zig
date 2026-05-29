@@ -3,9 +3,7 @@
 
 const c = @import("constants.zig");
 
-// ============================================================================
-// Handle Types
-// ============================================================================
+// == Handle Types ==
 
 // Dispatchable handles (pointer-sized, platform-specific)
 pub const Instance = if (@sizeOf(usize) == 8) ?*opaque {} else u64;
@@ -37,13 +35,13 @@ pub const RenderPass = u64;
 pub const PipelineCache = u64;
 pub const SurfaceKHR = u64;
 pub const SwapchainKHR = u64;
+pub const DisplayKHR = u64;
+pub const DisplayModeKHR = u64;
 pub const DebugUtilsMessengerEXT = u64;
 pub const DebugReportCallbackEXT = u64;
 pub const DescriptorUpdateTemplateKHR = u64;
 
-// ============================================================================
-// Basic Types
-// ============================================================================
+// == Basic Types ==
 
 pub const Bool32 = u32;
 pub const DeviceSize = u64;
@@ -51,9 +49,7 @@ pub const DeviceAddress = u64;
 pub const SampleMask = u32;
 pub const Flags = u32;
 
-// ============================================================================
-// Result Codes
-// ============================================================================
+// == Result Codes ==
 
 pub const Result = enum(i32) {
     success = 0,
@@ -89,9 +85,7 @@ pub const Result = enum(i32) {
     _,
 };
 
-// ============================================================================
-// Structure Types
-// ============================================================================
+// == Structure Types ==
 
 pub const StructureType = enum(i32) {
     application_info = 0,
@@ -146,6 +140,7 @@ pub const StructureType = enum(i32) {
 
     // Vulkan 1.1
     physical_device_subgroup_properties = 1000094000,
+    device_queue_info_2 = 1000145003,
     bind_buffer_memory_info = 1000157000,
     bind_image_memory_info = 1000157001,
     physical_device_16bit_storage_features = 1000083000,
@@ -160,23 +155,22 @@ pub const StructureType = enum(i32) {
     bind_buffer_memory_device_group_info = 1000060013,
     bind_image_memory_device_group_info = 1000060014,
     physical_device_group_properties = 1000070000,
-    device_group_base_group_properties = 1000070002, // Wait, checking standard...
     physical_device_features_2 = 1000059000,
     physical_device_properties_2 = 1000059001,
     format_properties_2 = 1000059002,
     image_format_properties_2 = 1000059003,
-    queue_family_properties_2 = 1000059004,
-    physical_device_memory_properties_2 = 1000059005,
-    sparse_image_format_properties_2 = 1000059006,
-    physical_device_sparse_image_format_info_2 = 1000059007,
-    physical_device_image_format_info_2 = 1000059008,
+    physical_device_image_format_info_2 = 1000059004,
+    queue_family_properties_2 = 1000059005,
+    physical_device_memory_properties_2 = 1000059006,
+    sparse_image_format_properties_2 = 1000059007,
+    physical_device_sparse_image_format_info_2 = 1000059008,
     image_memory_requirements_info_2 = 1000146001,
     buffer_memory_requirements_info_2 = 1000146000,
     memory_requirements_2 = 1000146003,
     sparse_image_memory_requirements_2 = 1000146004,
     command_buffer_inheritance_conditional_rendering_info_ext = 1000081000,
-    external_memory_image_create_info = 1000072000,
-    external_memory_buffer_create_info = 1000072001,
+    external_memory_buffer_create_info = 1000072000,
+    external_memory_image_create_info = 1000072001,
     export_memory_allocate_info = 1000072002,
     physical_device_external_image_format_info = 1000071000,
     external_image_format_properties = 1000071001,
@@ -196,19 +190,17 @@ pub const StructureType = enum(i32) {
     semaphore_type_create_info = 1000207002,
     timeline_semaphore_submit_info = 1000207003,
     semaphore_wait_info = 1000207004,
-    submit_info_2 = 1000314004,
-    command_buffer_submit_info = 1000314005,
-    semaphore_submit_info = 1000314006,
     semaphore_signal_info = 1000207005,
     device_memory_opaque_capture_address_info = 1000257004,
     buffer_device_address_info = 1000244001,
-    render_pass_create_info_2 = 1000109000,
-    attachment_description_2 = 1000109001,
-    attachment_reference_2 = 1000109002,
-    subpass_description_2 = 1000109003,
-    subpass_dependency_2 = 1000109004,
-    render_pass_input_attachment_aspect_create_info = 1000117000,
-    input_attachment_aspect_reference = 1000117001,
+    attachment_description_2 = 1000109000,
+    attachment_reference_2 = 1000109001,
+    subpass_description_2 = 1000109002,
+    subpass_dependency_2 = 1000109003,
+    render_pass_create_info_2 = 1000109004,
+    subpass_begin_info = 1000109005,
+    subpass_end_info = 1000109006,
+    render_pass_input_attachment_aspect_create_info = 1000117001,
     surface_format_2_khr = 1000119002,
     image_format_list_create_info = 1000147000,
     image_sparse_memory_requirements_info_2 = 1000146002,
@@ -216,30 +208,42 @@ pub const StructureType = enum(i32) {
     // Vulkan 1.3
     physical_device_vulkan_1_3_features = 53,
     physical_device_vulkan_1_3_properties = 54,
+    private_data_slot_create_info = 1000295002,
 
     // Vulkan 1.4
     physical_device_vulkan_1_4_features = 55,
     physical_device_vulkan_1_4_properties = 56,
     pipeline_creation_feedback_create_info = 1000192000,
-    pipeline_rendering_create_info = 1000044000,
-    rendering_info = 1000044001,
-    rendering_attachment_info = 1000044002,
+    rendering_info = 1000044000,
+    rendering_attachment_info = 1000044001,
+    pipeline_rendering_create_info = 1000044002,
     physical_device_dynamic_rendering_features = 1000044003,
     command_buffer_inheritance_rendering_info = 1000044004,
+    rendering_fragment_shading_rate_attachment_info_khr = 1000044006,
     rendering_fragment_density_map_attachment_info_ext = 1000044007,
-    pipeline_shader_stage_required_subgroup_size_create_info = 1000225000,
+    physical_device_subgroup_size_control_properties = 1000225000,
+    pipeline_shader_stage_required_subgroup_size_create_info = 1000225001,
     physical_device_subgroup_size_control_features = 1000225002,
     physical_device_tool_properties = 1000245000,
-    dependency_info = 1000314000,
-    memory_barrier_2 = 1000314001,
-    buffer_memory_barrier_2 = 1000314002,
-    image_memory_barrier_2 = 1000314003,
+    memory_barrier_2 = 1000314000,
+    buffer_memory_barrier_2 = 1000314001,
+    image_memory_barrier_2 = 1000314002,
+    dependency_info = 1000314003,
+    submit_info_2 = 1000314004,
+    semaphore_submit_info = 1000314005,
+    command_buffer_submit_info = 1000314006,
+    physical_device_synchronization_2_features = 1000314007,
     copy_buffer_info_2 = 1000337000,
     copy_image_info_2 = 1000337001,
     copy_buffer_to_image_info_2 = 1000337002,
     copy_image_to_buffer_info_2 = 1000337003,
     blit_image_info_2 = 1000337004,
-    physical_device_synchronization_2_features = 1000314007,
+    resolve_image_info_2 = 1000337005,
+    buffer_copy_2 = 1000337006,
+    image_copy_2 = 1000337007,
+    image_blit_2 = 1000337008,
+    buffer_image_copy_2 = 1000337009,
+    image_resolve_2 = 1000337010,
     physical_device_zero_initialize_workgroup_memory_features = 1000325000,
     physical_device_shader_demote_to_helper_invocation_features = 1000276000,
     physical_device_shader_terminate_invocation_features = 1000215000,
@@ -247,17 +251,14 @@ pub const StructureType = enum(i32) {
     physical_device_shader_integer_dot_product_features = 1000280000,
     physical_device_maintenance_4_features = 1000413000,
     physical_device_maintenance_4_properties = 1000413001,
-    rendering_fragment_shading_rate_attachment_info_khr = 1000044006, // Alias needed for Checking
 
     swapchain_create_info_khr = 1000001000,
     present_info_khr = 1000001001,
 
-    // VK_KHR_descriptor_update_template (promoted to core 1.1, but keeping KHR alias)
-    descriptor_update_template_create_info_khr = 1000080000,
-    descriptor_update_template_khr = 1000080001,
+    descriptor_update_template_create_info = 1000085000,
 
     // VK_KHR_push_descriptor
-    physical_device_push_descriptor_properties_khr = 1000080003,
+    physical_device_push_descriptor_properties_khr = 1000080000,
     push_descriptor_set_info_khr = 1000545005,
     push_descriptor_set_with_template_info_khr = 1000545006,
 
@@ -285,11 +286,12 @@ pub const StructureType = enum(i32) {
     xcb_surface_create_info_khr = 1000005000,
 
     // Vulkan 1.4 / Maintenance5
-    device_image_subresource_info = 1000300000,
-    image_subresource_2 = 1000300001,
-    rendering_area_info_khr = 1000300002,
-    subresource_layout_2_khr = 1000300003,
-    bind_memory_status_khr = 1000331000,
+    subresource_layout_2 = 1000338002,
+    image_subresource_2 = 1000338003,
+    device_image_subresource_info = 1000470004,
+    rendering_area_info = 1000470003,
+    // Maintenance6
+    bind_memory_status = 1000545002,
 
     // VK_EXT_mesh_shader
     physical_device_mesh_shader_features_ext = 1000328000,
@@ -299,13 +301,11 @@ pub const StructureType = enum(i32) {
     validation_features_ext = 1000247000,
 
     // VK_AMD_memory_overallocation_behavior
-    device_memory_overallocation_create_info_amd = 1000181000,
+    device_memory_overallocation_create_info_amd = 1000189000,
     _,
 };
 
-// ============================================================================
-// Enumerations
-// ============================================================================
+// == Enumerations ==
 
 pub const Format = enum(i32) {
     undefined = 0,
@@ -1072,9 +1072,7 @@ pub const ObjectType = enum(i32) {
     _,
 };
 
-// ============================================================================
-// Flag Bits
-// ============================================================================
+// == Flag Bits ==
 
 pub const QueueFlags = packed struct(u32) {
     graphics: bool = false,
@@ -1533,9 +1531,7 @@ pub const RenderingFlags = packed struct(u32) {
     _padding: u29 = 0,
 };
 
-// ============================================================================
-// Common Structures
-// ============================================================================
+// == Common Structures ==
 
 pub const Offset2D = extern struct {
     x: i32,
@@ -1623,24 +1619,6 @@ pub const MemoryRequirements = extern struct {
     memory_type_bits: u32,
 };
 
-pub const MemoryRequirements2 = extern struct {
-    s_type: StructureType,
-    p_next: ?*anyopaque,
-    memory_requirements: MemoryRequirements,
-};
-
-pub const ImageMemoryRequirementsInfo2 = extern struct {
-    s_type: StructureType,
-    p_next: ?*anyopaque,
-    image: Image,
-};
-
-pub const BufferMemoryRequirementsInfo2 = extern struct {
-    s_type: StructureType,
-    p_next: ?*anyopaque,
-    buffer: Buffer,
-};
-
 pub const SubresourceLayout = extern struct {
     offset: DeviceSize,
     size: DeviceSize,
@@ -1655,30 +1633,6 @@ pub const DeviceQueueInfo2 = extern struct {
     flags: u32,
     queue_family_index: u32,
     queue_index: u32,
-};
-
-pub const RenderPassCreateInfo2 = extern struct {
-    s_type: StructureType,
-    p_next: ?*anyopaque,
-    flags: u32,
-    attachment_count: u32,
-    p_attachments: ?*const anyopaque,
-    subpass_count: u32,
-    p_subpasses: ?*const anyopaque,
-    dependency_count: u32,
-    p_dependencies: ?*const anyopaque,
-    correlated_view_mask_count: u32,
-    p_correlated_view_masks: ?*const u32,
-};
-
-pub const RenderPassBeginInfo = extern struct {
-    s_type: StructureType,
-    p_next: ?*anyopaque,
-    render_pass: RenderPass,
-    framebuffer: Framebuffer,
-    render_area: Rect2D,
-    clear_value_count: u32,
-    p_clear_values: ?*const ClearValue,
 };
 
 pub const SubpassBeginInfo = extern struct {
@@ -1700,92 +1654,7 @@ pub const PrivateDataSlotCreateInfo = extern struct {
 
 pub const StencilFaceFlags = u32;
 
-pub const PhysicalDeviceToolProperties = extern struct {
-    s_type: StructureType,
-    p_next: ?*anyopaque,
-    name: [256]u8,
-    version: [256]u8,
-    purposes: u32,
-    description: [256]u8,
-    layer: [256]u8,
-};
-
 pub const PrivateDataSlot = u64;
-
-pub const SubmitInfo2 = extern struct {
-    s_type: StructureType,
-    p_next: ?*anyopaque,
-    flags: u32,
-    wait_semaphore_info_count: u32,
-    p_wait_semaphore_infos: ?*const anyopaque,
-    command_buffer_info_count: u32,
-    p_command_buffer_infos: ?*const anyopaque,
-    signal_semaphore_info_count: u32,
-    p_signal_semaphore_infos: ?*const anyopaque,
-};
-
-pub const CopyBufferInfo2 = extern struct {
-    s_type: StructureType,
-    p_next: ?*anyopaque,
-    src_buffer: Buffer,
-    dst_buffer: Buffer,
-    region_count: u32,
-    p_regions: ?*const anyopaque,
-};
-
-pub const CopyImageInfo2 = extern struct {
-    s_type: StructureType,
-    p_next: ?*anyopaque,
-    src_image: Image,
-    src_image_layout: u32,
-    dst_image: Image,
-    dst_image_layout: u32,
-    region_count: u32,
-    p_regions: ?*const anyopaque,
-};
-
-pub const CopyBufferToImageInfo2 = extern struct {
-    s_type: StructureType,
-    p_next: ?*anyopaque,
-    src_buffer: Buffer,
-    dst_image: Image,
-    dst_image_layout: u32,
-    region_count: u32,
-    p_regions: ?*const anyopaque,
-};
-
-pub const CopyImageToBufferInfo2 = extern struct {
-    s_type: StructureType,
-    p_next: ?*anyopaque,
-    src_image: Image,
-    src_image_layout: u32,
-    dst_buffer: Buffer,
-    region_count: u32,
-    p_regions: ?*const anyopaque,
-};
-
-pub const BlitImageInfo2 = extern struct {
-    s_type: StructureType,
-    p_next: ?*anyopaque,
-    src_image: Image,
-    src_image_layout: u32,
-    dst_image: Image,
-    dst_image_layout: u32,
-    region_count: u32,
-    p_regions: ?*const anyopaque,
-    filter: u32,
-};
-
-pub const ResolveImageInfo2 = extern struct {
-    s_type: StructureType,
-    p_next: ?*anyopaque,
-    src_image: Image,
-    src_image_layout: u32,
-    dst_image: Image,
-    dst_image_layout: u32,
-    region_count: u32,
-    p_regions: ?*const anyopaque,
-};
 
 pub const VertexInputAttributeDescription = extern struct {
     location: u32,
@@ -1865,9 +1734,7 @@ pub const AllocationCallbacks = extern struct {
     pfn_internal_free: ?*const fn (?*anyopaque, usize, usize, u32) callconv(.c) void,
 };
 
-// ============================================================================
-// Vulkan 1.3 Flag Types
-// ============================================================================
+// == Vulkan 1.3 Flag Types ==
 
 pub const ToolPurposeFlagBits = enum(u32) {
     validation = 0x00000001,
@@ -1876,9 +1743,7 @@ pub const ToolPurposeFlagBits = enum(u32) {
     _,
 };
 
-// ============================================================================
-// Additional Types for Copy Commands 2
-// ============================================================================
+// == Additional Types for Copy Commands 2 ==
 
 pub const BufferCopy2 = extern struct {
     s_type: StructureType,
@@ -1916,4 +1781,14 @@ pub const ImageBlit2 = extern struct {
     src_offsets: [2]Offset3D,
     dst_subresource: ImageSubresourceLayers,
     dst_offsets: [2]Offset3D,
+};
+
+pub const ImageResolve2 = extern struct {
+    s_type: StructureType,
+    p_next: ?*const anyopaque,
+    src_subresource: ImageSubresourceLayers,
+    src_offset: Offset3D,
+    dst_subresource: ImageSubresourceLayers,
+    dst_offset: Offset3D,
+    extent: Extent3D,
 };
