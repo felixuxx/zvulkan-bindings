@@ -783,8 +783,8 @@ fn testExtensionStructures() void {
         .view_mask = 0,
         .color_attachment_count = 0,
         .p_color_attachments = null,
-        .depth_attachment = null,
-        .stencil_attachment = null,
+        .p_depth_attachment = null,
+        .p_stencil_attachment = null,
     };
     _ = rendering_info;
 
@@ -894,7 +894,7 @@ fn testMemoryAndBufferStructures() void {
         .extent = .{ .width = 1920, .height = 1080, .depth = 1 },
         .mip_levels = 1,
         .array_layers = 1,
-        .samples = .{ .@"1" = true },
+        .samples = .@"1",
         .tiling = .optimal,
         .usage = .{ .color_attachment = true, .sampled = true },
         .sharing_mode = .exclusive,
@@ -1509,7 +1509,7 @@ fn testRenderPassStructures() void {
     const attachment_desc = vk.core_1_0.AttachmentDescription{
         .flags = 0,
         .format = .r8g8b8a8_unorm,
-        .samples = .{ .@"1" = true },
+        .samples = .@"1",
         .load_op = .clear,
         .store_op = .store,
         .stencil_load_op = .dont_care,
@@ -2231,7 +2231,7 @@ fn testImageAndBufferCreationStructures() void {
         .extent = .{ .width = 1920, .height = 1080, .depth = 1 },
         .mip_levels = 1,
         .array_layers = 1,
-        .samples = .{ .@"1" = true },
+        .samples = .@"1",
         .tiling = .optimal,
         .usage = .{ .color_attachment = true, .sampled = true },
         .sharing_mode = .exclusive,
