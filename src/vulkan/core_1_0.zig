@@ -724,11 +724,11 @@ pub const PipelineDepthStencilStateCreateInfo = extern struct {
     depth_write_enable: types.Bool32 = 0,
     depth_compare_op: types.CompareOp = .never,
     depth_bounds_test_enable: types.Bool32 = 0,
-    min_depth_bounds: f32 = 0.0,
-    max_depth_bounds: f32 = 1.0,
     stencil_test_enable: types.Bool32 = 0,
     front: types.StencilOpState = std.mem.zeroes(types.StencilOpState),
     back: types.StencilOpState = std.mem.zeroes(types.StencilOpState),
+    min_depth_bounds: f32 = 0.0,
+    max_depth_bounds: f32 = 1.0,
 };
 
 pub const DynamicState = enum(i32) {
