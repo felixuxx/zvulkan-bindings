@@ -656,7 +656,7 @@ pub const PipelineRasterizationStateCreateInfo = extern struct {
     depth_clamp_enable: types.Bool32 = 0,
     rasterizer_discard_enable: types.Bool32 = 0,
     polygon_mode: types.PolygonMode = .fill,
-    cull_mode: types.CullModeFlags = .{ .none = true },
+    cull_mode: types.CullModeFlags = .{},
     front_face: types.FrontFace = .counter_clockwise,
     depth_bias_enable: types.Bool32 = 0,
     depth_bias_constant_factor: f32 = 0.0,
