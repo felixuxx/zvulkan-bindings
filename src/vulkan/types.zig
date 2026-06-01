@@ -1398,11 +1398,9 @@ pub const ColorComponentFlags = packed struct(u32) {
 };
 
 pub const CullModeFlags = packed struct(u32) {
-    none: bool = false,
-    front: bool = false,
-    back: bool = false,
-    front_and_back: bool = false,
-    _padding: u28 = 0,
+    front: bool = false, // bit 0 → value 1 = VK_CULL_MODE_FRONT_BIT
+    back: bool = false, // bit 1 → value 2 = VK_CULL_MODE_BACK_BIT
+    _padding: u30 = 0,
 };
 
 pub const SampleCountFlags = packed struct(u32) {
