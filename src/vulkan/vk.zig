@@ -25,6 +25,7 @@ pub const ext_mesh_shader = extensions.ext_mesh_shader;
 pub const ext_validation_features = extensions.ext_validation_features;
 pub const amd_memory_overallocation = extensions.amd_memory_overallocation;
 pub const intel_performance_query = extensions.intel_performance_query;
+pub const ext_debug_utils = extensions.ext_debug_utils;
 const platform = @import("platform.zig");
 pub const types = @import("types.zig");
 pub const Instance = types.Instance;
@@ -383,6 +384,19 @@ pub const PFN_vkGetPhysicalDeviceXlibPresentationSupportKHR = *const fn (Physica
 pub const PFN_vkCreateWin32SurfaceKHR = *const fn (Instance, *const khr_win32_surface.Win32SurfaceCreateInfoKHR, ?*const types.AllocationCallbacks, *types.SurfaceKHR) callconv(.c) Result;
 pub const PFN_vkGetPhysicalDeviceWin32PresentationSupportKHR = *const fn (PhysicalDevice, u32) callconv(.c) types.Bool32;
 
+// VK_EXT_debug_utils
+pub const PFN_vkSetDebugUtilsObjectNameEXT = *const fn (Device, *const ext_debug_utils.DebugUtilsObjectNameInfoEXT) callconv(.c) Result;
+pub const PFN_vkSetDebugUtilsObjectTagEXT = *const fn (Device, *const ext_debug_utils.DebugUtilsObjectTagInfoEXT) callconv(.c) Result;
+pub const PFN_vkQueueBeginDebugUtilsLabelEXT = *const fn (Queue, *const ext_debug_utils.DebugUtilsLabelEXT) callconv(.c) void;
+pub const PFN_vkQueueEndDebugUtilsLabelEXT = *const fn (Queue) callconv(.c) void;
+pub const PFN_vkQueueInsertDebugUtilsLabelEXT = *const fn (Queue, *const ext_debug_utils.DebugUtilsLabelEXT) callconv(.c) void;
+pub const PFN_vkCmdBeginDebugUtilsLabelEXT = *const fn (CommandBuffer, *const ext_debug_utils.DebugUtilsLabelEXT) callconv(.c) void;
+pub const PFN_vkCmdEndDebugUtilsLabelEXT = *const fn (CommandBuffer) callconv(.c) void;
+pub const PFN_vkCmdInsertDebugUtilsLabelEXT = *const fn (CommandBuffer, *const ext_debug_utils.DebugUtilsLabelEXT) callconv(.c) void;
+pub const PFN_vkCreateDebugUtilsMessengerEXT = *const fn (Instance, *const ext_debug_utils.DebugUtilsMessengerCreateInfoEXT, ?*const types.AllocationCallbacks, *types.DebugUtilsMessengerEXT) callconv(.c) Result;
+pub const PFN_vkDestroyDebugUtilsMessengerEXT = *const fn (Instance, types.DebugUtilsMessengerEXT, ?*const types.AllocationCallbacks) callconv(.c) void;
+pub const PFN_vkSubmitDebugUtilsMessageEXT = *const fn (Instance, ext_debug_utils.DebugUtilsMessageSeverityFlagBitsEXT, ext_debug_utils.DebugUtilsMessageTypeFlagsEXT, *const ext_debug_utils.DebugUtilsMessengerCallbackDataEXT) callconv(.c) void;
+
 // == Extension and Layer Structures ==
 
 pub const ExtensionProperties = extern struct {
@@ -559,6 +573,11 @@ pub const InstanceDispatch = struct {
     // VK_KHR_fragment_shading_rate
     vkGetPhysicalDeviceFragmentShadingRatesKHR: ?PFN_vkGetPhysicalDeviceFragmentShadingRatesKHR = null,
 
+    // VK_EXT_debug_utils
+    vkCreateDebugUtilsMessengerEXT: ?PFN_vkCreateDebugUtilsMessengerEXT = null,
+    vkDestroyDebugUtilsMessengerEXT: ?PFN_vkDestroyDebugUtilsMessengerEXT = null,
+    vkSubmitDebugUtilsMessageEXT: ?PFN_vkSubmitDebugUtilsMessageEXT = null,
+
     fn init(get_proc: PFN_vkGetInstanceProcAddr, instance: Instance) !InstanceDispatch {
         return InstanceDispatch{
             .vkDestroyInstance = try loadInstanceFunction(get_proc, instance, "vkDestroyInstance", PFN_vkDestroyInstance),
@@ -610,6 +629,11 @@ pub const InstanceDispatch = struct {
 
             // VK_KHR_fragment_shading_rate
             .vkGetPhysicalDeviceFragmentShadingRatesKHR = loadOptionalInstanceFunction(get_proc, instance, "vkGetPhysicalDeviceFragmentShadingRatesKHR", PFN_vkGetPhysicalDeviceFragmentShadingRatesKHR),
+
+            // VK_EXT_debug_utils
+            .vkCreateDebugUtilsMessengerEXT = loadOptionalInstanceFunction(get_proc, instance, "vkCreateDebugUtilsMessengerEXT", PFN_vkCreateDebugUtilsMessengerEXT),
+            .vkDestroyDebugUtilsMessengerEXT = loadOptionalInstanceFunction(get_proc, instance, "vkDestroyDebugUtilsMessengerEXT", PFN_vkDestroyDebugUtilsMessengerEXT),
+            .vkSubmitDebugUtilsMessageEXT = loadOptionalInstanceFunction(get_proc, instance, "vkSubmitDebugUtilsMessageEXT", PFN_vkSubmitDebugUtilsMessageEXT),
         };
     }
 
@@ -728,6 +752,16 @@ pub const DeviceDispatch = struct {
 
     // VK_KHR_fragment_shading_rate
     vkCmdSetFragmentShadingRateKHR: ?PFN_vkCmdSetFragmentShadingRateKHR = null,
+
+    // VK_EXT_debug_utils
+    vkSetDebugUtilsObjectNameEXT: ?PFN_vkSetDebugUtilsObjectNameEXT = null,
+    vkSetDebugUtilsObjectTagEXT: ?PFN_vkSetDebugUtilsObjectTagEXT = null,
+    vkQueueBeginDebugUtilsLabelEXT: ?PFN_vkQueueBeginDebugUtilsLabelEXT = null,
+    vkQueueEndDebugUtilsLabelEXT: ?PFN_vkQueueEndDebugUtilsLabelEXT = null,
+    vkQueueInsertDebugUtilsLabelEXT: ?PFN_vkQueueInsertDebugUtilsLabelEXT = null,
+    vkCmdBeginDebugUtilsLabelEXT: ?PFN_vkCmdBeginDebugUtilsLabelEXT = null,
+    vkCmdEndDebugUtilsLabelEXT: ?PFN_vkCmdEndDebugUtilsLabelEXT = null,
+    vkCmdInsertDebugUtilsLabelEXT: ?PFN_vkCmdInsertDebugUtilsLabelEXT = null,
 
     // VK_INTEL_performance_query
     vkInitializePerformanceApiINTEL: ?PFN_vkInitializePerformanceApiINTEL = null,
@@ -1151,6 +1185,16 @@ pub const DeviceDispatch = struct {
 
             // VK_KHR_fragment_shading_rate
             .vkCmdSetFragmentShadingRateKHR = loadOptionalDeviceFunction(get_proc, device, "vkCmdSetFragmentShadingRateKHR", PFN_vkCmdSetFragmentShadingRateKHR),
+
+            // VK_EXT_debug_utils
+            .vkSetDebugUtilsObjectNameEXT = loadOptionalDeviceFunction(get_proc, device, "vkSetDebugUtilsObjectNameEXT", PFN_vkSetDebugUtilsObjectNameEXT),
+            .vkSetDebugUtilsObjectTagEXT = loadOptionalDeviceFunction(get_proc, device, "vkSetDebugUtilsObjectTagEXT", PFN_vkSetDebugUtilsObjectTagEXT),
+            .vkQueueBeginDebugUtilsLabelEXT = loadOptionalDeviceFunction(get_proc, device, "vkQueueBeginDebugUtilsLabelEXT", PFN_vkQueueBeginDebugUtilsLabelEXT),
+            .vkQueueEndDebugUtilsLabelEXT = loadOptionalDeviceFunction(get_proc, device, "vkQueueEndDebugUtilsLabelEXT", PFN_vkQueueEndDebugUtilsLabelEXT),
+            .vkQueueInsertDebugUtilsLabelEXT = loadOptionalDeviceFunction(get_proc, device, "vkQueueInsertDebugUtilsLabelEXT", PFN_vkQueueInsertDebugUtilsLabelEXT),
+            .vkCmdBeginDebugUtilsLabelEXT = loadOptionalDeviceFunction(get_proc, device, "vkCmdBeginDebugUtilsLabelEXT", PFN_vkCmdBeginDebugUtilsLabelEXT),
+            .vkCmdEndDebugUtilsLabelEXT = loadOptionalDeviceFunction(get_proc, device, "vkCmdEndDebugUtilsLabelEXT", PFN_vkCmdEndDebugUtilsLabelEXT),
+            .vkCmdInsertDebugUtilsLabelEXT = loadOptionalDeviceFunction(get_proc, device, "vkCmdInsertDebugUtilsLabelEXT", PFN_vkCmdInsertDebugUtilsLabelEXT),
 
             // VK_INTEL_performance_query
             .vkInitializePerformanceApiINTEL = loadOptionalDeviceFunction(get_proc, device, "vkInitializePerformanceApiINTEL", PFN_vkInitializePerformanceApiINTEL),
