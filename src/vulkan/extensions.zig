@@ -17,3 +17,4 @@ pub const khr_win32_surface = @import("extensions/khr_win32_surface.zig");
 pub const khr_xcb_surface = @import("extensions/khr_xcb_surface.zig");
 pub const khr_xlib_surface = @import("extensions/khr_xlib_surface.zig");
 pub const ext_debug_utils = @import("extensions/ext_debug_utils.zig");
+pub const ext_descriptor_indexing = @import("extensions/ext_descriptor_indexing.zig");

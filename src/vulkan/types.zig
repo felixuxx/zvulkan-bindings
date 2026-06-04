@@ -205,6 +205,13 @@ pub const StructureType = enum(i32) {
     image_format_list_create_info = 1000147000,
     image_sparse_memory_requirements_info_2 = 1000146002,
 
+    // VK_EXT_descriptor_indexing (promoted to Vulkan 1.2)
+    descriptor_set_layout_binding_flags_create_info = 1000161000,
+    physical_device_descriptor_indexing_features = 1000161001,
+    physical_device_descriptor_indexing_properties = 1000161002,
+    descriptor_set_variable_descriptor_count_allocate_info = 1000161003,
+    descriptor_set_variable_descriptor_count_layout_support = 1000161004,
+
     // Vulkan 1.3
     physical_device_vulkan_1_3_features = 53,
     physical_device_vulkan_1_3_properties = 54,
