@@ -520,6 +520,10 @@ pub fn main() !void {
         try testPhysicalDeviceFormatQueries(&instance_dispatch, physical_devices[0]);
     }
 
+    // Test VK_EXT_descriptor_indexing
+    std.debug.print("\nTesting VK_EXT_descriptor_indexing...\n", .{});
+    try testDescriptorIndexing();
+
     std.debug.print("\n✓ All tests completed successfully!\n", .{});
 }
 
@@ -2826,4 +2830,74 @@ fn testPhysicalDeviceFormatQueries(instance_dispatch: *const vk.InstanceDispatch
     }
 
     std.debug.print("  ✓ Physical device format queries completed successfully\n", .{});
+}
+
+fn testDescriptorIndexing() !void {
+    const d = vk.ext_descriptor_indexing;
+
+    // Extension constants
+    try std.testing.expectEqualStrings("VK_EXT_descriptor_indexing", d.EXT_DESCRIPTOR_INDEXING_EXTENSION_NAME);
+    try std.testing.expect(d.EXT_DESCRIPTOR_INDEXING_SPEC_VERSION >= 2);
+    try std.testing.expectEqual(@as(u32, 0x00000002), d.DESCRIPTOR_SET_LAYOUT_CREATE_UPDATE_AFTER_BIND_POOL_BIT);
+
+    // DescriptorBindingFlags bit layout
+    try std.testing.expectEqual(@as(u32, 0x01), @as(u32, @bitCast(d.DescriptorBindingFlags{ .update_after_bind = true })));
+    try std.testing.expectEqual(@as(u32, 0x02), @as(u32, @bitCast(d.DescriptorBindingFlags{ .update_unused_while_pending = true })));
+    try std.testing.expectEqual(@as(u32, 0x04), @as(u32, @bitCast(d.DescriptorBindingFlags{ .partially_bound = true })));
+    try std.testing.expectEqual(@as(u32, 0x08), @as(u32, @bitCast(d.DescriptorBindingFlags{ .variable_descriptor_count = true })));
+
+    // Combined flags
+    const combined = d.DescriptorBindingFlags{
+        .update_after_bind = true,
+        .variable_descriptor_count = true,
+    };
+    try std.testing.expectEqual(@as(u32, 0x09), @as(u32, @bitCast(combined)));
+
+    // DescriptorSetLayoutBindingFlagsCreateInfo
+    var binding_flags = [_]d.DescriptorBindingFlags{
+        .{ .update_after_bind = true, .variable_descriptor_count = true },
+        .{ .partially_bound = true },
+    };
+    const layout_flags_info = d.DescriptorSetLayoutBindingFlagsCreateInfo{
+        .binding_count = 2,
+        .p_binding_flags = &binding_flags,
+    };
+    try std.testing.expectEqual(vk.types.StructureType.descriptor_set_layout_binding_flags_create_info, layout_flags_info.s_type);
+    try std.testing.expectEqual(@as(u32, 2), layout_flags_info.binding_count);
+
+    // pNext chaining: attach to DescriptorSetLayoutCreateInfo
+    const layout_info = vk.core_1_0.DescriptorSetLayoutCreateInfo{
+        .flags = d.DESCRIPTOR_SET_LAYOUT_CREATE_UPDATE_AFTER_BIND_POOL_BIT,
+        .p_next = @ptrCast(&layout_flags_info),
+        .binding_count = 0,
+        .p_bindings = null,
+    };
+    _ = layout_info;
+
+    // DescriptorSetVariableDescriptorCountAllocateInfo
+    var counts = [_]u32{ 256, 128 };
+    const variable_count_info = d.DescriptorSetVariableDescriptorCountAllocateInfo{
+        .descriptor_set_count = 2,
+        .p_descriptor_counts = &counts,
+    };
+    try std.testing.expectEqual(vk.types.StructureType.descriptor_set_variable_descriptor_count_allocate_info, variable_count_info.s_type);
+    try std.testing.expectEqual(@as(u32, 2), variable_count_info.descriptor_set_count);
+
+    // pNext chaining: attach to DescriptorSetAllocateInfo
+    const alloc_info = vk.core_1_0.DescriptorSetAllocateInfo{
+        .p_next = @ptrCast(&variable_count_info),
+        .descriptor_pool = 0,
+        .descriptor_set_count = 2,
+        .p_set_layouts = undefined,
+    };
+    _ = alloc_info;
+
+    // DescriptorSetVariableDescriptorCountLayoutSupport (output struct)
+    const layout_support = d.DescriptorSetVariableDescriptorCountLayoutSupport{
+        .max_variable_descriptor_count = 512,
+    };
+    try std.testing.expectEqual(vk.types.StructureType.descriptor_set_variable_descriptor_count_layout_support, layout_support.s_type);
+    try std.testing.expectEqual(@as(u32, 512), layout_support.max_variable_descriptor_count);
+
+    std.debug.print("  ✓ VK_EXT_descriptor_indexing structures and flags verified\n", .{});
 }
