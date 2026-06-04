@@ -83,6 +83,13 @@ fn requiredInstanceExtensionForField(comptime field_name: []const u8) ?[*:0]cons
         return vk.extensions.khr_fragment_shading_rate.KHR_FRAGMENT_SHADING_RATE_EXTENSION_NAME;
     }
 
+    if (std.mem.eql(u8, field_name, "vkCreateDebugUtilsMessengerEXT") or
+        std.mem.eql(u8, field_name, "vkDestroyDebugUtilsMessengerEXT") or
+        std.mem.eql(u8, field_name, "vkSubmitDebugUtilsMessageEXT"))
+    {
+        return vk.ext_debug_utils.EXT_DEBUG_UTILS_EXTENSION_NAME;
+    }
+
     return null;
 }
 
@@ -180,6 +187,7 @@ pub fn main() !void {
         vk.khr_xlib_surface.KHR_XLIB_SURFACE_EXTENSION_NAME,
         vk.khr_win32_surface.KHR_WIN32_SURFACE_EXTENSION_NAME,
         vk.extensions.khr_fragment_shading_rate.KHR_FRAGMENT_SHADING_RATE_EXTENSION_NAME,
+        vk.ext_debug_utils.EXT_DEBUG_UTILS_EXTENSION_NAME,
     };
 
     var enabled_instance_extensions: [desired_instance_extensions.len][*:0]const u8 = undefined;
@@ -327,6 +335,10 @@ pub fn main() !void {
     // Test extension enumeration
     std.debug.print("\nTesting extension enumeration...\n", .{});
     try testExtensionEnumeration(&loader, allocator);
+
+    // Test VK_EXT_debug_utils
+    std.debug.print("\nTesting VK_EXT_debug_utils...\n", .{});
+    testDebugUtils(instance, &instance_dispatch);
 
     // Test structure initialization for different API versions
     std.debug.print("\nTesting structure initialization...\n", .{});
@@ -606,6 +618,58 @@ fn testExtensionEnumeration(loader: *const vk.Loader, allocator: std.mem.Allocat
     std.debug.print("  ✓ Swapchain extension: {s}\n", .{if (found_swapchain) "available" else "not available"});
     std.debug.print("  ✓ Synchronization2 extension: {s}\n", .{if (found_sync2) "available" else "not available"});
     std.debug.print("  ✓ Dynamic Rendering extension: {s}\n", .{if (found_dynamic_rendering) "available" else "not available"});
+}
+
+fn testDebugUtils(instance: vk.Instance, instance_dispatch: *const vk.InstanceDispatch) void {
+    const callback: *const fn (
+        vk.ext_debug_utils.DebugUtilsMessageSeverityFlagBitsEXT,
+        vk.ext_debug_utils.DebugUtilsMessageTypeFlagsEXT,
+        *const vk.ext_debug_utils.DebugUtilsMessengerCallbackDataEXT,
+        ?*anyopaque,
+    ) callconv(.c) vk.types.Bool32 = struct {
+        fn cb(
+            _: vk.ext_debug_utils.DebugUtilsMessageSeverityFlagBitsEXT,
+            _: vk.ext_debug_utils.DebugUtilsMessageTypeFlagsEXT,
+            p_data: *const vk.ext_debug_utils.DebugUtilsMessengerCallbackDataEXT,
+            _: ?*anyopaque,
+        ) callconv(.c) vk.types.Bool32 {
+            const msg = std.mem.sliceTo(p_data.p_message, 0);
+            std.debug.print("    → Debug callback: \"{s}\"\n", .{msg});
+            return vk.constants.FALSE;
+        }
+    }.cb;
+
+    if (instance_dispatch.vkCreateDebugUtilsMessengerEXT) |create_fn| {
+        var messenger: vk.types.DebugUtilsMessengerEXT = undefined;
+        const result = create_fn(instance, &.{
+            .message_severity = .{ .verbose = true, .info = true, .warning = true, .@"error" = true },
+            .message_type = .{ .general = true, .validation = true, .performance = true },
+            .pfn_user_callback = callback,
+        }, null, &messenger);
+        if (result == .success) {
+            std.debug.print("  ✓ Debug messenger created\n", .{});
+            if (instance_dispatch.vkSubmitDebugUtilsMessageEXT) |submit_fn| {
+                submit_fn(instance, .info, .{ .general = true }, &.{
+                    .p_message = "zvulkan-bindings debug utils test",
+                    .p_message_id_name = "Test",
+                    .message_id_number = 0,
+                    .queue_label_count = 0,
+                    .p_queue_labels = null,
+                    .cmd_buf_label_count = 0,
+                    .p_cmd_buf_labels = null,
+                    .object_count = 0,
+                    .p_objects = null,
+                });
+                std.debug.print("  ✓ Debug message submitted\n", .{});
+            }
+            instance_dispatch.vkDestroyDebugUtilsMessengerEXT.?(instance, messenger, null);
+            std.debug.print("  ✓ Debug messenger destroyed\n", .{});
+        } else {
+            std.debug.print("  ⚠ Failed to create debug messenger: {}\n", .{result});
+        }
+    } else {
+        std.debug.print("  ⚠ VK_EXT_debug_utils not available on this system\n", .{});
+    }
 }
 
 fn testStructureInitialization() void {
