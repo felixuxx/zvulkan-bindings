@@ -293,6 +293,13 @@ pub const StructureType = enum(i32) {
     // Maintenance6
     bind_memory_status = 1000545002,
 
+    // VK_EXT_debug_utils
+    debug_utils_object_name_info_ext = 1000128000,
+    debug_utils_object_tag_info_ext = 1000128001,
+    debug_utils_label_ext = 1000128002,
+    debug_utils_messenger_callback_data_ext = 1000128003,
+    debug_utils_messenger_create_info_ext = 1000128004,
+
     // VK_EXT_mesh_shader
     physical_device_mesh_shader_features_ext = 1000328000,
     physical_device_mesh_shader_properties_ext = 1000328001,
@@ -1057,7 +1064,11 @@ pub const ObjectType = enum(i32) {
     video_session_parameters_khr = 1000023001,
     cu_module_nvx = 1000029000,
     cu_function_nvx = 1000029001,
-    debug_utils_messenger_ext = 1000128000,
+    debug_utils_object_name_info_ext = 1000128000,
+    debug_utils_object_tag_info_ext = 1000128001,
+    debug_utils_label_ext = 1000128002,
+    debug_utils_messenger_callback_data_ext = 1000128003,
+    debug_utils_messenger_create_info_ext = 1000128004,
     acceleration_structure_khr = 1000150000,
     validation_cache_ext = 1000160000,
     acceleration_structure_nv = 1000165000,
@@ -1398,8 +1409,8 @@ pub const ColorComponentFlags = packed struct(u32) {
 };
 
 pub const CullModeFlags = packed struct(u32) {
-    front: bool = false, // bit 0 → value 1 = VK_CULL_MODE_FRONT_BIT
-    back: bool = false, // bit 1 → value 2 = VK_CULL_MODE_BACK_BIT
+    front: bool = false,    // bit 0 → value 1 = VK_CULL_MODE_FRONT_BIT
+    back: bool = false,     // bit 1 → value 2 = VK_CULL_MODE_BACK_BIT
     _padding: u30 = 0,
 };
 
