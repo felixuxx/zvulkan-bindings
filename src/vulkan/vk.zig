@@ -26,6 +26,7 @@ pub const ext_validation_features = extensions.ext_validation_features;
 pub const amd_memory_overallocation = extensions.amd_memory_overallocation;
 pub const intel_performance_query = extensions.intel_performance_query;
 pub const ext_debug_utils = extensions.ext_debug_utils;
+pub const ext_descriptor_indexing = extensions.ext_descriptor_indexing;
 const platform = @import("platform.zig");
 pub const types = @import("types.zig");
 pub const Instance = types.Instance;

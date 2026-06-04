@@ -39,6 +39,7 @@ pub const ext_validation_features = vk.ext_validation_features;
 pub const amd_memory_overallocation = vk.amd_memory_overallocation;
 pub const intel_performance_query = vk.intel_performance_query;
 pub const ext_debug_utils = vk.ext_debug_utils;
+pub const ext_descriptor_indexing = vk.ext_descriptor_indexing;
 
 // Re-export the loader
 pub const Loader = vk.Loader;
